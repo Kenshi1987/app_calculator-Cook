@@ -17,6 +17,7 @@ const translations = {
     navRecetas: "Recetas",
     navMaterias: "Materias Primas",
     navConversor: "Conversor",
+    navBuscar: "Buscar",
     crearReceta: "Crear Receta",
     placeholderNombreReceta: "Nombre de la receta",
     placeholderUnidades: "Número de unidades producidas",
@@ -46,15 +47,15 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>¿Qué es CostCalc Pro?</strong><br>
-            CostCalc Pro es una aplicación que te permite calcular el costo de producción de recetas utilizando materias primas. Por ejemplo, puedes ingresar el costo de harina, agua y otros ingredientes para saber cuánto cuesta producir cada unidad de tu receta.</li>
+            Es una aplicación para calcular el costo de producción de recetas usando materias primas. Por ejemplo, puedes saber cuánto cuesta producir cada pan o torta.</li>
         <li><strong>¿Cómo agrego una materia prima?</strong><br>
-            Ve a la solapa "Materias Primas", ingresa el nombre, costo y la unidad (por ejemplo, “Harina”, "$0.50" y "kg") y haz clic en "Agregar Materia Prima". Estas materias se usarán al crear tus recetas.</li>
+            Ve a la pestaña "Materias Primas", ingresa el nombre, costo y unidad (por ejemplo, "Harina", "$1.0" y "kg") y haz clic en "Agregar Materia Prima".</li>
         <li><strong>¿Cómo creo una receta?</strong><br>
-            En la solapa "Recetas", ingresa el nombre de la receta y el número de unidades que produces. Puedes agregar comentarios si lo deseas. Luego, añade ingredientes seleccionando una materia prima y especificando la cantidad (por ejemplo, 2 kg de harina). Finalmente, haz clic en "Calcular Receta" para ver el costo total y el costo por unidad.</li>
+            En la pestaña "Recetas", ingresa el nombre de la receta y el número de unidades producidas. Luego, añade ingredientes seleccionando materias primas y especificando cantidades. <em>Por ejemplo, si registraste la harina a $1.0 por kg y usas 300 gramos en la receta, deberás ingresar 0.3 como cantidad de harina.</em> Puedes incluir comentarios y, al presionar "Calcular Receta", verás el costo total y el costo por unidad.</li>
         <li><strong>¿Cómo edito una receta o materia prima?</strong><br>
-            En la lista de recetas o materias, utiliza el botón de editar (icono de lápiz) para abrir un modal con la información actual. Realiza los cambios necesarios y presiona "Guardar Cambios".</li>
+            Usa el botón de editar (ícono de lápiz) en la lista para abrir un modal, modificar la información y luego guardar los cambios.</li>
         <li><strong>¿Cómo se calculan los costos?</strong><br>
-            El costo total de una receta se calcula multiplicando la cantidad de cada ingrediente por su costo y luego sumando estos valores. Por ejemplo, si usas 2 kg de harina a $0.50 por kg y 1 litro de agua a $0.20, el costo será: (2 x 0.50) + (1 x 0.20) = $1.20.</li>
+            El costo total se obtiene multiplicando la cantidad de cada ingrediente por su costo y sumando los resultados. Por ejemplo, si usas 2 kg de harina a $1.0 y 1 l de agua a $0.2, el costo será: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
       </ul>`
   },
   en: {
@@ -62,6 +63,7 @@ const translations = {
     navRecetas: "Recipes",
     navMaterias: "Raw Materials",
     navConversor: "Converter",
+    navBuscar: "Search",
     crearReceta: "Create Recipe",
     placeholderNombreReceta: "Recipe name",
     placeholderUnidades: "Number of units produced",
@@ -91,15 +93,15 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>What is CostCalc Pro?</strong><br>
-            CostCalc Pro is an application that helps you calculate production costs of recipes using raw materials. For example, you can input the cost of flour, water, etc., to know the cost per unit of your recipe.</li>
+            It is an application to calculate production costs of recipes using raw materials. For example, you can know the cost per unit of each bread or cake.</li>
         <li><strong>How do I add a raw material?</strong><br>
-            Go to the "Raw Materials" tab, enter the name, cost, and unit (e.g., “Flour”, "$0.50" and "kg"), and click "Add Raw Material". These materials will be available when creating recipes.</li>
+            Go to the "Raw Materials" tab, enter the name, cost, and unit (e.g., "Flour", "$1.0", "kg"), and click "Add Raw Material".</li>
         <li><strong>How do I create a recipe?</strong><br>
-            In the "Recipes" tab, enter the recipe name and the number of units produced. You can add optional comments. Then, add ingredients by selecting a raw material and specifying the quantity (e.g., 2 kg of flour). Click "Calculate Recipe" to see the total cost and cost per unit.</li>
+            In the "Recipes" tab, enter the recipe name and the number of units produced. Then, add ingredients by selecting raw materials and specifying quantities. For example, if you registered flour at $1.0 per kg and use 300 grams in the recipe, you should enter 0.3 as the quantity of flour. Optionally, add comments and click "Calculate Recipe" to see the total cost and cost per unit.</li>
         <li><strong>How do I edit a recipe or raw material?</strong><br>
-            In the saved recipes or raw materials list, use the edit button (pencil icon) to open a modal with the current information. Make your changes and click "Save Changes".</li>
-        <li><strong>How are costs calculated?</strong><br>
-            The total cost of a recipe is calculated by multiplying the quantity of each ingredient by its cost and then summing the results. For instance, if you use 2 kg of flour at $0.50 per kg and 1 liter of water at $0.20, the cost would be: (2 x 0.50) + (1 x 0.20) = $1.20.</li>
+            Use the edit button (pencil icon) in the list to open a modal, modify the information, and then save changes.</li>
+        <li><strong>How are the costs calculated?</strong><br>
+            The total cost is calculated by multiplying the quantity of each ingredient by its cost and summing the values. For example, if you use 2 kg of flour at $1.0 and 1 l of water at $0.2, the cost is: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
       </ul>`
   },
   pt: {
@@ -107,6 +109,7 @@ const translations = {
     navRecetas: "Receitas",
     navMaterias: "Matérias-Primas",
     navConversor: "Conversor",
+    navBuscar: "Pesquisar",
     crearReceta: "Criar Receita",
     placeholderNombreReceta: "Nome da receita",
     placeholderUnidades: "Número de unidades produzidas",
@@ -136,15 +139,15 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>O que é o CostCalc Pro?</strong><br>
-            CostCalc Pro é um aplicativo que ajuda a calcular o custo de produção de receitas utilizando matérias-primas. Por exemplo, você pode inserir o custo da farinha, água, etc., para saber o custo por unidade de sua receita.</li>
+            É um aplicativo para calcular o custo de produção de receitas usando matérias-primas. Por exemplo, você pode saber o custo por unidade de cada pão ou bolo.</li>
         <li><strong>Como adiciono uma matéria-prima?</strong><br>
-            Vá até a aba "Matérias-Primas", insira o nome, custo e unidade (ex.: “Farinha”, “$0,50” e “kg”) e clique em "Adicionar Matéria-Prima". Essas matérias estarão disponíveis para a criação de receitas.</li>
+            Vá até a aba "Matérias-Primas", insira o nome, custo e unidade (ex.: "Farinha", "$1.0", "kg") e clique em "Adicionar Matéria-Prima".</li>
         <li><strong>Como crio uma receita?</strong><br>
-            Na aba "Receitas", insira o nome da receita e o número de unidades produzidas. Você pode adicionar comentários opcionais. Em seguida, adicione os ingredientes selecionando uma matéria-prima e especificando a quantidade (ex.: 2 kg de farinha). Clique em "Calcular Receita" para ver o custo total e o custo por unidade.</li>
+            Na aba "Receitas", insira o nome da receita e o número de unidades produzidas. Em seguida, adicione os ingredientes selecionando as matérias-primas e especificando as quantidades. Por exemplo, se você cadastrou a farinha a $1.0 por kg e utiliza 300 gramas na receita, deverá inserir 0.3 como quantidade de farinha. Você pode incluir comentários e, ao clicar em "Calcular Receita", ver o custo total e o custo por unidade.</li>
         <li><strong>Como edito uma receita ou matéria-prima?</strong><br>
-            Na lista de receitas ou matérias-primas, use o botão de editar (ícone de lápis) para abrir um modal com as informações atuais. Faça as alterações necessárias e clique em "Salvar Alterações".</li>
+            Utilize o botão de editar (ícone de lápis) na lista para abrir um modal, modificar as informações e salvar as alterações.</li>
         <li><strong>Como os custos são calculados?</strong><br>
-            O custo total de uma receita é calculado multiplicando a quantidade de cada ingrediente pelo seu custo e somando os resultados. Por exemplo, se você usar 2 kg de farinha a $0,50 por kg e 1 litro de água a $0,20, o custo será: (2 x 0,50) + (1 x 0,20) = $1,20.</li>
+            O custo total é calculado multiplicando a quantidade de cada ingrediente pelo seu custo e somando os valores. Por exemplo, se você usar 2 kg de farinha a $1.0 e 1 l de água a $0.2, o custo será: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
       </ul>`
   }
 };
@@ -187,7 +190,6 @@ function translateApp() {
   document.getElementById("editarUnidadMateria").placeholder = t.placeholderEditarUnidadMateria;
   document.getElementById("btnGuardarCambiosMateria").innerText = t.btnGuardarCambiosMateria;
   
-  // Actualiza FAQ
   document.getElementById("faqTitle").innerText = t.faqTitle;
   document.getElementById("faqContent").innerHTML = t.faqContent;
 }
@@ -205,7 +207,7 @@ function toggleTheme() {
     : '<i class="fas fa-sun"></i>';
 }
 
-// Funciones para alternar secciones
+// Alterna la visibilidad de las secciones
 function showSection(sectionId) {
   document.getElementById("recetas-section").style.display = sectionId === "recetas-section" ? "block" : "none";
   document.getElementById("materias-section").style.display = sectionId === "materias-section" ? "block" : "none";
@@ -558,7 +560,7 @@ function guardarEdicionReceta() {
   cerrarModalRecetaEdit();
 }
 
-// Conversor
+/* ----- Funciones del Conversor ----- */
 function convertirMedida() {
   const valor = parseFloat(document.getElementById("valorConversor").value);
   const unidadOrigen = document.getElementById("unidadOrigen").value;
@@ -593,7 +595,7 @@ function cerrarModalRecetaView() {
   document.getElementById("modalRecetaView").style.display = "none";
 }
 
-// FAQ Modal
+/* ----- Funciones del FAQ ----- */
 function abrirModalFAQ() {
   document.getElementById("modalFAQ").style.display = "block";
 }

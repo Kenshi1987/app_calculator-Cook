@@ -255,12 +255,19 @@ footer a:hover {
 .dark-mode .nav-btn {
   background: #555;
 }
-.dark-mode #themeToggle, .dark-mode #faqButton {
+.dark-mode #themeToggle, 
+.dark-mode #faqButton {
   background: #555;
   color: #fff;
 }
 .dark-mode button:hover {
   background: #666;
+}
+/* Aseguramos que en dark mode las listas tengan fondo y texto legible */
+.dark-mode #listaMaterias li,
+.dark-mode #listaRecetas li {
+  background: #444;
+  color: #eee;
 }
 
 /* Responsive: Pantallas mayores a 600px */
