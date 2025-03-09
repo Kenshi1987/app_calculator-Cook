@@ -1,0 +1,255 @@
+/* Reset y base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Encabezado */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+header .logo {
+  font-size: 3rem;
+  color: #007bff;
+}
+header h1 {
+  font-size: 2rem;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#langSelect {
+  font-size: 1rem;
+  padding: 5px;
+}
+#themeToggle {
+  background: #007bff;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#themeToggle:hover {
+  background: #0056b3;
+}
+
+/* Navegación */
+.nav {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+.nav-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  flex: 1;
+  margin: 0 5px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.nav-btn:hover {
+  background: #0056b3;
+}
+.nav-btn i {
+  font-size: 1.5rem;
+}
+.nav-label {
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* Secciones */
+section {
+  margin-bottom: 20px;
+}
+section h2,
+section h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+input, select, textarea, button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+textarea {
+  resize: vertical;
+}
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button:hover {
+  background: #0056b3;
+}
+
+/* Fila de ingredientes */
+.ingrediente-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.ingrediente-row select,
+.ingrediente-row input {
+  flex: 1;
+  padding: 8px;
+  font-size: 1rem;
+}
+.ingrediente-row button {
+  flex: 0 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Listados */
+#listaMaterias li,
+#listaRecetas li {
+  background: #e9ecef;
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lista-btns {
+  display: flex;
+  gap: 5px;
+}
+.lista-btns button {
+  background: #ffc107;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 8px;
+  cursor: pointer;
+  color: #212529;
+}
+.lista-btns button.ver {
+  background: #28a745;
+  color: #fff;
+}
+.lista-btns button.eliminar {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* Modales */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  position: relative;
+}
+.small-modal {
+  max-width: 400px;
+}
+.modal .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Dark mode */
+.dark-mode {
+  background: #222;
+  color: #eee;
+}
+.dark-mode .container {
+  background: #333;
+  color: #eee;
+}
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea,
+.dark-mode button {
+  background: #444;
+  color: #eee;
+  border: 1px solid #555;
+}
+.dark-mode .nav-btn {
+  background: #555;
+}
+.dark-mode #themeToggle {
+  background: #555;
+  color: #fff;
+}
+.dark-mode button:hover {
+  background: #666;
+}
+
+/* Responsive: Pantallas mayores a 600px */
+@media (min-width: 600px) {
+  .container {
+    max-width: 800px;
+  }
+  .nav-btn {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .nav-label {
+    margin-left: 8px;
+    display: inline;
+  }
+}
