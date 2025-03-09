@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Encabezado con logo, título, selector de idioma y tema -->
+    <!-- Encabezado con logo, título, selector de idioma, tema y FAQ -->
     <header>
       <div class="header-left">
         <i class="fas fa-calculator logo"></i>
@@ -24,6 +24,9 @@
         </select>
         <button id="themeToggle" onclick="toggleTheme()" title="Cambiar tema">
           <i class="fas fa-sun"></i>
+        </button>
+        <button id="faqButton" onclick="abrirModalFAQ()" title="Preguntas frecuentes">
+          <i class="fas fa-question-circle"></i>
         </button>
       </div>
     </header>
@@ -68,6 +71,12 @@
       <ul id="listaMaterias"></ul>
     </section>
   </div>
+  
+  <!-- Footer con enlaces a Instagram y Cafecito -->
+  <footer>
+    <a href="https://instagram.com/tuusuario" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://cafecito.app/tuusuario" target="_blank"><i class="fas fa-mug-hot"></i></a>
+  </footer>
   
   <!-- Modal para el Conversor -->
   <div id="modalConversor" class="modal">
@@ -123,6 +132,15 @@
       <input type="number" id="editarCostoMateria" placeholder="Costo">
       <input type="text" id="editarUnidadMateria" placeholder="Unidad (g, ml, unidad)">
       <button id="btnGuardarCambiosMateria" onclick="guardarEdicionMateria()">Guardar Cambios</button>
+    </div>
+  </div>
+  
+  <!-- Modal para FAQ -->
+  <div id="modalFAQ" class="modal">
+    <div class="modal-content small-modal">
+      <span class="close" onclick="cerrarModalFAQ()">&times;</span>
+      <h2 id="faqTitle">Preguntas Frecuentes</h2>
+      <div id="faqContent"></div>
     </div>
   </div>
   

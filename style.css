@@ -4,14 +4,12 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   color: #333;
   transition: background 0.3s, color 0.3s;
 }
-
 .container {
   max-width: 800px;
   margin: auto;
@@ -50,7 +48,7 @@ header h1 {
   font-size: 1rem;
   padding: 5px;
 }
-#themeToggle {
+#themeToggle, #faqButton {
   background: #007bff;
   border: none;
   color: #fff;
@@ -58,8 +56,9 @@ header h1 {
   font-size: 1.5rem;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s;
 }
-#themeToggle:hover {
+#themeToggle:hover, #faqButton:hover {
   background: #0056b3;
 }
 
@@ -180,6 +179,22 @@ button:hover {
   color: #fff;
 }
 
+/* Footer */
+footer {
+  text-align: center;
+  margin: 20px 0;
+}
+footer a {
+  color: #007bff;
+  margin: 0 10px;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+footer a:hover {
+  color: #0056b3;
+}
+
 /* Modales */
 .modal {
   display: none;
@@ -211,6 +226,15 @@ button:hover {
   cursor: pointer;
 }
 
+/* FAQ List */
+.faq-list {
+  list-style: none;
+  padding: 0;
+}
+.faq-list li {
+  margin-bottom: 10px;
+}
+
 /* Dark mode */
 .dark-mode {
   background: #222;
@@ -231,7 +255,7 @@ button:hover {
 .dark-mode .nav-btn {
   background: #555;
 }
-.dark-mode #themeToggle {
+.dark-mode #themeToggle, .dark-mode #faqButton {
   background: #555;
   color: #fff;
 }
