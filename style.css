@@ -255,18 +255,26 @@ footer a:hover {
 .dark-mode .nav-btn {
   background: #555;
 }
-.dark-mode #themeToggle, 
-.dark-mode #faqButton {
+.dark-mode #themeToggle, .dark-mode #faqButton {
   background: #555;
   color: #fff;
 }
 .dark-mode button:hover {
   background: #666;
 }
-/* Aseguramos que en dark mode las listas tengan fondo y texto legible */
+/* Aseguramos que las listas tengan fondo y texto legible en dark mode */
 .dark-mode #listaMaterias li,
 .dark-mode #listaRecetas li {
   background: #444;
+  color: #eee;
+}
+/* Modales en Dark Mode */
+.dark-mode .modal-content {
+  background: #333;
+  color: #eee;
+  border: 1px solid #555;
+}
+.dark-mode .modal .close {
   color: #eee;
 }
 

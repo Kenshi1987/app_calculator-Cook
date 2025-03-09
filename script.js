@@ -51,7 +51,7 @@ const translations = {
         <li><strong>¿Cómo agrego una materia prima?</strong><br>
             Ve a la pestaña "Materias Primas", ingresa el nombre, costo y unidad (por ejemplo, "Harina", "$1.0" y "kg") y haz clic en "Agregar Materia Prima".</li>
         <li><strong>¿Cómo creo una receta?</strong><br>
-            En la pestaña "Recetas", ingresa el nombre de la receta y el número de unidades producidas. Luego, añade ingredientes seleccionando materias primas y especificando cantidades. <em>Por ejemplo, si registraste la harina a $1.0 por kg y usas 300 gramos en la receta, deberás ingresar 0.3 como cantidad de harina.</em> Puedes incluir comentarios y, al presionar "Calcular Receta", verás el costo total y el costo por unidad.</li>
+            En la pestaña "Recetas", ingresa el nombre de la receta y el número de unidades producidas. Luego, añade ingredientes seleccionando materias primas y especificando cantidades. Por ejemplo, si registraste la harina a $1.0 por kg y usas 300 gramos en la receta, deberás ingresar 0.3 como cantidad de harina. Puedes incluir comentarios y, al presionar "Calcular Receta", verás el costo total y el costo por unidad.</li>
         <li><strong>¿Cómo edito una receta o materia prima?</strong><br>
             Usa el botón de editar (ícono de lápiz) en la lista para abrir un modal, modificar la información y luego guardar los cambios.</li>
         <li><strong>¿Cómo se calculan los costos?</strong><br>
@@ -97,11 +97,11 @@ const translations = {
         <li><strong>How do I add a raw material?</strong><br>
             Go to the "Raw Materials" tab, enter the name, cost, and unit (e.g., "Flour", "$1.0", "kg"), and click "Add Raw Material".</li>
         <li><strong>How do I create a recipe?</strong><br>
-            In the "Recipes" tab, enter the recipe name and the number of units produced. Then, add ingredients by selecting raw materials and specifying quantities. For example, if you registered flour at $1.0 per kg and use 300 grams in the recipe, you should enter 0.3 as the quantity of flour. Optionally, add comments and click "Calculate Recipe" to see the total cost and cost per unit.</li>
+            In the "Recipes" tab, enter the recipe name and number of units produced. Then add ingredients by selecting raw materials and specifying quantities. For example, if you registered flour at $1.0 per kg and use 300 grams in the recipe, you should enter 0.3 as the quantity of flour. Optionally, add comments and click "Calculate Recipe" to see the total cost and cost per unit.</li>
         <li><strong>How do I edit a recipe or raw material?</strong><br>
             Use the edit button (pencil icon) in the list to open a modal, modify the information, and then save changes.</li>
         <li><strong>How are the costs calculated?</strong><br>
-            The total cost is calculated by multiplying the quantity of each ingredient by its cost and summing the values. For example, if you use 2 kg of flour at $1.0 and 1 l of water at $0.2, the cost is: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
+            The total cost is calculated by multiplying the quantity of each ingredient by its cost and summing up the values. For example, if you use 2 kg of flour at $1.0 and 1 l of water at $0.2, the cost is: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
       </ul>`
   },
   pt: {
