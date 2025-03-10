@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Encabezado con logo, título, selector de idioma, tema y FAQ -->
+    <!-- Encabezado -->
     <header>
       <div class="header-left">
         <i class="fas fa-calculator logo"></i>
@@ -31,7 +31,7 @@
       </div>
     </header>
     
-    <!-- Barra de navegación -->
+    <!-- Navegación -->
     <nav class="nav">
       <button onclick="showSection('recetas-section')" class="nav-btn">
         <i class="fas fa-book-open"></i>
@@ -62,7 +62,7 @@
     </section>
     
     <!-- Sección Materias Primas -->
-    <section id="materias-section" style="display: none;">
+    <section id="materias-section" style="display:none;">
       <h2 id="materiaTitle">Materias Primas</h2>
       <input type="text" id="nombreMateria" placeholder="Nombre">
       <input type="number" id="costoMateria" placeholder="Costo">
@@ -72,13 +72,13 @@
     </section>
   </div>
   
-  <!-- Footer con enlaces a Instagram y Cafecito -->
+  <!-- Footer -->
   <footer>
     <a href="https://instagram.com/tuusuario" target="_blank"><i class="fab fa-instagram"></i></a>
     <a href="https://cafecito.app/tuusuario" target="_blank"><i class="fas fa-mug-hot"></i></a>
   </footer>
   
-  <!-- Modal para el Conversor -->
+  <!-- Modal Conversor -->
   <div id="modalConversor" class="modal">
     <div class="modal-content small-modal">
       <span class="close" onclick="cerrarModalConversor()">&times;</span>
@@ -101,7 +101,7 @@
     </div>
   </div>
   
-  <!-- Modal para ver receta -->
+  <!-- Modal Ver Receta -->
   <div id="modalRecetaView" class="modal">
     <div class="modal-content small-modal">
       <span class="close" onclick="cerrarModalRecetaView()">&times;</span>
@@ -110,20 +110,21 @@
     </div>
   </div>
   
-  <!-- Modal para editar receta -->
+  <!-- Modal Editar/Duplicar Receta -->
   <div id="modalRecetaEdit" class="modal">
     <div class="modal-content small-modal">
       <span class="close" onclick="cerrarModalRecetaEdit()">&times;</span>
       <h2 id="editarRecetaTitle">Editar Receta</h2>
       <input type="text" id="editarNombreReceta" placeholder="Nombre de la receta">
       <input type="number" id="editarUnidadesProduccion" placeholder="Número de unidades producidas">
+      <textarea id="editarComentariosReceta" placeholder="Comentarios (opcional)"></textarea>
       <div id="editarIngredientesReceta"></div>
       <button id="btnAgregarIngredienteEdit" onclick="agregarIngredienteRecetaEdit()">Agregar Ingrediente</button>
       <button id="btnGuardarCambiosReceta" onclick="guardarEdicionReceta()">Guardar Cambios</button>
     </div>
   </div>
   
-  <!-- Modal para editar materia prima -->
+  <!-- Modal Editar Materia Prima -->
   <div id="modalMateriaEdit" class="modal">
     <div class="modal-content small-modal">
       <span class="close" onclick="cerrarModalMateriaEdit()">&times;</span>
@@ -135,7 +136,7 @@
     </div>
   </div>
   
-  <!-- Modal para FAQ -->
+  <!-- Modal FAQ -->
   <div id="modalFAQ" class="modal">
     <div class="modal-content small-modal">
       <span class="close" onclick="cerrarModalFAQ()">&times;</span>

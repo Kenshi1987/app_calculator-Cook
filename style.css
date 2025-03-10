@@ -12,11 +12,11 @@ body {
 }
 .container {
   max-width: 800px;
-  margin: auto;
+  margin: 20px auto;
   background: #fff;
-  padding: 15px;
+  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
 /* Encabezado */
@@ -56,10 +56,12 @@ header h1 {
   font-size: 1.5rem;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 #themeToggle:hover, #faqButton:hover {
   background: #0056b3;
+  transform: scale(1.02);
 }
 
 /* Navegación */
@@ -80,10 +82,12 @@ header h1 {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .nav-btn:hover {
   background: #0056b3;
+  transform: scale(1.02);
 }
 .nav-btn i {
   font-size: 1.5rem;
@@ -108,19 +112,26 @@ input, select, textarea, button {
   margin: 8px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: box-shadow 0.3s;
 }
 textarea {
   resize: vertical;
+  white-space: pre-wrap;
+}
+input:focus, select:focus, textarea:focus, button:focus {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 button {
   background: #007bff;
   color: #fff;
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 button:hover {
   background: #0056b3;
+  transform: scale(1.02);
 }
 
 /* Fila de ingredientes */
@@ -145,6 +156,11 @@ button:hover {
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.ingrediente-row button:hover {
+  transform: scale(1.05);
 }
 
 /* Listados */
@@ -157,6 +173,12 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+#listaMaterias li:hover,
+#listaRecetas li:hover {
+  background: #d0d0d0;
 }
 .lista-btns {
   display: flex;
@@ -169,6 +191,11 @@ button:hover {
   padding: 5px 8px;
   cursor: pointer;
   color: #212529;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.lista-btns button:hover {
+  transform: scale(1.05);
 }
 .lista-btns button.ver {
   background: #28a745;
@@ -176,6 +203,10 @@ button:hover {
 }
 .lista-btns button.eliminar {
   background: #dc3545;
+  color: #fff;
+}
+.lista-btns button.duplicar {
+  background: #17a2b8;
   color: #fff;
 }
 
@@ -189,10 +220,11 @@ footer a {
   margin: 0 10px;
   font-size: 1.5rem;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s, transform 0.3s;
 }
 footer a:hover {
   color: #0056b3;
+  transform: scale(1.05);
 }
 
 /* Modales */
@@ -209,11 +241,19 @@ footer a:hover {
 }
 .modal-content {
   background: #fff;
-  margin: 10% auto;
-  padding: 20px;
+  margin: 8% auto;
+  padding: 30px;
   border-radius: 8px;
   max-width: 400px;
   position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.modal-content p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.modal-content:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 .small-modal {
   max-width: 400px;
@@ -224,6 +264,10 @@ footer a:hover {
   right: 20px;
   font-size: 1.5rem;
   cursor: pointer;
+  transition: transform 0.3s;
+}
+.modal .close:hover {
+  transform: scale(1.1);
 }
 
 /* FAQ List */
@@ -235,7 +279,7 @@ footer a:hover {
   margin-bottom: 10px;
 }
 
-/* Dark mode */
+/* Dark Mode */
 .dark-mode {
   background: #222;
   color: #eee;
@@ -255,20 +299,19 @@ footer a:hover {
 .dark-mode .nav-btn {
   background: #555;
 }
-.dark-mode #themeToggle, .dark-mode #faqButton {
+.dark-mode #themeToggle,
+.dark-mode #faqButton {
   background: #555;
   color: #fff;
 }
 .dark-mode button:hover {
   background: #666;
 }
-/* Aseguramos que las listas tengan fondo y texto legible en dark mode */
 .dark-mode #listaMaterias li,
 .dark-mode #listaRecetas li {
   background: #444;
   color: #eee;
 }
-/* Modales en Dark Mode */
 .dark-mode .modal-content {
   background: #333;
   color: #eee;
@@ -278,7 +321,7 @@ footer a:hover {
   color: #eee;
 }
 
-/* Responsive: Pantallas mayores a 600px */
+/* Responsive */
 @media (min-width: 600px) {
   .container {
     max-width: 800px;
