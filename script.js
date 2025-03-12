@@ -4,10 +4,10 @@
 let recetaEditIndex = null;
 let materiaEditIndex = null;
 let duplicarMode = false; // false: editar; true: duplicar
-let currentLang = "es"; // idioma por defecto
+let currentLang = "es";   // idioma por defecto
 let darkMode = false;
 
-// Datos iniciales
+// Cargar datos desde localStorage o inicializar arrays vacíos
 let materiasPrimas = JSON.parse(localStorage.getItem("materias")) || [];
 let recetas = JSON.parse(localStorage.getItem("recetas")) || [];
 
@@ -52,12 +52,13 @@ const translations = {
         <li><strong>¿Cómo agrego una materia prima?</strong><br>
             Ve a la pestaña "Materias Primas", ingresa el nombre, costo y unidad (por ejemplo, "Harina", "$1.0" y "kg") y haz clic en "Agregar Materia Prima".</li>
         <li><strong>¿Cómo creo una receta?</strong><br>
-            En la pestaña "Recetas", ingresa el nombre de la receta y el número de unidades producidas. Luego, añade ingredientes seleccionando materias primas y especificando cantidades. Por ejemplo, si registraste la harina a $1.0 por kg y usas 300 gramos, ingresa <strong>0.3</strong> como cantidad. Puedes incluir comentarios (cada salto de línea se mostrará como <br>) y, al presionar "Calcular Receta", verás el costo total y el costo por unidad.</li>
+            En la pestaña "Recetas", ingresa el nombre de la receta y el número de unidades producidas. Luego, añade ingredientes seleccionando materias primas y especificando cantidades. Por ejemplo, si registraste la harina a $1.0 por kg y usas 300 gramos, ingresa <strong>0.3</strong> como cantidad. Puedes incluir comentarios (cada salto de línea se convertirá en un &lt;br&gt;) y, al presionar "Calcular Receta", verás el costo total y el costo por unidad.</li>
         <li><strong>¿Cómo edito o duplico una receta?</strong><br>
-            Usa el botón de editar (lápiz) para modificar una receta o el botón de duplicar (copia) para crear una nueva basada en una existente. En duplicar mode, el modal se precargará con los datos y, al guardar, se añadirá como nueva receta.</li>
+            Usa el botón de editar (ícono de lápiz) para modificar una receta existente o el botón de duplicar (ícono de copia) para crear una nueva basada en una existente. En duplicar mode, el modal se precargará con los datos y, al guardar, se agregará como nueva receta.</li>
         <li><strong>¿Cómo se calculan los costos?</strong><br>
             El costo total se obtiene multiplicando la cantidad de cada ingrediente por su costo y sumando los resultados. Por ejemplo, si usas 2 kg de harina a $1.0 y 1 l de agua a $0.2, el costo será: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
-      </ul>`
+      </ul>
+    `
   },
   en: {
     headerTitle: "CostCalc Pro",
@@ -98,12 +99,13 @@ const translations = {
         <li><strong>How do I add a raw material?</strong><br>
             Go to the "Raw Materials" tab, enter the name, cost, and unit (e.g., "Flour", "$1.0", "kg"), and click "Add Raw Material".</li>
         <li><strong>How do I create a recipe?</strong><br>
-            In the "Recipes" tab, enter the recipe name and number of units produced. Then add ingredients by selecting raw materials and specifying quantities. For example, if you registered flour at $1.0 per kg and use 300 grams, enter <strong>0.3</strong> as the quantity. Optionally, add comments (each newline will be converted to a line break) and click "Calculate Recipe" to see the total and per-unit cost.</li>
+            In the "Recipes" tab, enter the recipe name and number of units produced. Then add ingredients by selecting raw materials and specifying quantities. For example, if you registered flour at $1.0 per kg and use 300 grams, enter <strong>0.3</strong> as the quantity. Optionally, add comments (each newline will be converted to a &lt;br&gt;) and click "Calculate Recipe" to see the total and per-unit cost.</li>
         <li><strong>How do I edit or duplicate a recipe?</strong><br>
-            Use the edit button (pencil icon) to modify an existing recipe, or the duplicate button (copy icon) to create a new recipe based on an existing one. In duplicate mode, the modal will be prefilled and saving will add a new recipe.</li>
+            Use the edit button (pencil icon) to modify an existing recipe or the duplicate button (copy icon) to create a new recipe based on an existing one. In duplicate mode, the modal will be prefilled and saving will add a new recipe.</li>
         <li><strong>How are costs calculated?</strong><br>
             The total cost is calculated by multiplying the quantity of each ingredient by its cost and summing the values. For example, if you use 2 kg of flour at $1.0 and 1 l of water at $0.2, the cost is: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
-      </ul>`
+      </ul>
+    `
   },
   pt: {
     headerTitle: "CostCalc Pro",
@@ -140,16 +142,17 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>O que é o CostCalc Pro?</strong><br>
-            É um aplicativo para calcular o custo de produção de receitas usando matérias-primas. Por exemplo, você pode saber quanto custa produzir cada pão ou bolo.</li>
+            É um aplicativo para calcular o custo de produção de receitas usando matérias-primas. Por exemplo, você pode saber o custo por unidade de cada pão ou bolo.</li>
         <li><strong>Como adiciono uma matéria-prima?</strong><br>
             Vá até a aba "Matérias-Primas", insira o nome, custo e unidade (ex.: "Farinha", "$1.0", "kg") e clique em "Adicionar Matéria-Prima".</li>
         <li><strong>Como crio uma receita?</strong><br>
-            Na aba "Receitas", insira o nome da receita e o número de unidades produzidas. Em seguida, adicione os ingredientes selecionando as matérias-primas e especificando as quantidades. Por exemplo, se você cadastrou a farinha a $1.0 por kg e utiliza 300 gramas, insira <strong>0.3</strong> como quantidade. Você pode incluir comentários (cada nova linha será convertida em quebra de linha) e, ao clicar em "Calcular Receita", verá o custo total e o custo por unidade.</li>
+            Na aba "Receitas", insira o nome da receita e o número de unidades produzidas. Em seguida, adicione os ingredientes selecionando as matérias-primas e especificando as quantidades. Por exemplo, se você cadastrou a farinha a $1.0 por kg e utiliza 300 gramas, insira <strong>0.3</strong> como quantidade. Você pode incluir comentários (cada nova linha será convertida em &lt;br&gt;) e, ao clicar em "Calcular Receita", verá o custo total e o custo por unidade.</li>
         <li><strong>Como edito ou duplico uma receita?</strong><br>
-            Utilize o botão de editar (ícone de lápis) para modificar uma receita existente ou o botão de duplicar (ícone de cópia) para criar uma nova receita baseada em uma existente. No modo duplicar, o modal será pré-preenchido e, ao salvar, será adicionada como nova receita.</li>
+            Utilize o botão de editar (ícone de lápis) para modificar uma receita existente ou o botão de duplicar (ícone de cópia) para criar uma nova baseada em uma existente. No modo duplicar, o modal será pré-preenchido e, ao salvar, a nova receita será adicionada.</li>
         <li><strong>Como os custos são calculados?</strong><br>
             O custo total é calculado multiplicando a quantidade de cada ingrediente pelo seu custo e somando os valores. Por exemplo, se você usar 2 kg de farinha a $1.0 e 1 l de água a $0.2, o custo será: (2 x 1.0) + (1 x 0.2) = $2.2.</li>
-      </ul>`
+      </ul>
+    `
   }
 };
 
@@ -203,6 +206,15 @@ function setLanguage(lang) {
   translateApp();
 }
 
+function abrirModalFAQ() {
+  document.getElementById("modalFAQ").style.display = "block";
+}
+
+function cerrarModalFAQ() {
+  document.getElementById("modalFAQ").style.display = "none";
+}
+
+
 function toggleTheme() {
   darkMode = !darkMode;
   document.body.classList.toggle("dark-mode", darkMode);
@@ -212,11 +224,11 @@ function toggleTheme() {
 }
 
 function showSection(sectionId) {
-  document.getElementById("recetas-section").style.display = sectionId === "recetas-section" ? "block" : "none";
-  document.getElementById("materias-section").style.display = sectionId === "materias-section" ? "block" : "none";
+  document.getElementById("recetas-section").style.display = (sectionId === "recetas-section") ? "block" : "none";
+  document.getElementById("materias-section").style.display = (sectionId === "materias-section") ? "block" : "none";
 }
 
-/* ----- Funciones de Materias Primas ----- */
+/* Funciones de Materias Primas */
 function guardarMaterias() {
   localStorage.setItem("materias", JSON.stringify(materiasPrimas));
 }
@@ -313,7 +325,7 @@ function actualizarRecetasConMateria() {
   mostrarRecetas();
 }
 
-/* ----- Funciones de Recetas ----- */
+/* Funciones de Recetas */
 function agregarIngredienteReceta() {
   const container = document.getElementById("ingredientesReceta");
   const div = document.createElement("div");
@@ -351,7 +363,7 @@ function calcularReceta() {
     alert("Completa el nombre y número de unidades de la receta.");
     return;
   }
-  // Reemplaza cada salto de línea (ENTER) por <br>
+  // Reemplaza cada salto de línea con <br>
   if (comentarios) {
     comentarios = comentarios.replace(/\n/g, "<br>");
   }
@@ -381,7 +393,7 @@ function calcularReceta() {
     ingredientesArray.push({
       id: materia.id,
       materia: materia.nombre,
-      cantidad,
+      cantidad: cantidad,
       unidad: materia.unidad,
       costo: materia.costo
     });
@@ -392,8 +404,8 @@ function calcularReceta() {
     unidades: Number(unidadesProduccion),
     comentarios: comentarios,
     ingredientes: ingredientesArray,
-    costoTotal,
-    costoPorUnidad
+    costoTotal: costoTotal,
+    costoPorUnidad: costoPorUnidad
   };
   recetas.push(receta);
   localStorage.setItem("recetas", JSON.stringify(recetas));
@@ -435,7 +447,7 @@ function verReceta(index) {
   const receta = recetas[index];
   let html = `<p><strong>Nombre:</strong> ${receta.nombre}</p>
     <p><strong>Unidades producidas:</strong> ${receta.unidades}</p>
-    ${receta.comentarios ? `<p><strong>Comentarios:</strong><br>${receta.comentarios}</p>` : ""}
+    ${receta.comentarios ? `<p><strong>Comentarios:</strong><br>${receta.comentarios}</p>` : "" }
     <p><strong>Total:</strong> $${receta.costoTotal.toFixed(2)}</p>
     <p><strong>Costo por unidad:</strong> $${receta.costoPorUnidad.toFixed(2)}</p>
     <h3>Ingredientes:</h3><ul>`;
@@ -555,7 +567,7 @@ function guardarEdicionReceta() {
     ingredientesArray.push({
       id: materia.id,
       materia: materia.nombre,
-      cantidad,
+      cantidad: cantidad,
       unidad: materia.unidad,
       costo: materia.costo
     });
@@ -563,23 +575,23 @@ function guardarEdicionReceta() {
   const costoPorUnidad = costoTotal / Number(unidades);
   if (duplicarMode) {
     const nuevaReceta = {
-      nombre,
+      nombre: nombre,
       unidades: Number(unidades),
       comentarios: comentariosEdit,
       ingredientes: ingredientesArray,
-      costoTotal,
-      costoPorUnidad
+      costoTotal: costoTotal,
+      costoPorUnidad: costoPorUnidad
     };
     recetas.push(nuevaReceta);
     duplicarMode = false;
   } else {
     recetas[recetaEditIndex] = {
-      nombre,
+      nombre: nombre,
       unidades: Number(unidades),
       comentarios: comentariosEdit,
       ingredientes: ingredientesArray,
-      costoTotal,
-      costoPorUnidad
+      costoTotal: costoTotal,
+      costoPorUnidad: costoPorUnidad
     };
   }
   localStorage.setItem("recetas", JSON.stringify(recetas));
@@ -587,7 +599,7 @@ function guardarEdicionReceta() {
   cerrarModalRecetaEdit();
 }
 
-// Conversor
+/* Funciones del Conversor */
 function convertirMedida() {
   const valor = parseFloat(document.getElementById("valorConversor").value);
   const unidadOrigen = document.getElementById("unidadOrigen").value;
@@ -598,11 +610,11 @@ function convertirMedida() {
   }
   let resultado;
   if ((unidadOrigen === "g" || unidadOrigen === "kg") && (unidadDestino === "g" || unidadDestino === "kg")) {
-    let enGramos = unidadOrigen === "g" ? valor : valor * 1000;
-    resultado = unidadDestino === "g" ? enGramos : enGramos / 1000;
+    const enGramos = (unidadOrigen === "g") ? valor : valor * 1000;
+    resultado = (unidadDestino === "g") ? enGramos : enGramos / 1000;
   } else if ((unidadOrigen === "ml" || unidadOrigen === "l") && (unidadDestino === "ml" || unidadDestino === "l")) {
-    let enMl = unidadOrigen === "ml" ? valor : valor * 1000;
-    resultado = unidadDestino === "ml" ? enMl : enMl / 1000;
+    const enMl = (unidadOrigen === "ml") ? valor : valor * 1000;
+    resultado = (unidadDestino === "ml") ? enMl : enMl / 1000;
   } else {
     alert("Conversión no compatible.");
     return;
@@ -622,7 +634,7 @@ function cerrarModalRecetaView() {
   document.getElementById("modalRecetaView").style.display = "none";
 }
 
-// Duplicar receta
+/* Función para duplicar receta */
 function duplicarReceta(index) {
   duplicarMode = true;
   const receta = JSON.parse(JSON.stringify(recetas[index]));
@@ -663,7 +675,7 @@ function duplicarReceta(index) {
 }
 
 // Inicialización
-window.onload = () => {
+window.onload = function() {
   showSection("recetas-section");
   mostrarMaterias();
   mostrarRecetas();

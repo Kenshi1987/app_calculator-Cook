@@ -1,4 +1,4 @@
-/* Reset y base */
+/* Reset y estilos base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,7 +19,7 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-/* Encabezado */
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -32,7 +32,7 @@ header {
   align-items: center;
   gap: 10px;
 }
-header .logo {
+.logo {
   font-size: 3rem;
   color: #007bff;
 }
@@ -48,6 +48,8 @@ header h1 {
   font-size: 1rem;
   padding: 5px;
 }
+
+/* Botones del Header */
 #themeToggle, #faqButton {
   background: #007bff;
   border: none;
@@ -89,23 +91,12 @@ header h1 {
   background: #0056b3;
   transform: scale(1.02);
 }
-.nav-btn i {
-  font-size: 1.5rem;
-}
-.nav-label {
-  font-size: 0.9rem;
-  margin-top: 4px;
-}
+.nav-btn i { font-size: 1.5rem; margin-right: 8px;}
+.nav-label { font-size: 0.9rem; margin-top: 4px; display: block; margin-top: 5px; }
 
 /* Secciones */
-section {
-  margin-bottom: 20px;
-}
-section h2,
-section h3 {
-  text-align: center;
-  margin-bottom: 10px;
-}
+section { margin-bottom: 20px; }
+section h2, section h3 { text-align: center; margin-bottom: 10px; }
 input, select, textarea, button {
   width: 100%;
   padding: 10px;
@@ -114,10 +105,7 @@ input, select, textarea, button {
   border-radius: 5px;
   transition: box-shadow 0.3s;
 }
-textarea {
-  resize: vertical;
-  white-space: pre-wrap;
-}
+textarea { resize: vertical; white-space: pre-wrap; }
 input:focus, select:focus, textarea:focus, button:focus {
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
@@ -134,14 +122,13 @@ button:hover {
   transform: scale(1.02);
 }
 
-/* Fila de ingredientes */
+/* Filas de ingredientes */
 .ingrediente-row {
   display: flex;
   gap: 5px;
   margin-bottom: 8px;
 }
-.ingrediente-row select,
-.ingrediente-row input {
+.ingrediente-row select, .ingrediente-row input {
   flex: 1;
   padding: 8px;
   font-size: 1rem;
@@ -159,13 +146,10 @@ button:hover {
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-.ingrediente-row button:hover {
-  transform: scale(1.05);
-}
+.ingrediente-row button:hover { transform: scale(1.05); }
 
 /* Listados */
-#listaMaterias li,
-#listaRecetas li {
+#listaMaterias li, #listaRecetas li {
   background: #e9ecef;
   margin-bottom: 5px;
   padding: 10px;
@@ -176,14 +160,8 @@ button:hover {
   transition: background 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-#listaMaterias li:hover,
-#listaRecetas li:hover {
-  background: #d0d0d0;
-}
-.lista-btns {
-  display: flex;
-  gap: 5px;
-}
+#listaMaterias li:hover, #listaRecetas li:hover { background: #d0d0d0; }
+.lista-btns { display: flex; gap: 5px; }
 .lista-btns button {
   background: #ffc107;
   border: none;
@@ -194,21 +172,10 @@ button:hover {
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-.lista-btns button:hover {
-  transform: scale(1.05);
-}
-.lista-btns button.ver {
-  background: #28a745;
-  color: #fff;
-}
-.lista-btns button.eliminar {
-  background: #dc3545;
-  color: #fff;
-}
-.lista-btns button.duplicar {
-  background: #17a2b8;
-  color: #fff;
-}
+.lista-btns button:hover { transform: scale(1.05); }
+.lista-btns button.ver { background: #28a745; color: #fff; }
+.lista-btns button.eliminar { background: #dc3545; color: #fff; }
+.lista-btns button.duplicar { background: #17a2b8; color: #fff; }
 
 /* Footer */
 footer {
@@ -222,10 +189,7 @@ footer a {
   text-decoration: none;
   transition: color 0.3s, transform 0.3s;
 }
-footer a:hover {
-  color: #0056b3;
-  transform: scale(1.05);
-}
+footer a:hover { color: #0056b3; transform: scale(1.05); }
 
 /* Modales */
 .modal {
@@ -252,12 +216,8 @@ footer a:hover {
   margin-bottom: 10px;
   line-height: 1.5;
 }
-.modal-content:hover {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-.small-modal {
-  max-width: 400px;
-}
+.modal-content:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.small-modal { max-width: 400px; }
 .modal .close {
   position: absolute;
   top: 10px;
@@ -266,72 +226,30 @@ footer a:hover {
   cursor: pointer;
   transition: transform 0.3s;
 }
-.modal .close:hover {
-  transform: scale(1.1);
-}
+.modal .close:hover { transform: scale(1.1); }
 
 /* FAQ List */
-.faq-list {
-  list-style: none;
-  padding: 0;
-}
-.faq-list li {
-  margin-bottom: 10px;
-}
+.faq-list { list-style: none; padding: 0; }
+.faq-list li { margin-bottom: 10px; }
 
 /* Dark Mode */
-.dark-mode {
-  background: #222;
-  color: #eee;
-}
-.dark-mode .container {
-  background: #333;
-  color: #eee;
-}
-.dark-mode input,
-.dark-mode select,
-.dark-mode textarea,
-.dark-mode button {
+.dark-mode { background: #222; color: #eee; }
+.dark-mode .container { background: #333; color: #eee; }
+.dark-mode input, .dark-mode select, .dark-mode textarea, .dark-mode button {
   background: #444;
   color: #eee;
   border: 1px solid #555;
 }
-.dark-mode .nav-btn {
-  background: #555;
-}
-.dark-mode #themeToggle,
-.dark-mode #faqButton {
-  background: #555;
-  color: #fff;
-}
-.dark-mode button:hover {
-  background: #666;
-}
-.dark-mode #listaMaterias li,
-.dark-mode #listaRecetas li {
-  background: #444;
-  color: #eee;
-}
-.dark-mode .modal-content {
-  background: #333;
-  color: #eee;
-  border: 1px solid #555;
-}
-.dark-mode .modal .close {
-  color: #eee;
-}
+.dark-mode .nav-btn { background: #555; }
+.dark-mode #themeToggle, .dark-mode #faqButton { background: #555; color: #fff; }
+.dark-mode button:hover { background: #666; }
+.dark-mode #listaMaterias li, .dark-mode #listaRecetas li { background: #444; color: #eee; }
+.dark-mode .modal-content { background: #333; color: #eee; border: 1px solid #555; }
+.dark-mode .modal .close { color: #eee; }
 
 /* Responsive */
 @media (min-width: 600px) {
-  .container {
-    max-width: 800px;
-  }
-  .nav-btn {
-    flex-direction: row;
-    justify-content: center;
-  }
-  .nav-label {
-    margin-left: 8px;
-    display: inline;
-  }
+  .container { max-width: 800px; }
+  .nav-btn { flex-direction: row; justify-content: center; }
+  .nav-label { margin-left: 8px; display: inline; }
 }
