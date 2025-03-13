@@ -402,30 +402,28 @@ function translateApp() {
   document.getElementById("btnAgregarIngrediente").innerText = t.btnAgregarIngrediente;
   document.getElementById("btnCalcularReceta").innerText = t.btnCalcularReceta;
   document.getElementById("recetasGuardadasTitle").innerText = t.recetasGuardadas;
-  
   document.getElementById("fotoRecetaLabel").innerText = t.labelFotoReceta;
-  if(document.getElementById("fotoRecetaEditLabel"))
+  if (document.getElementById("fotoRecetaEditLabel"))
     document.getElementById("fotoRecetaEditLabel").innerText = t.labelFotoRecetaEdit;
-  
   document.getElementById("btnAgregarGastoReceta").innerText = t.btnAgregarGastoReceta;
   document.getElementById("porcentajeGanancia").placeholder = t.placeholderGanancia;
-  
+
   document.getElementById("materiaTitle").innerText = t.materiaTitle;
   document.getElementById("nombreMateria").placeholder = t.placeholderNombreMateria;
   document.getElementById("costoMateria").placeholder = t.placeholderCostoMateria;
   document.getElementById("unidadMateria").placeholder = t.placeholderUnidadMateria;
   document.getElementById("btnAgregarMateria").innerText = t.btnAgregarMateria;
-  
+
   document.getElementById("gastosTitle").innerText = t.gastosTitle;
   document.getElementById("nombreGasto").placeholder = t.placeholderNombreGasto;
   document.getElementById("costoGasto").placeholder = t.placeholderCostoGasto;
   document.getElementById("btnAgregarGasto").innerText = t.btnAgregarGasto;
-  
+
   document.getElementById("conversorTitle").innerText = t.conversorTitle;
   document.getElementById("valorConversor").placeholder = t.placeholderValorConversor;
-  
+
   document.getElementById("detalleRecetaTitle").innerText = t.detalleRecetaTitle;
-  
+
   if (duplicarMode) {
     document.getElementById("editarRecetaTitle").innerText = t.duplicarRecetaTitle || "Duplicar Receta";
   } else {
@@ -436,22 +434,27 @@ function translateApp() {
   document.getElementById("editarTiempoCoccion").placeholder = t.placeholderTiempoCoccion;
   document.getElementById("btnAgregarIngredienteEdit").innerText = t.btnAgregarIngredienteEdit;
   document.getElementById("btnGuardarCambiosReceta").innerText = t.btnGuardarCambiosReceta;
-  
+
   document.getElementById("editarMateriaTitle").innerText = t.editarMateriaTitle;
   document.getElementById("editarNombreMateria").placeholder = t.placeholderEditarNombreMateria;
   document.getElementById("editarCostoMateria").placeholder = t.placeholderEditarCostoMateria;
   document.getElementById("editarUnidadMateria").placeholder = t.placeholderEditarUnidadMateria;
   document.getElementById("btnGuardarCambiosMateria").innerText = t.btnGuardarCambiosMateria;
-  
+
   if (document.getElementById("modalGastoEdit")) {
     document.getElementById("editarGastoTitle").innerText = t.editarGastoTitle;
     document.getElementById("editarNombreGasto").placeholder = t.placeholderEditarNombreGasto;
     document.getElementById("editarCostoGasto").placeholder = t.placeholderEditarCostoGasto;
     document.getElementById("btnGuardarCambiosGasto").innerText = t.btnGuardarCambiosGasto;
   }
-  
+
   document.getElementById("faqTitle").innerText = t.faqTitle;
   document.getElementById("faqContent").innerHTML = t.faqContent;
+
+  // Para el campo de edición del % de ganancia en el modal
+  if(document.getElementById("editarPorcentajeGanancia")) {
+    document.getElementById("editarPorcentajeGanancia").placeholder = t.placeholderGanancia;
+  }
 }
 
 function setLanguage(lang) {
@@ -468,9 +471,9 @@ function toggleTheme() {
 }
 
 function showSection(sectionId) {
-  document.getElementById("recetas-section").style.display = (sectionId === "recetas-section") ? "block" : "none";
-  document.getElementById("materias-section").style.display = (sectionId === "materias-section") ? "block" : "none";
-  document.getElementById("gastos-section").style.display = (sectionId === "gastos-section") ? "block" : "none";
+  document.getElementById("recetas-section").style.display = sectionId === "recetas-section" ? "block" : "none";
+  document.getElementById("materias-section").style.display = sectionId === "materias-section" ? "block" : "none";
+  document.getElementById("gastos-section").style.display = sectionId === "gastos-section" ? "block" : "none";
 }
 
 /* -------------------- Funciones para Materias Primas -------------------- */
@@ -482,7 +485,7 @@ function mostrarMaterias() {
   const lista = document.getElementById("listaMaterias");
   lista.innerHTML = "";
   const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-  materiasOrdenadas.forEach(function(materia) {
+  materiasOrdenadas.forEach(function (materia) {
     const li = document.createElement("li");
     li.innerHTML = `<span>${materia.nombre}: $${materia.costo} por ${materia.unidad}</span>
       <div class="lista-btns">
@@ -512,7 +515,7 @@ function agregarMateria() {
 }
 
 function editarMateria(id) {
-  const index = materiasPrimas.findIndex(m => m.id === id);
+  const index = materiasPrimas.findIndex((m) => m.id === id);
   if (index === -1) return;
   materiaEditIndex = index;
   const materia = materiasPrimas[index];
@@ -544,7 +547,7 @@ function guardarEdicionMateria() {
 
 function eliminarMateria(id) {
   if (confirm("¿Eliminar esta materia prima?")) {
-    materiasPrimas = materiasPrimas.filter(m => m.id !== id);
+    materiasPrimas = materiasPrimas.filter((m) => m.id !== id);
     guardarMaterias();
     mostrarMaterias();
     actualizarFijosReceta();
@@ -556,10 +559,10 @@ function cerrarModalMateriaEdit() {
 }
 
 function actualizarRecetasConMateria() {
-  recetas.forEach(function(receta) {
+  recetas.forEach(function (receta) {
     let nuevoCostoTotal = 0;
-    receta.ingredientes.forEach(function(ing) {
-      const materiaActual = materiasPrimas.find(m => m.id === ing.id);
+    receta.ingredientes.forEach(function (ing) {
+      const materiaActual = materiasPrimas.find((m) => m.id === ing.id);
       if (materiaActual) {
         ing.costo = materiaActual.costo;
         ing.materia = materiaActual.nombre;
@@ -583,7 +586,7 @@ function guardarGastosFijos() {
 function mostrarGastos() {
   const lista = document.getElementById("listaGastos");
   lista.innerHTML = "";
-  gastosFijos.forEach(function(gasto, index) {
+  gastosFijos.forEach(function (gasto, index) {
     const li = document.createElement("li");
     li.innerHTML = `<span>${gasto.nombre}: $${gasto.costo}</span>
       <div class="lista-btns">
@@ -850,7 +853,6 @@ function calcularReceta() {
   const porcentajeGanancia = parseFloat(document.getElementById("porcentajeGanancia").value) || 0;
   const precioSugerido = costoPorUnidad * (1 + porcentajeGanancia / 100);
   
-  // Crear receta con un id único
   let receta = {
     id: Date.now().toString(),
     nombre: nombreReceta,
@@ -864,7 +866,6 @@ function calcularReceta() {
     costoPorUnidad: costoPorUnidad,
     porcentajeGanancia: porcentajeGanancia,
     precioSugerido: precioSugerido,
-    // Guardaremos solo la referencia al id de la imagen en IndexedDB
     foto: null
   };
   
@@ -876,7 +877,6 @@ function calcularReceta() {
         recetas.push(receta);
         localStorage.setItem("recetas", JSON.stringify(recetas));
         mostrarRecetas();
-        // Limpiar campos
         document.getElementById("nombreReceta").value = "";
         document.getElementById("unidadesProduccion").value = "";
         document.getElementById("tiempoCoccion").value = "";
@@ -893,7 +893,6 @@ function calcularReceta() {
     recetas.push(receta);
     localStorage.setItem("recetas", JSON.stringify(recetas));
     mostrarRecetas();
-    // Limpiar campos
     document.getElementById("nombreReceta").value = "";
     document.getElementById("unidadesProduccion").value = "";
     document.getElementById("tiempoCoccion").value = "";
@@ -907,9 +906,9 @@ function calcularReceta() {
 function mostrarRecetas() {
   const lista = document.getElementById("listaRecetas");
   lista.innerHTML = "";
-  recetas.forEach(function(receta, index) {
+  recetas.forEach(function (receta, index) {
     const li = document.createElement("li");
-    li.innerHTML = `<strong>${receta.nombre}</strong> - Total: $${receta.costoTotal.toFixed(2)} - C/U: $${receta.costoPorUnidad.toFixed(2)}
+    li.innerHTML = `<strong>${receta.nombre}</strong>
       <div class="lista-btns">
         <button onclick="verReceta(${index})"><i class="fas fa-eye"></i></button>
         <button onclick="editarReceta(${index})"><i class="fas fa-edit"></i></button>
@@ -923,7 +922,6 @@ function mostrarRecetas() {
 function eliminarReceta(index) {
   if (confirm("¿Eliminar esta receta?")) {
     const receta = recetas[index];
-    // Borrar imagen de IndexedDB si existe
     if (receta.foto) {
       deleteImage(receta.foto).catch(err => console.error("Error borrando imagen:", err));
     }
@@ -963,12 +961,12 @@ function verReceta(index) {
     <p><strong>Costo por unidad:</strong> $${receta.costoPorUnidad.toFixed(2)}</p>
     <p><strong>Precio sugerido por unidad:</strong> $${receta.precioSugerido.toFixed(2)}</p>
     <h3>Ingredientes:</h3><ul>`;
-  receta.ingredientes.forEach(function(ing) {
+  receta.ingredientes.forEach(function (ing) {
     html += `<li>${ing.materia} - ${ing.cantidad} ${ing.unidad} (Costo: $${ing.costo})</li>`;
   });
   html += "</ul>";
   html += "<h3>Gastos fijos incluidos:</h3><ul>";
-  receta.gastosReceta.forEach(function(gasto) {
+  receta.gastosReceta.forEach(function (gasto) {
     html += `<li>${gasto.nombre} - ${gasto.cantidad} (Costo unitario: $${gasto.costo})</li>`;
   });
   html += "</ul>";
@@ -988,20 +986,23 @@ function editarReceta(index) {
   document.getElementById("editarUnidadesProduccion").value = receta.unidades;
   document.getElementById("editarTiempoCoccion").value = receta.tiempoCoccion || "";
   document.getElementById("editarComentariosReceta").value = receta.comentarios || "";
+  document.getElementById("editarPorcentajeGanancia").value = receta.porcentajeGanancia || 0;
   
   const containerIng = document.getElementById("editarIngredientesReceta");
   containerIng.innerHTML = "";
-  receta.ingredientes.forEach(function(ing) {
+  receta.ingredientes.forEach(function (ing) {
     const div = document.createElement("div");
     div.className = "ingrediente-row";
     const select = document.createElement("select");
     select.className = "select-materia";
     const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-    materiasOrdenadas.forEach(function(materia) {
+    materiasOrdenadas.forEach(function (materia) {
       const option = document.createElement("option");
       option.value = materia.id;
       option.textContent = materia.nombre + " (" + materia.unidad + ")";
-      if (materia.id === ing.id) { option.selected = true; }
+      if (materia.id === ing.id) {
+        option.selected = true;
+      }
       select.appendChild(option);
     });
     const inputCantidad = document.createElement("input");
@@ -1011,7 +1012,7 @@ function editarReceta(index) {
     inputCantidad.value = ing.cantidad;
     const btnRemove = document.createElement("button");
     btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-    btnRemove.onclick = function() {
+    btnRemove.onclick = function () {
       containerIng.removeChild(div);
     };
     div.appendChild(select);
@@ -1023,16 +1024,18 @@ function editarReceta(index) {
   const containerGastos = document.getElementById("editarFijosRecetaContainer");
   containerGastos.innerHTML = "";
   if (receta.gastosReceta) {
-    receta.gastosReceta.forEach(function(gasto) {
+    receta.gastosReceta.forEach(function (gasto) {
       const div = document.createElement("div");
       div.className = "gasto-receta-row";
       const select = document.createElement("select");
       select.className = "select-gasto";
-      gastosFijos.forEach(function(g) {
+      gastosFijos.forEach(function (g) {
         const option = document.createElement("option");
         option.value = g.id;
         option.textContent = g.nombre + " ($" + g.costo + ")";
-        if (g.id === gasto.id) { option.selected = true; }
+        if (g.id === gasto.id) {
+          option.selected = true;
+        }
         select.appendChild(option);
       });
       const inputCantidad = document.createElement("input");
@@ -1042,7 +1045,7 @@ function editarReceta(index) {
       inputCantidad.value = gasto.cantidad;
       const btnRemove = document.createElement("button");
       btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-      btnRemove.onclick = function() {
+      btnRemove.onclick = function () {
         containerGastos.removeChild(div);
       };
       div.appendChild(select);
@@ -1052,144 +1055,6 @@ function editarReceta(index) {
     });
   }
   
-  document.getElementById("fotoRecetaEdit").value = "";
-  duplicarMode = false;
-  document.getElementById("editarRecetaTitle").innerText = translations[currentLang].editarRecetaTitle;
-  document.getElementById("modalRecetaEdit").style.display = "block";
-}
-
-function cerrarModalRecetaEdit() {
-  document.getElementById("modalRecetaEdit").style.display = "none";
-}
-
-function agregarIngredienteRecetaEdit() {
-  const container = document.getElementById("editarIngredientesReceta");
-  const div = document.createElement("div");
-  div.className = "ingrediente-row";
-  const select = document.createElement("select");
-  select.className = "select-materia";
-  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-  materiasOrdenadas.forEach(function(materia) {
-    const option = document.createElement("option");
-    option.value = materia.id;
-    option.textContent = materia.nombre + " (" + materia.unidad + ")";
-    select.appendChild(option);
-  });
-  const inputCantidad = document.createElement("input");
-  inputCantidad.type = "number";
-  inputCantidad.placeholder = "Cantidad";
-  inputCantidad.className = "input-cantidad";
-  const btnRemove = document.createElement("button");
-  btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-  btnRemove.onclick = function() {
-    container.removeChild(div);
-  };
-  div.appendChild(select);
-  div.appendChild(inputCantidad);
-  div.appendChild(btnRemove);
-  container.appendChild(div);
-}
-
-function agregarGastoRecetaEdit() {
-  const container = document.getElementById("editarFijosRecetaContainer");
-  const div = document.createElement("div");
-  div.className = "gasto-receta-row";
-  const select = document.createElement("select");
-  select.className = "select-gasto";
-  gastosFijos.forEach(function(gasto) {
-    const option = document.createElement("option");
-    option.value = gasto.id;
-    option.textContent = gasto.nombre + " ($" + gasto.costo + ")";
-    select.appendChild(option);
-  });
-  const inputCantidad = document.createElement("input");
-  inputCantidad.type = "number";
-  inputCantidad.placeholder = "Cantidad";
-  inputCantidad.className = "input-cantidad";
-  const btnRemove = document.createElement("button");
-  btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-  btnRemove.onclick = function() {
-    container.removeChild(div);
-  };
-  div.appendChild(select);
-  div.appendChild(inputCantidad);
-  div.appendChild(btnRemove);
-  container.appendChild(div);
-}
-
-function duplicarReceta(index) {
-  duplicarMode = true;
-  duplicarRecetaData = JSON.parse(JSON.stringify(recetas[index]));
-  // No se conserva el id original; se asignará uno nuevo al duplicar
-  document.getElementById("editarNombreReceta").value = duplicarRecetaData.nombre + " (Duplicado)";
-  document.getElementById("editarUnidadesProduccion").value = duplicarRecetaData.unidades;
-  document.getElementById("editarTiempoCoccion").value = duplicarRecetaData.tiempoCoccion || "";
-  document.getElementById("editarComentariosReceta").value = duplicarRecetaData.comentarios || "";
-  
-  const containerIng = document.getElementById("editarIngredientesReceta");
-  containerIng.innerHTML = "";
-  duplicarRecetaData.ingredientes.forEach(function(ing) {
-    const div = document.createElement("div");
-    div.className = "ingrediente-row";
-    const select = document.createElement("select");
-    select.className = "select-materia";
-    const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-    materiasOrdenadas.forEach(function(materia) {
-      const option = document.createElement("option");
-      option.value = materia.id;
-      option.textContent = materia.nombre + " (" + materia.unidad + ")";
-      if (materia.id === ing.id) { option.selected = true; }
-      select.appendChild(option);
-    });
-    const inputCantidad = document.createElement("input");
-    inputCantidad.type = "number";
-    inputCantidad.placeholder = "Cantidad";
-    inputCantidad.className = "input-cantidad";
-    inputCantidad.value = ing.cantidad;
-    const btnRemove = document.createElement("button");
-    btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-    btnRemove.onclick = function() {
-      containerIng.removeChild(div);
-    };
-    div.appendChild(select);
-    div.appendChild(inputCantidad);
-    div.appendChild(btnRemove);
-    containerIng.appendChild(div);
-  });
-  
-  const containerGastos = document.getElementById("editarFijosRecetaContainer");
-  containerGastos.innerHTML = "";
-  if (duplicarRecetaData.gastosReceta) {
-    duplicarRecetaData.gastosReceta.forEach(function(gasto) {
-      const div = document.createElement("div");
-      div.className = "gasto-receta-row";
-      const select = document.createElement("select");
-      select.className = "select-gasto";
-      gastosFijos.forEach(function(g) {
-        const option = document.createElement("option");
-        option.value = g.id;
-        option.textContent = g.nombre + " ($" + g.costo + ")";
-        if (g.id === gasto.id) { option.selected = true; }
-        select.appendChild(option);
-      });
-      const inputCantidad = document.createElement("input");
-      inputCantidad.type = "number";
-      inputCantidad.placeholder = "Cantidad";
-      inputCantidad.className = "input-cantidad";
-      inputCantidad.value = gasto.cantidad;
-      const btnRemove = document.createElement("button");
-      btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-      btnRemove.onclick = function() {
-        containerGastos.removeChild(div);
-      };
-      div.appendChild(select);
-      div.appendChild(inputCantidad);
-      div.appendChild(btnRemove);
-      containerGastos.appendChild(div);
-    });
-  }
-  
-  document.getElementById("editarRecetaTitle").innerText = translations[currentLang].duplicarRecetaTitle || "Duplicar Receta";
   document.getElementById("modalRecetaEdit").style.display = "block";
 }
 
@@ -1197,11 +1062,16 @@ function guardarEdicionReceta() {
   const nombre = document.getElementById("editarNombreReceta").value;
   const unidades = document.getElementById("editarUnidadesProduccion").value;
   const tiempoCoccion = document.getElementById("editarTiempoCoccion").value;
-  const comentarios = document.getElementById("editarComentariosReceta").value;
+  let comentarios = document.getElementById("editarComentariosReceta").value;
+  const porcentajeGanancia = parseFloat(document.getElementById("editarPorcentajeGanancia").value) || 0;
   
   if (!nombre || !unidades) {
-    alert("Completa el nombre y número de unidades de la receta.");
+    alert("Completa el nombre y número de unidades.");
     return;
+  }
+  
+  if (comentarios) {
+    comentarios = comentarios.replace(/\n/g, "<br>");
   }
   
   const containerIng = document.getElementById("editarIngredientesReceta");
@@ -1268,196 +1138,174 @@ function guardarEdicionReceta() {
   
   const costoTotalFinal = costoTotalIngredientes + costoGastosReceta;
   const costoPorUnidad = costoTotalFinal / Number(unidades);
-  const porcentajeGanancia = parseFloat(document.getElementById("porcentajeGanancia").value) || 0;
   const precioSugerido = costoPorUnidad * (1 + porcentajeGanancia / 100);
   
-  if (duplicarMode) {
-    // En duplicar, crear nueva receta con id nuevo
-    const newId = Date.now().toString();
-    let newReceta = {
-      id: newId,
-      nombre: nombre,
-      unidades: Number(unidades),
-      tiempoCoccion: tiempoCoccion,
-      comentarios: comentarios,
-      ingredientes: ingredientesArray,
-      gastosReceta: gastosRecetaArray,
-      gastosIncluidos: costoGastosReceta,
-      costoTotal: costoTotalFinal,
-      costoPorUnidad: costoPorUnidad,
-      porcentajeGanancia: porcentajeGanancia,
-      precioSugerido: precioSugerido,
-      foto: null
-    };
-    const file = document.getElementById("fotoRecetaEdit").files[0];
-    if (file) {
-      saveImage(newId, file)
-        .then(() => {
-          newReceta.foto = newId;
-          recetas.push(newReceta);
-          localStorage.setItem("recetas", JSON.stringify(recetas));
-          mostrarRecetas();
-          cerrarModalRecetaEdit();
-          duplicarMode = false;
-          duplicarRecetaData = null;
-        })
-        .catch(err => alert("Error guardando la imagen: " + err));
-    } else if (duplicarRecetaData && duplicarRecetaData.foto) {
-      // Si no se selecciona nueva imagen, copiar la imagen original
-      getImage(duplicarRecetaData.foto)
-        .then(blob => {
-          if (blob) {
-            return saveImage(newId, blob);
-          } else {
-            return Promise.resolve();
-          }
-        })
-        .then(() => {
-          newReceta.foto = newId;
-          recetas.push(newReceta);
-          localStorage.setItem("recetas", JSON.stringify(recetas));
-          mostrarRecetas();
-          cerrarModalRecetaEdit();
-          duplicarMode = false;
-          duplicarRecetaData = null;
-        })
-        .catch(err => alert("Error copiando la imagen: " + err));
-    } else {
-      newReceta.foto = null;
-      recetas.push(newReceta);
-      localStorage.setItem("recetas", JSON.stringify(recetas));
-      mostrarRecetas();
-      cerrarModalRecetaEdit();
-      duplicarMode = false;
-      duplicarRecetaData = null;
-    }
-  } else {
-    // Modo edición: actualizar receta existente
-    const recetaActual = recetas[recetaEditIndex];
-    recetaActual.nombre = nombre;
-    recetaActual.unidades = Number(unidades);
-    recetaActual.tiempoCoccion = tiempoCoccion;
-    recetaActual.comentarios = comentarios;
-    recetaActual.ingredientes = ingredientesArray;
-    recetaActual.gastosReceta = gastosRecetaArray;
-    recetaActual.gastosIncluidos = costoGastosReceta;
-    recetaActual.costoTotal = costoTotalFinal;
-    recetaActual.costoPorUnidad = costoPorUnidad;
-    recetaActual.porcentajeGanancia = porcentajeGanancia;
-    recetaActual.precioSugerido = precioSugerido;
-    
-    const file = document.getElementById("fotoRecetaEdit").files[0];
-    if (file) {
-      saveImage(recetaActual.id, file)
-        .then(() => {
-          recetaActual.foto = recetaActual.id;
-          localStorage.setItem("recetas", JSON.stringify(recetas));
-          mostrarRecetas();
-          cerrarModalRecetaEdit();
-        })
-        .catch(err => alert("Error actualizando la imagen: " + err));
-    } else {
-      // Si no se selecciona nueva imagen, se conserva la anterior
-      localStorage.setItem("recetas", JSON.stringify(recetas));
-      mostrarRecetas();
-      cerrarModalRecetaEdit();
-    }
-  }
+  const receta = recetas[recetaEditIndex];
+  receta.nombre = nombre;
+  receta.unidades = Number(unidades);
+  receta.tiempoCoccion = tiempoCoccion;
+  receta.comentarios = comentarios;
+  receta.ingredientes = ingredientesArray;
+  receta.gastosReceta = gastosRecetaArray;
+  receta.gastosIncluidos = costoGastosReceta;
+  receta.costoTotal = costoTotalFinal;
+  receta.costoPorUnidad = costoPorUnidad;
+  receta.porcentajeGanancia = porcentajeGanancia;
+  receta.precioSugerido = precioSugerido;
+  
+  localStorage.setItem("recetas", JSON.stringify(recetas));
+  mostrarRecetas();
+  cerrarModalRecetaEdit();
 }
 
-/* -------------------- Funciones para Exportar/Importar Datos -------------------- */
-function exportData() {
-  const data = {
-    materias: materiasPrimas,
-    recetas: recetas,
-    gastosFijos: gastosFijos
-  };
-  const dataStr = JSON.stringify(data, null, 2);
-  const blob = new Blob([dataStr], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "costcalc_data.json";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (data.materias && data.recetas && data.gastosFijos) {
-        data.materias.forEach(materiaImport => {
-          if (!materiasPrimas.some(m => m.nombre.trim().toLowerCase() === materiaImport.nombre.trim().toLowerCase())) {
-            materiasPrimas.push(materiaImport);
-          }
-        });
-        data.gastosFijos.forEach(gastoImport => {
-          if (!gastosFijos.some(g => g.nombre.trim().toLowerCase() === gastoImport.nombre.trim().toLowerCase())) {
-            gastosFijos.push(gastoImport);
-          }
-        });
-        data.recetas.forEach(recetaImport => {
-          if (!recetas.some(r => r.nombre.trim().toLowerCase() === recetaImport.nombre.trim().toLowerCase())) {
-            recetas.push(recetaImport);
-          }
-        });
-        localStorage.setItem("materias", JSON.stringify(materiasPrimas));
-        localStorage.setItem("gastosFijos", JSON.stringify(gastosFijos));
-        localStorage.setItem("recetas", JSON.stringify(recetas));
-        mostrarMaterias();
-        mostrarRecetas();
-        mostrarGastos();
-        actualizarFijosReceta();
-        actualizarRecetasConGasto();
-        alert("Datos importados correctamente.");
-      } else {
-        alert("El archivo no contiene datos válidos.");
+function duplicarReceta(index) {
+  // Se puede implementar duplicación similar a la edición
+  duplicarMode = true;
+  recetaEditIndex = index;
+  const receta = recetas[index];
+  // Cargar los datos en el modal para duplicar
+  document.getElementById("editarNombreReceta").value = receta.nombre + " (Copia)";
+  document.getElementById("editarUnidadesProduccion").value = receta.unidades;
+  document.getElementById("editarTiempoCoccion").value = receta.tiempoCoccion || "";
+  document.getElementById("editarComentariosReceta").value = receta.comentarios || "";
+  document.getElementById("editarPorcentajeGanancia").value = receta.porcentajeGanancia || 0;
+  
+  const containerIng = document.getElementById("editarIngredientesReceta");
+  containerIng.innerHTML = "";
+  receta.ingredientes.forEach(function (ing) {
+    const div = document.createElement("div");
+    div.className = "ingrediente-row";
+    const select = document.createElement("select");
+    select.className = "select-materia";
+    const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
+    materiasOrdenadas.forEach(function (materia) {
+      const option = document.createElement("option");
+      option.value = materia.id;
+      option.textContent = materia.nombre + " (" + materia.unidad + ")";
+      if (materia.id === ing.id) {
+        option.selected = true;
       }
-    } catch (error) {
-      alert("Error al importar los datos: " + error);
-    }
-  };
-  reader.readAsText(file);
+      select.appendChild(option);
+    });
+    const inputCantidad = document.createElement("input");
+    inputCantidad.type = "number";
+    inputCantidad.placeholder = "Cantidad";
+    inputCantidad.className = "input-cantidad";
+    inputCantidad.value = ing.cantidad;
+    const btnRemove = document.createElement("button");
+    btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
+    btnRemove.onclick = function () {
+      containerIng.removeChild(div);
+    };
+    div.appendChild(select);
+    div.appendChild(inputCantidad);
+    div.appendChild(btnRemove);
+    containerIng.appendChild(div);
+  });
+  
+  const containerGastos = document.getElementById("editarFijosRecetaContainer");
+  containerGastos.innerHTML = "";
+  if (receta.gastosReceta) {
+    receta.gastosReceta.forEach(function (gasto) {
+      const div = document.createElement("div");
+      div.className = "gasto-receta-row";
+      const select = document.createElement("select");
+      select.className = "select-gasto";
+      gastosFijos.forEach(function (g) {
+        const option = document.createElement("option");
+        option.value = g.id;
+        option.textContent = g.nombre + " ($" + g.costo + ")";
+        if (g.id === gasto.id) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+      const inputCantidad = document.createElement("input");
+      inputCantidad.type = "number";
+      inputCantidad.placeholder = "Cantidad";
+      inputCantidad.className = "input-cantidad";
+      inputCantidad.value = gasto.cantidad;
+      const btnRemove = document.createElement("button");
+      btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
+      btnRemove.onclick = function () {
+        containerGastos.removeChild(div);
+      };
+      div.appendChild(select);
+      div.appendChild(inputCantidad);
+      div.appendChild(btnRemove);
+      containerGastos.appendChild(div);
+    });
+  }
+  
+  document.getElementById("modalRecetaEdit").style.display = "block";
 }
 
-/* -------------------- Conversor y Mini Calculadora -------------------- */
-function convertirMedida() {
-  const valor = parseFloat(document.getElementById("valorConversor").value);
-  const unidadOrigen = document.getElementById("unidadOrigen").value;
-  const unidadDestino = document.getElementById("unidadDestino").value;
-  if (isNaN(valor)) {
-    alert("Ingrese un valor numérico.");
-    return;
+function cerrarModalRecetaEdit() {
+  document.getElementById("modalRecetaEdit").style.display = "none";
+}
+
+/* -------------------- Función para imprimir receta -------------------- */
+function imprimirReceta() {
+  const contenido = document.getElementById("modalRecetaView").innerHTML;
+  const ventanaImpresion = window.open("", "", "height=600,width=800");
+  ventanaImpresion.document.write("<html><head><title>Imprimir Receta</title>");
+  ventanaImpresion.document.write("<link rel='stylesheet' href='css/style.css'>");
+  ventanaImpresion.document.write("</head><body>");
+  ventanaImpresion.document.write(contenido);
+  ventanaImpresion.document.write("</body></html>");
+  ventanaImpresion.document.close();
+  ventanaImpresion.focus();
+  ventanaImpresion.print();
+  ventanaImpresion.close();
+}
+
+/* -------------------- Otras funciones de utilidad -------------------- */
+function limpiarRecetas() {
+  if (confirm("¿Eliminar todas las recetas?")) {
+    recetas.forEach(receta => {
+      if (receta.foto) {
+        deleteImage(receta.foto).catch(err => console.error("Error borrando imagen:", err));
+      }
+    });
+    recetas = [];
+    localStorage.setItem("recetas", JSON.stringify(recetas));
+    mostrarRecetas();
   }
-  
-  let resultado = 0;
-  if ((unidadOrigen === "g" || unidadOrigen === "kg") && (unidadDestino === "g" || unidadDestino === "kg")) {
-    if (unidadOrigen === "g" && unidadDestino === "kg") {
-      resultado = valor / 1000;
-    } else if (unidadOrigen === "kg" && unidadDestino === "g") {
-      resultado = valor * 1000;
-    } else {
-      resultado = valor;
-    }
+}
+
+function limpiarMaterias() {
+  if (confirm("¿Eliminar todas las materias primas?")) {
+    materiasPrimas = [];
+    localStorage.setItem("materias", JSON.stringify(materiasPrimas));
+    mostrarMaterias();
   }
-  else if ((unidadOrigen === "ml" || unidadOrigen === "l") && (unidadDestino === "ml" || unidadDestino === "l")) {
-    if (unidadOrigen === "ml" && unidadDestino === "l") {
-      resultado = valor / 1000;
-    } else if (unidadOrigen === "l" && unidadDestino === "ml") {
-      resultado = valor * 1000;
-    } else {
-      resultado = valor;
-    }
-  } else {
-    alert("Conversión entre unidades incompatibles.");
-    return;
+}
+
+function limpiarGastos() {
+  if (confirm("¿Eliminar todos los gastos fijos?")) {
+    gastosFijos = [];
+    localStorage.setItem("gastosFijos", JSON.stringify(gastosFijos));
+    mostrarGastos();
   }
-  
-  document.getElementById("resultadoConversor").innerText = "Resultado: " + resultado;
+}
+
+/* -------------------- Funciones de Mini Calculadora y Conversor -------------------- */
+function abrirMiniCalculator() {
+  document.getElementById("modalMiniCalc").style.display = "block";
+}
+
+function cerrarMiniCalculator() {
+  document.getElementById("modalMiniCalc").style.display = "none";
+}
+
+function calcularMini() {
+  try {
+    const input = document.getElementById("miniCalcInput").value;
+    const result = eval(input);
+    document.getElementById("miniCalcResult").innerText = result;
+  } catch (e) {
+    document.getElementById("miniCalcResult").innerText = "Error en la operación";
+  }
 }
 
 function abrirModalConversor() {
@@ -1468,24 +1316,19 @@ function cerrarModalConversor() {
   document.getElementById("modalConversor").style.display = "none";
 }
 
-function abrirMiniCalculator() {
-  document.getElementById("modalMiniCalc").style.display = "block";
-}
-
-function cerrarMiniCalculator() {
-  document.getElementById("modalMiniCalc").style.display = "none";
-}
-
-function calcularMini() {
-  const input = document.getElementById("miniCalcInput").value;
-  try {
-    const resultado = eval(input);
-    document.getElementById("miniCalcResult").innerText = resultado;
-  } catch (error) {
-    document.getElementById("miniCalcResult").innerText = "Error";
+function convertirMedida() {
+  const valor = parseFloat(document.getElementById("valorConversor").value);
+  const origen = document.getElementById("unidadOrigen").value;
+  const destino = document.getElementById("unidadDestino").value;
+  if (isNaN(valor)) {
+    document.getElementById("resultadoConversor").innerText = "Ingresa un valor válido";
+    return;
   }
+  // Aquí se puede implementar la lógica de conversión según las unidades
+  document.getElementById("resultadoConversor").innerText = "Resultado: " + valor;
 }
 
+/* -------------------- Funciones para FAQ, Exportar/Importar datos -------------------- */
 function abrirModalFAQ() {
   document.getElementById("modalFAQ").style.display = "block";
 }
@@ -1494,45 +1337,40 @@ function cerrarModalFAQ() {
   document.getElementById("modalFAQ").style.display = "none";
 }
 
-/* -------------------- Funciones para limpiar datos -------------------- */
-function limpiarMaterias() {
-  if (confirm("¿Estás seguro de eliminar todas las Materias Primas?")) {
-    materiasPrimas = [];
-    localStorage.removeItem("materias");
+function exportData() {
+  const data = {
+    materias: materiasPrimas,
+    recetas: recetas,
+    gastosFijos: gastosFijos
+  };
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+  const a = document.createElement("a");
+  a.href = dataStr;
+  a.download = "costcalc_data.json";
+  a.click();
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const data = JSON.parse(e.target.result);
+    materiasPrimas = data.materias || [];
+    recetas = data.recetas || [];
+    gastosFijos = data.gastosFijos || [];
+    localStorage.setItem("materias", JSON.stringify(materiasPrimas));
+    localStorage.setItem("recetas", JSON.stringify(recetas));
+    localStorage.setItem("gastosFijos", JSON.stringify(gastosFijos));
     mostrarMaterias();
-    alert("Materias Primas eliminadas.");
-  }
-}
-
-function limpiarRecetas() {
-  if (confirm("¿Estás seguro de eliminar todas las Recetas?")) {
-    // Borrar imágenes de IndexedDB para cada receta que tenga foto
-    recetas.forEach(receta => {
-      if (receta.foto) {
-        deleteImage(receta.foto).catch(err => console.error("Error borrando imagen:", err));
-      }
-    });
-    recetas = [];
-    localStorage.removeItem("recetas");
     mostrarRecetas();
-    alert("Recetas eliminadas.");
-  }
-}
-
-function limpiarGastos() {
-  if (confirm("¿Estás seguro de eliminar todos los Gastos Fijos?")) {
-    gastosFijos = [];
-    localStorage.removeItem("gastosFijos");
     mostrarGastos();
-    alert("Gastos Fijos eliminados.");
-  }
+  };
+  reader.readAsText(file);
 }
 
-/* -------------------- Función reservada para actualizar UI de gastos fijos -------------------- */
-function actualizarFijosReceta() {}
-
-/* -------------------- Inicialización -------------------- */
-window.onload = function() {
+// Inicializar la aplicación
+window.onload = function () {
   translateApp();
   mostrarMaterias();
   mostrarRecetas();

@@ -9,7 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="container">
@@ -17,7 +17,7 @@
       <header>
         <div class="header-left">
           <!-- Al hacer clic en el logo se abre la mini calculadora -->
-          <i class="fas fa-calculator logo" onclick="abrirMiniCalculator()"></i>
+          <img src="img/Logo.png" alt="Logo" class="logo" onclick="abrirMiniCalculator()" />
           <h1 id="headerTitle">CostCalc Pro</h1>
         </div>
         <div class="header-right">
@@ -120,7 +120,9 @@
     <!-- Footer con carrusel y enlaces -->
     <footer>
       <div class="footer-carousel">
-        <p>¡Síguenos en Instagram, y si te gustó la app, ayúdanos con un cafecito para cumplir nuestro sueño!</p>
+        <p>
+          ¡Síguenos en Instagram, y si te gustó la app, ayúdanos con un cafecito para cumplir nuestro sueño!
+        </p>
       </div>
       <div class="footer-links">
         <a href="https://instagram.com/tuusuario" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -170,6 +172,10 @@
         <img id="fotoRecetaDisplay" alt="Foto de la receta" />
         <h2 id="detalleRecetaTitle">Detalle de Receta</h2>
         <div id="detalleReceta"></div>
+        <!-- Botón para imprimir la receta -->
+        <button id="btnImprimirReceta" onclick="imprimirReceta()">
+          <i class="fas fa-print"></i> Imprimir
+        </button>
       </div>
     </div>
 
@@ -185,6 +191,8 @@
         <!-- Campo para foto opcional en edición -->
         <label id="fotoRecetaEditLabel" for="fotoRecetaEdit">Subir foto (opcional)</label>
         <input type="file" id="fotoRecetaEdit" accept="image/*" />
+        <!-- Nuevo campo para editar % de ganancia -->
+        <input type="number" id="editarPorcentajeGanancia" placeholder="Porcentaje de ganancia (%)" />
         <!-- Ingredientes a editar -->
         <div id="editarIngredientesReceta"></div>
         <button id="btnAgregarIngredienteEdit" onclick="agregarIngredienteRecetaEdit()">Agregar Ingrediente</button>
@@ -228,7 +236,6 @@
         <div id="faqContent"></div>
       </div>
     </div>
-
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
