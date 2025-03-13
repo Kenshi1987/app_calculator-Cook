@@ -1,5 +1,78 @@
 "use strict";
 
+/* -------------------- IndexedDB para imágenes -------------------- */
+const dbName = "CostCalcDB";
+const dbVersion = 1;
+let db;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName, dbVersion);
+    request.onupgradeneeded = function (e) {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains("images")) {
+        db.createObjectStore("images", { keyPath: "id" });
+      }
+    };
+    request.onsuccess = function (e) {
+      db = e.target.result;
+      resolve(db);
+    };
+    request.onerror = function (e) {
+      reject(e.target.error);
+    };
+  });
+}
+
+function saveImage(id, fileOrBlob) {
+  return openDB().then((db) => {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("images", "readwrite");
+      const store = tx.objectStore("images");
+      const request = store.put({ id: id, blob: fileOrBlob });
+      request.onsuccess = function () {
+        resolve();
+      };
+      request.onerror = function (e) {
+        reject(e.target.error);
+      };
+    });
+  });
+}
+
+function getImage(id) {
+  return openDB().then((db) => {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("images", "readonly");
+      const store = tx.objectStore("images");
+      const request = store.get(id);
+      request.onsuccess = function (e) {
+        resolve(e.target.result ? e.target.result.blob : null);
+      };
+      request.onerror = function (e) {
+        reject(e.target.error);
+      };
+    });
+  });
+}
+
+function deleteImage(id) {
+  return openDB().then((db) => {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("images", "readwrite");
+      const store = tx.objectStore("images");
+      const request = store.delete(id);
+      request.onsuccess = function () {
+        resolve();
+      };
+      request.onerror = function (e) {
+        reject(e.target.error);
+      };
+    });
+  });
+}
+
+/* -------------------- Datos y Traducciones -------------------- */
 // Variables globales
 let recetaEditIndex = null;
 let materiaEditIndex = null;
@@ -7,9 +80,9 @@ let gastoEditIndex = null;
 let duplicarMode = false; // false: editar; true: duplicar
 let currentLang = "es";   // idioma por defecto
 let darkMode = false;
-let duplicarRecetaData = null; // Variable para almacenar la receta duplicada
+let duplicarRecetaData = null; // Para almacenar temporalmente la receta duplicada
 
-// Cargar datos desde localStorage
+// Datos en localStorage (sin imágenes)
 let materiasPrimas = JSON.parse(localStorage.getItem("materias")) || [];
 let recetas = JSON.parse(localStorage.getItem("recetas")) || [];
 let gastosFijos = JSON.parse(localStorage.getItem("gastosFijos")) || [];
@@ -63,20 +136,13 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>¿Qué es CostCalc Pro?</strong><br>
-            Es una aplicación para calcular el costo de producción de recetas usando materias primas. Por ejemplo, puedes saber cuánto cuesta producir cada pan o torta.</li>
-        <li><strong>¿Cómo agrego una materia prima?</strong><br>
-            Ve a la pestaña "Materias Primas", ingresa el nombre, costo y unidad (ej. "Harina", "$1.0", "kg") y haz clic en "Agregar Materia Prima".</li>
-        <li><strong>¿Cómo creo una receta?</strong><br>
-            Ingresa el nombre, número de unidades, tiempo de cocción y agrega ingredientes. Luego, de forma similar a los ingredientes, agrega gastos fijos (selecciona de una lista y especifica cantidad) y define un % de ganancia. La receta se guarda directamente en la lista.</li>
-        <li><strong>¿Cómo agrego gastos fijos?</strong><br>
-            En la pestaña "Gastos Fijos", ingresa el nombre y costo (ej.: Luz, $0.5). Estos datos se guardan y podrás seleccionarlos en la receta, además de poder editarlos.</li>
-        <li><strong>¿Cómo edito o duplico una receta?</strong><br>
-            Utiliza el botón de editar (ícono de lápiz) para modificar o el botón de duplicar (ícono de copia) para crear una nueva basada en una existente.</li>
-        <li><strong>¿Cómo se calculan los costos?</strong><br>
-            El costo total se calcula sumando el costo de los ingredientes y los gastos fijos seleccionados. El precio sugerido por unidad se obtiene dividiendo el costo total entre las unidades y aplicando el % de ganancia.</li>
-        <li><strong>¿Cómo calcular el gas?</strong><br>
-            El consumo promedio de gas de un horno es de 0.32 m³/h. Para calcular el precio de un minuto de gas, realiza: (Costo de la boleta de gas / (m³ consumidos / 0.32)) / 60.
-        </li>
+            Es una aplicación para calcular el costo de producción de recetas usando materias primas.</li>
+        <li><strong>¿Cómo se agregan materias primas?</strong><br>
+            En la sección "Materias Primas" ingresa nombre, costo y unidad, luego haz clic en "Agregar Materia Prima".</li>
+        <li><strong>¿Cómo se crean las recetas?</strong><br>
+            Ingresa el nombre, unidades, tiempo de cocción, ingredientes, gastos fijos y porcentaje de ganancia. La receta se guarda automáticamente.</li>
+        <li><strong>¿Cómo se borran los datos?</strong><br>
+            Utiliza los botones "Limpiar ..." en cada sección para borrar los datos almacenados en localStorage.</li>
       </ul>
     `,
     labelFotoReceta: "Subir foto (opcional)",
@@ -129,20 +195,13 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>What is CostCalc Pro?</strong><br>
-            It is an application to calculate production costs of recipes using raw materials. For example, you can know the cost per unit of each bread or cake.</li>
+            It is an application to calculate production costs of recipes using raw materials.</li>
         <li><strong>How do I add a raw material?</strong><br>
-            Go to the "Raw Materials" tab, enter the name, cost, and unit (e.g., "Flour", "$1.0", "kg") and click "Add Raw Material".</li>
+            In the "Raw Materials" section, enter name, cost, and unit then click "Add Raw Material".</li>
         <li><strong>How do I create a recipe?</strong><br>
-            Enter the recipe name, number of units, cooking time and add ingredients. Then, similarly, add fixed expenses (select from a list and specify quantity) and enter a profit percentage. The recipe is saved directly to the list.</li>
-        <li><strong>How do I add fixed expenses?</strong><br>
-            In the "Fixed Expenses" tab, enter expenses such as electricity, gas, packaging, or taxes. These are saved and can be selected in a recipe.</li>
-        <li><strong>How do I edit or copy a recipe?</strong><br>
-            Use the edit button (pencil icon) to modify an existing recipe or the duplicate button (copy icon) to create a new one based on an existing recipe.</li>
-        <li><strong>How are costs calculated?</strong><br>
-            The total cost is the sum of ingredient costs plus the selected fixed expenses. The suggested price per unit is calculated by dividing the total cost by the number of units and applying the profit percentage.</li>
-        <li><strong>How do I calculate the gas cost?</strong><br>
-            A typical oven consumes 0.32 m³/h. To calculate the price per minute of gas, perform: (Cost of gas bill / (cubic meters consumed / 0.32)) / 60.
-        </li>
+            Enter recipe details along with ingredients and fixed expenses. The recipe is saved automatically.</li>
+        <li><strong>How can I clear data?</strong><br>
+            Use the "Clear ..." buttons in each section to remove the stored data from localStorage.</li>
       </ul>
     `,
     labelFotoReceta: "Upload photo (optional)",
@@ -195,20 +254,13 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>O que é o CostCalc Pro?</strong><br>
-            É um aplicativo para calcular o custo de produção de receitas usando matérias-primas. Por exemplo, você pode saber quanto custa produzir cada pão ou bolo.</li>
+            É um aplicativo para calcular o custo de produção de receitas usando matérias-primas.</li>
         <li><strong>Como adicionar uma matéria-prima?</strong><br>
-            Vá para a aba "Matérias-Primas", insira o nome, custo e unidade (ex.: "Farinha", "$1.0", "kg") e clique em "Adicionar Matéria-Prima".</li>
+            Na seção "Matérias-Primas", insira nome, custo e unidade e clique em "Adicionar Matéria-Prima".</li>
         <li><strong>Como criar uma receita?</strong><br>
-            Insira o nome da receita, número de unidades, tempo de cozimento e adicione os ingredientes. Em seguida, adicione os gastos fixos (selecione da lista e informe a quantidade) e defina a porcentagem de lucro. A receita é salva diretamente na lista.</li>
-        <li><strong>Como adicionar gastos fixos?</strong><br>
-            Na aba "Gastos Fixos", insira o nome e o custo (ex.: Luz, $0.5). Esses dados são salvos e poderão ser selecionados na criação da receita, podendo também ser editados.</li>
-        <li><strong>Como editar ou copiar uma receita?</strong><br>
-            Utilize o botão de editar (ícone de lápis) para modificar ou o botão de duplicar (ícone de cópia) para criar uma nova receita baseada em uma existente.</li>
-        <li><strong>Como são calculados os custos?</strong><br>
-            O custo total é a soma dos custos dos ingredientes com os gastos fixos selecionados. O custo por unidade é obtido dividindo o custo total pelo número de unidades e aplicando o percentual de lucro.</li>
-        <li><strong>Como calcular o gás?</strong><br>
-            O consumo médio de gás de um forno é de 0,32 m³/h. Para calcular o preço por minuto de gás, faça: (Custo da conta de gás / (m³ consumidos / 0,32)) / 60.
-        </li>
+            Insira os dados da receita, ingredientes e gastos fixos. A receita é salva automaticamente.</li>
+        <li><strong>Como limpar os dados?</strong><br>
+            Utilize os botões "Limpar ..." em cada seção para remover os dados do localStorage.</li>
       </ul>
     `,
     labelFotoReceta: "Enviar foto (opcional)",
@@ -261,19 +313,13 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>CostCalc Proとは？</strong><br>
-            CostCalc Proは、原材料を使ってレシピの生産コストを計算するアプリです。例えば、パンやケーキの単価を知ることができます。</li>
+            CostCalc Proは、原材料を使ってレシピの生産コストを計算するアプリです。</li>
         <li><strong>原材料はどう追加しますか？</strong><br>
-            「原材料」タブで、名前、コスト、単位（例：「小麦粉」「$1.0」「kg」）を入力し、「原材料を追加」をクリックします。</li>
+            「原材料」セクションで名前、コスト、単位を入力し「原材料を追加」をクリックします。</li>
         <li><strong>レシピはどう作成しますか？</strong><br>
-            レシピの名前、生産単位数、調理時間を入力し、材料を追加します。次に、材料と同様に固定費を追加し、利益率を設定します。アプリは、材料のみのコスト、固定費込みの総コスト、1単位あたりの推奨販売価格を表示します。</li>
-        <li><strong>固定費はどう追加しますか？</strong><br>
-            「固定費」タブで、電気、ガス、包装、税金などの費用を入力します。これらの情報は保存され、レシピ作成時に供選でき、編集も可能です。</li>
-        <li><strong>レシピの編集や複製はどうしますか？</strong><br>
-            編集ボタン（鉛筆アイコン）で既存のレシピを修正し、複製ボタン（コピーアイコン）で新しいレシピを作成できます。</li>
-        <li><strong>コストはどう計算されますか？</strong><br>
-            総コストは、材料費と選択した固定費の合計です。1単位あたりのコストは、総コストを生産単位数で割り、利益率を加えて推奨販売価格を計算します。</li>
-        <li><strong>ガスのコストはどう計算されますか？</strong><br>
-            オーブンの平均燃料消費量は1時間あたり0.32立方メートルです。1分あたりのガス料金は、(ガス料金 ÷ (月間消費量 ÷ 0.32)) ÷ 60 の式で求めます。</li>
+            レシピの詳細、材料、固定費を入力すると自動的に保存されます。</li>
+        <li><strong>データはどう消去しますか？</strong><br>
+            各セクションの「クリア」ボタンでlocalStorageのデータを削除できます。</li>
       </ul>
     `,
     labelFotoReceta: "写真をアップロード（任意）",
@@ -326,20 +372,13 @@ const translations = {
     faqContent: `
       <ul class="faq-list">
         <li><strong>什么是 CostCalc Pro?</strong><br>
-            这是一款通过原材料计算食谱生产成本的应用。例如，你可以知道每个面包或蛋糕的单价。</li>
+            这是一款通过原材料计算食谱生产成本的应用。</li>
         <li><strong>如何添加原材料？</strong><br>
-            请在“原材料”标签中输入名称、成本和单位（例如，“面粉”、“$1.0”、“kg”），然后点击“添加原材料”。</li>
+            在“原材料”部分输入名称、成本、单位，然后点击“添加原材料”。</li>
         <li><strong>如何创建食谱？</strong><br>
-            在“食谱”标签中，输入食谱名称、生产单位数、烹饪时间，并添加原材料。接着，以与原材料相同的方式添加固定费用（从列表中选择并输入数量），并输入利润百分比。应用会显示仅计算原材料的成本、固定费用包含在内的总成本以及每单位建议售价。</li>
-        <li><strong>如何添加固定费用？</strong><br>
-            在“固定费用”标签中，输入电费、燃气费、包装费或税费等费用。这些数据会被保存，并在创建食谱时供选择，同时可以编辑固定费用。</li>
-        <li><strong>如何编辑或复制食谱？</strong><br>
-            使用编辑按钮（铅笔图标）修改已有食谱，或使用复制按钮（复制图标）基于已有食谱创建新食谱。</li>
-        <li><strong>成本如何计算？</strong><br>
-            总成本为原材料成本与所选固定费用的总和。每单位成本为总成本除以生产单位数，建议售价则根据利润百分比计算得出。</li>
-        <li><strong>如何计算燃气费用？</strong><br>
-            假设一个烤箱每小时消耗0.32立方米燃气。要计算每分钟的燃气价格，请使用以下公式：(燃气账单费用 ÷ (当月消耗的立方米数 ÷ 0.32)) ÷ 60。
-        </li>
+            输入食谱详细信息、材料和固定费用后，食谱会自动保存。</li>
+        <li><strong>如何清除数据？</strong><br>
+            使用每个部分的“清除”按钮来删除localStorage中的数据。</li>
       </ul>
     `,
     labelFotoReceta: "上传照片（可选）",
@@ -347,6 +386,7 @@ const translations = {
   }
 };
 
+/* -------------------- Funciones de traducción y UI -------------------- */
 function translateApp() {
   const t = translations[currentLang];
   document.getElementById("headerTitle").innerText = t.headerTitle;
@@ -363,12 +403,10 @@ function translateApp() {
   document.getElementById("btnCalcularReceta").innerText = t.btnCalcularReceta;
   document.getElementById("recetasGuardadasTitle").innerText = t.recetasGuardadas;
   
-  // Campos de foto en creación y edición
   document.getElementById("fotoRecetaLabel").innerText = t.labelFotoReceta;
   if(document.getElementById("fotoRecetaEditLabel"))
     document.getElementById("fotoRecetaEditLabel").innerText = t.labelFotoRecetaEdit;
   
-  // Actualización de botón y placeholder para gastos de receta
   document.getElementById("btnAgregarGastoReceta").innerText = t.btnAgregarGastoReceta;
   document.getElementById("porcentajeGanancia").placeholder = t.placeholderGanancia;
   
@@ -435,12 +473,7 @@ function showSection(sectionId) {
   document.getElementById("gastos-section").style.display = (sectionId === "gastos-section") ? "block" : "none";
 }
 
-/* Función para ordenar materias alfabéticamente */
-function getMateriasOrdenadas() {
-  return materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-}
-
-/* Funciones de Materias Primas */
+/* -------------------- Funciones para Materias Primas -------------------- */
 function guardarMaterias() {
   localStorage.setItem("materias", JSON.stringify(materiasPrimas));
 }
@@ -448,7 +481,7 @@ function guardarMaterias() {
 function mostrarMaterias() {
   const lista = document.getElementById("listaMaterias");
   lista.innerHTML = "";
-  const materiasOrdenadas = getMateriasOrdenadas();
+  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
   materiasOrdenadas.forEach(function(materia) {
     const li = document.createElement("li");
     li.innerHTML = `<span>${materia.nombre}: $${materia.costo} por ${materia.unidad}</span>
@@ -465,7 +498,7 @@ function agregarMateria() {
   const costo = document.getElementById("costoMateria").value;
   const unidad = document.getElementById("unidadMateria").value;
   if (nombre && costo && unidad) {
-    const nuevaMateria = { id: Date.now().toString(), nombre: nombre, costo: parseFloat(costo), unidad: unidad };
+    const nuevaMateria = { id: Date.now().toString(), nombre, costo: parseFloat(costo), unidad };
     materiasPrimas.push(nuevaMateria);
     guardarMaterias();
     mostrarMaterias();
@@ -496,9 +529,9 @@ function guardarEdicionMateria() {
   if (nombre && costo && unidad) {
     materiasPrimas[materiaEditIndex] = {
       id: materiasPrimas[materiaEditIndex].id,
-      nombre: nombre,
+      nombre,
       costo: parseFloat(costo),
-      unidad: unidad
+      unidad
     };
     guardarMaterias();
     mostrarMaterias();
@@ -542,7 +575,7 @@ function actualizarRecetasConMateria() {
   mostrarRecetas();
 }
 
-/* Funciones de Gastos Fijos */
+/* -------------------- Funciones para Gastos Fijos -------------------- */
 function guardarGastosFijos() {
   localStorage.setItem("gastosFijos", JSON.stringify(gastosFijos));
 }
@@ -565,7 +598,7 @@ function agregarGasto() {
   const nombre = document.getElementById("nombreGasto").value;
   const costo = document.getElementById("costoGasto").value;
   if (nombre && costo) {
-    gastosFijos.push({ id: Date.now().toString(), nombre: nombre, costo: parseFloat(costo) });
+    gastosFijos.push({ id: Date.now().toString(), nombre, costo: parseFloat(costo) });
     guardarGastosFijos();
     mostrarGastos();
     actualizarFijosReceta();
@@ -601,7 +634,7 @@ function guardarEdicionGasto() {
   if (nombre && costo) {
     gastosFijos[gastoEditIndex] = {
       id: gastosFijos[gastoEditIndex].id,
-      nombre: nombre,
+      nombre,
       costo: parseFloat(costo)
     };
     guardarGastosFijos();
@@ -702,7 +735,7 @@ function actualizarRecetasConGasto() {
   mostrarRecetas();
 }
 
-/* Funciones de Recetas */
+/* -------------------- Funciones para Recetas -------------------- */
 function agregarIngredienteReceta() {
   const container = document.getElementById("ingredientesReceta");
   const div = document.createElement("div");
@@ -710,7 +743,7 @@ function agregarIngredienteReceta() {
   
   const select = document.createElement("select");
   select.className = "select-materia";
-  const materiasOrdenadas = getMateriasOrdenadas();
+  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
   materiasOrdenadas.forEach(function(materia) {
     const option = document.createElement("option");
     option.value = materia.id;
@@ -750,7 +783,6 @@ function calcularReceta() {
     comentarios = comentarios.replace(/\n/g, "<br>");
   }
   
-  // Procesar ingredientes
   const containerIng = document.getElementById("ingredientesReceta");
   const filasIng = containerIng.getElementsByClassName("ingrediente-row");
   if (filasIng.length === 0) {
@@ -784,7 +816,6 @@ function calcularReceta() {
     });
   }
   
-  // Procesar gastos fijos en la receta
   const containerGastos = document.getElementById("fijosRecetaContainer");
   const filasGasto = containerGastos.getElementsByClassName("gasto-receta-row");
   let costoGastosReceta = 0;
@@ -819,8 +850,9 @@ function calcularReceta() {
   const porcentajeGanancia = parseFloat(document.getElementById("porcentajeGanancia").value) || 0;
   const precioSugerido = costoPorUnidad * (1 + porcentajeGanancia / 100);
   
-  // Objeto receta, incluyendo foto (inicialmente null)
+  // Crear receta con un id único
   let receta = {
+    id: Date.now().toString(),
     nombre: nombreReceta,
     unidades: Number(unidadesProduccion),
     tiempoCoccion: tiempoCoccion,
@@ -832,29 +864,31 @@ function calcularReceta() {
     costoPorUnidad: costoPorUnidad,
     porcentajeGanancia: porcentajeGanancia,
     precioSugerido: precioSugerido,
+    // Guardaremos solo la referencia al id de la imagen en IndexedDB
     foto: null
   };
   
-  // Procesar foto opcional
   const file = document.getElementById("fotoReceta").files[0];
   if (file) {
-    let reader = new FileReader();
-    reader.onload = function(e) {
-      receta.foto = e.target.result;
-      recetas.push(receta);
-      localStorage.setItem("recetas", JSON.stringify(recetas));
-      mostrarRecetas();
-      // Limpiar campos
-      document.getElementById("nombreReceta").value = "";
-      document.getElementById("unidadesProduccion").value = "";
-      document.getElementById("tiempoCoccion").value = "";
-      document.getElementById("comentariosReceta").value = "";
-      document.getElementById("porcentajeGanancia").value = "";
-      document.getElementById("fotoReceta").value = "";
-      containerIng.innerHTML = "";
-      containerGastos.innerHTML = "";
-    };
-    reader.readAsDataURL(file);
+    saveImage(receta.id, file)
+      .then(() => {
+        receta.foto = receta.id;
+        recetas.push(receta);
+        localStorage.setItem("recetas", JSON.stringify(recetas));
+        mostrarRecetas();
+        // Limpiar campos
+        document.getElementById("nombreReceta").value = "";
+        document.getElementById("unidadesProduccion").value = "";
+        document.getElementById("tiempoCoccion").value = "";
+        document.getElementById("comentariosReceta").value = "";
+        document.getElementById("porcentajeGanancia").value = "";
+        document.getElementById("fotoReceta").value = "";
+        containerIng.innerHTML = "";
+        containerGastos.innerHTML = "";
+      })
+      .catch(err => {
+        alert("Error guardando la imagen: " + err);
+      });
   } else {
     recetas.push(receta);
     localStorage.setItem("recetas", JSON.stringify(recetas));
@@ -888,6 +922,11 @@ function mostrarRecetas() {
 
 function eliminarReceta(index) {
   if (confirm("¿Eliminar esta receta?")) {
+    const receta = recetas[index];
+    // Borrar imagen de IndexedDB si existe
+    if (receta.foto) {
+      deleteImage(receta.foto).catch(err => console.error("Error borrando imagen:", err));
+    }
     recetas.splice(index, 1);
     localStorage.setItem("recetas", JSON.stringify(recetas));
     mostrarRecetas();
@@ -898,8 +937,19 @@ function verReceta(index) {
   const receta = recetas[index];
   const fotoEl = document.getElementById("fotoRecetaDisplay");
   if (receta.foto) {
-    fotoEl.src = receta.foto;
-    fotoEl.style.display = "block";
+    getImage(receta.foto)
+      .then(blob => {
+        if (blob) {
+          fotoEl.src = URL.createObjectURL(blob);
+          fotoEl.style.display = "block";
+        } else {
+          fotoEl.style.display = "none";
+        }
+      })
+      .catch(err => {
+        console.error("Error obteniendo imagen:", err);
+        fotoEl.style.display = "none";
+      });
   } else {
     fotoEl.style.display = "none";
   }
@@ -939,7 +989,6 @@ function editarReceta(index) {
   document.getElementById("editarTiempoCoccion").value = receta.tiempoCoccion || "";
   document.getElementById("editarComentariosReceta").value = receta.comentarios || "";
   
-  // Cargar ingredientes para edición
   const containerIng = document.getElementById("editarIngredientesReceta");
   containerIng.innerHTML = "";
   receta.ingredientes.forEach(function(ing) {
@@ -947,7 +996,7 @@ function editarReceta(index) {
     div.className = "ingrediente-row";
     const select = document.createElement("select");
     select.className = "select-materia";
-    const materiasOrdenadas = getMateriasOrdenadas();
+    const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
     materiasOrdenadas.forEach(function(materia) {
       const option = document.createElement("option");
       option.value = materia.id;
@@ -971,7 +1020,6 @@ function editarReceta(index) {
     containerIng.appendChild(div);
   });
   
-  // Cargar gastos fijos para edición
   const containerGastos = document.getElementById("editarFijosRecetaContainer");
   containerGastos.innerHTML = "";
   if (receta.gastosReceta) {
@@ -1004,9 +1052,7 @@ function editarReceta(index) {
     });
   }
   
-  // Limpiar campo de foto en edición (se conservará la foto actual si no se selecciona nueva)
   document.getElementById("fotoRecetaEdit").value = "";
-  
   duplicarMode = false;
   document.getElementById("editarRecetaTitle").innerText = translations[currentLang].editarRecetaTitle;
   document.getElementById("modalRecetaEdit").style.display = "block";
@@ -1022,7 +1068,7 @@ function agregarIngredienteRecetaEdit() {
   div.className = "ingrediente-row";
   const select = document.createElement("select");
   select.className = "select-materia";
-  const materiasOrdenadas = getMateriasOrdenadas();
+  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
   materiasOrdenadas.forEach(function(materia) {
     const option = document.createElement("option");
     option.value = materia.id;
@@ -1073,14 +1119,13 @@ function agregarGastoRecetaEdit() {
 
 function duplicarReceta(index) {
   duplicarMode = true;
-  // Almacenar la receta original duplicada en la variable global
   duplicarRecetaData = JSON.parse(JSON.stringify(recetas[index]));
+  // No se conserva el id original; se asignará uno nuevo al duplicar
   document.getElementById("editarNombreReceta").value = duplicarRecetaData.nombre + " (Duplicado)";
   document.getElementById("editarUnidadesProduccion").value = duplicarRecetaData.unidades;
   document.getElementById("editarTiempoCoccion").value = duplicarRecetaData.tiempoCoccion || "";
   document.getElementById("editarComentariosReceta").value = duplicarRecetaData.comentarios || "";
   
-  // Duplicar ingredientes
   const containerIng = document.getElementById("editarIngredientesReceta");
   containerIng.innerHTML = "";
   duplicarRecetaData.ingredientes.forEach(function(ing) {
@@ -1088,7 +1133,7 @@ function duplicarReceta(index) {
     div.className = "ingrediente-row";
     const select = document.createElement("select");
     select.className = "select-materia";
-    const materiasOrdenadas = getMateriasOrdenadas();
+    const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
     materiasOrdenadas.forEach(function(materia) {
       const option = document.createElement("option");
       option.value = materia.id;
@@ -1112,7 +1157,6 @@ function duplicarReceta(index) {
     containerIng.appendChild(div);
   });
   
-  // Duplicar gastos fijos
   const containerGastos = document.getElementById("editarFijosRecetaContainer");
   containerGastos.innerHTML = "";
   if (duplicarRecetaData.gastosReceta) {
@@ -1149,7 +1193,6 @@ function duplicarReceta(index) {
   document.getElementById("modalRecetaEdit").style.display = "block";
 }
 
-/* Función para guardar edición de receta (incluye foto opcional) */
 function guardarEdicionReceta() {
   const nombre = document.getElementById("editarNombreReceta").value;
   const unidades = document.getElementById("editarUnidadesProduccion").value;
@@ -1161,7 +1204,6 @@ function guardarEdicionReceta() {
     return;
   }
   
-  // Procesar ingredientes
   const containerIng = document.getElementById("editarIngredientesReceta");
   const filasIng = containerIng.getElementsByClassName("ingrediente-row");
   if (filasIng.length === 0) {
@@ -1195,7 +1237,6 @@ function guardarEdicionReceta() {
     });
   }
   
-  // Procesar gastos fijos
   const containerGastos = document.getElementById("editarFijosRecetaContainer");
   const filasGasto = containerGastos.getElementsByClassName("gasto-receta-row");
   let costoGastosReceta = 0;
@@ -1230,10 +1271,11 @@ function guardarEdicionReceta() {
   const porcentajeGanancia = parseFloat(document.getElementById("porcentajeGanancia").value) || 0;
   const precioSugerido = costoPorUnidad * (1 + porcentajeGanancia / 100);
   
-  // Si se está en modo duplicar, se crea una nueva receta; de lo contrario, se actualiza la receta existente
-  const file = document.getElementById("fotoRecetaEdit").files[0];
   if (duplicarMode) {
+    // En duplicar, crear nueva receta con id nuevo
+    const newId = Date.now().toString();
     let newReceta = {
+      id: newId,
       nombre: nombre,
       unidades: Number(unidades),
       tiempoCoccion: tiempoCoccion,
@@ -1245,22 +1287,43 @@ function guardarEdicionReceta() {
       costoPorUnidad: costoPorUnidad,
       porcentajeGanancia: porcentajeGanancia,
       precioSugerido: precioSugerido,
-      // Si no se selecciona nueva foto, se conserva la foto de la receta duplicada (puede ser null)
-      foto: duplicarRecetaData ? duplicarRecetaData.foto : null
+      foto: null
     };
+    const file = document.getElementById("fotoRecetaEdit").files[0];
     if (file) {
-      let reader = new FileReader();
-      reader.onload = function(e) {
-        newReceta.foto = e.target.result;
-        recetas.push(newReceta);
-        localStorage.setItem("recetas", JSON.stringify(recetas));
-        mostrarRecetas();
-        cerrarModalRecetaEdit();
-        duplicarMode = false;
-        duplicarRecetaData = null;
-      };
-      reader.readAsDataURL(file);
+      saveImage(newId, file)
+        .then(() => {
+          newReceta.foto = newId;
+          recetas.push(newReceta);
+          localStorage.setItem("recetas", JSON.stringify(recetas));
+          mostrarRecetas();
+          cerrarModalRecetaEdit();
+          duplicarMode = false;
+          duplicarRecetaData = null;
+        })
+        .catch(err => alert("Error guardando la imagen: " + err));
+    } else if (duplicarRecetaData && duplicarRecetaData.foto) {
+      // Si no se selecciona nueva imagen, copiar la imagen original
+      getImage(duplicarRecetaData.foto)
+        .then(blob => {
+          if (blob) {
+            return saveImage(newId, blob);
+          } else {
+            return Promise.resolve();
+          }
+        })
+        .then(() => {
+          newReceta.foto = newId;
+          recetas.push(newReceta);
+          localStorage.setItem("recetas", JSON.stringify(recetas));
+          mostrarRecetas();
+          cerrarModalRecetaEdit();
+          duplicarMode = false;
+          duplicarRecetaData = null;
+        })
+        .catch(err => alert("Error copiando la imagen: " + err));
     } else {
+      newReceta.foto = null;
       recetas.push(newReceta);
       localStorage.setItem("recetas", JSON.stringify(recetas));
       mostrarRecetas();
@@ -1269,32 +1332,32 @@ function guardarEdicionReceta() {
       duplicarRecetaData = null;
     }
   } else {
-    // Modo edición: actualizar la receta existente
-    recetas[recetaEditIndex] = {
-      nombre: nombre,
-      unidades: Number(unidades),
-      tiempoCoccion: tiempoCoccion,
-      comentarios: comentarios,
-      ingredientes: ingredientesArray,
-      gastosReceta: gastosRecetaArray,
-      gastosIncluidos: costoGastosReceta,
-      costoTotal: costoTotalFinal,
-      costoPorUnidad: costoPorUnidad,
-      porcentajeGanancia: porcentajeGanancia,
-      precioSugerido: precioSugerido,
-      foto: recetas[recetaEditIndex].foto
-    };
+    // Modo edición: actualizar receta existente
+    const recetaActual = recetas[recetaEditIndex];
+    recetaActual.nombre = nombre;
+    recetaActual.unidades = Number(unidades);
+    recetaActual.tiempoCoccion = tiempoCoccion;
+    recetaActual.comentarios = comentarios;
+    recetaActual.ingredientes = ingredientesArray;
+    recetaActual.gastosReceta = gastosRecetaArray;
+    recetaActual.gastosIncluidos = costoGastosReceta;
+    recetaActual.costoTotal = costoTotalFinal;
+    recetaActual.costoPorUnidad = costoPorUnidad;
+    recetaActual.porcentajeGanancia = porcentajeGanancia;
+    recetaActual.precioSugerido = precioSugerido;
     
+    const file = document.getElementById("fotoRecetaEdit").files[0];
     if (file) {
-      let reader = new FileReader();
-      reader.onload = function(e) {
-        recetas[recetaEditIndex].foto = e.target.result;
-        localStorage.setItem("recetas", JSON.stringify(recetas));
-        mostrarRecetas();
-        cerrarModalRecetaEdit();
-      };
-      reader.readAsDataURL(file);
+      saveImage(recetaActual.id, file)
+        .then(() => {
+          recetaActual.foto = recetaActual.id;
+          localStorage.setItem("recetas", JSON.stringify(recetas));
+          mostrarRecetas();
+          cerrarModalRecetaEdit();
+        })
+        .catch(err => alert("Error actualizando la imagen: " + err));
     } else {
+      // Si no se selecciona nueva imagen, se conserva la anterior
       localStorage.setItem("recetas", JSON.stringify(recetas));
       mostrarRecetas();
       cerrarModalRecetaEdit();
@@ -1302,7 +1365,7 @@ function guardarEdicionReceta() {
   }
 }
 
-/* Función para exportar e importar datos sin duplicar */
+/* -------------------- Funciones para Exportar/Importar Datos -------------------- */
 function exportData() {
   const data = {
     materias: materiasPrimas,
@@ -1327,19 +1390,16 @@ function importData(event) {
     try {
       const data = JSON.parse(e.target.result);
       if (data.materias && data.recetas && data.gastosFijos) {
-        // Merge materias: no duplicar si ya existe una con el mismo nombre (case-insensitive)
         data.materias.forEach(materiaImport => {
           if (!materiasPrimas.some(m => m.nombre.trim().toLowerCase() === materiaImport.nombre.trim().toLowerCase())) {
             materiasPrimas.push(materiaImport);
           }
         });
-        // Merge gastosFijos
         data.gastosFijos.forEach(gastoImport => {
           if (!gastosFijos.some(g => g.nombre.trim().toLowerCase() === gastoImport.nombre.trim().toLowerCase())) {
             gastosFijos.push(gastoImport);
           }
         });
-        // Merge recetas
         data.recetas.forEach(recetaImport => {
           if (!recetas.some(r => r.nombre.trim().toLowerCase() === recetaImport.nombre.trim().toLowerCase())) {
             recetas.push(recetaImport);
@@ -1364,7 +1424,7 @@ function importData(event) {
   reader.readAsText(file);
 }
 
-/* Conversor de Medidas */
+/* -------------------- Conversor y Mini Calculadora -------------------- */
 function convertirMedida() {
   const valor = parseFloat(document.getElementById("valorConversor").value);
   const unidadOrigen = document.getElementById("unidadOrigen").value;
@@ -1408,7 +1468,6 @@ function cerrarModalConversor() {
   document.getElementById("modalConversor").style.display = "none";
 }
 
-/* Mini Calculadora */
 function abrirMiniCalculator() {
   document.getElementById("modalMiniCalc").style.display = "block";
 }
@@ -1427,7 +1486,6 @@ function calcularMini() {
   }
 }
 
-/* Modal FAQ */
 function abrirModalFAQ() {
   document.getElementById("modalFAQ").style.display = "block";
 }
@@ -1436,10 +1494,44 @@ function cerrarModalFAQ() {
   document.getElementById("modalFAQ").style.display = "none";
 }
 
-/* Actualización UI de gastos fijos (reservado para mejoras futuras) */
+/* -------------------- Funciones para limpiar datos -------------------- */
+function limpiarMaterias() {
+  if (confirm("¿Estás seguro de eliminar todas las Materias Primas?")) {
+    materiasPrimas = [];
+    localStorage.removeItem("materias");
+    mostrarMaterias();
+    alert("Materias Primas eliminadas.");
+  }
+}
+
+function limpiarRecetas() {
+  if (confirm("¿Estás seguro de eliminar todas las Recetas?")) {
+    // Borrar imágenes de IndexedDB para cada receta que tenga foto
+    recetas.forEach(receta => {
+      if (receta.foto) {
+        deleteImage(receta.foto).catch(err => console.error("Error borrando imagen:", err));
+      }
+    });
+    recetas = [];
+    localStorage.removeItem("recetas");
+    mostrarRecetas();
+    alert("Recetas eliminadas.");
+  }
+}
+
+function limpiarGastos() {
+  if (confirm("¿Estás seguro de eliminar todos los Gastos Fijos?")) {
+    gastosFijos = [];
+    localStorage.removeItem("gastosFijos");
+    mostrarGastos();
+    alert("Gastos Fijos eliminados.");
+  }
+}
+
+/* -------------------- Función reservada para actualizar UI de gastos fijos -------------------- */
 function actualizarFijosReceta() {}
 
-/* Inicialización */
+/* -------------------- Inicialización -------------------- */
 window.onload = function() {
   translateApp();
   mostrarMaterias();

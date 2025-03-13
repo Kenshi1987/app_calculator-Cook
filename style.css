@@ -45,9 +45,15 @@ header h1 {
   align-items: center;
   gap: 10px;
 }
+
+/* Selector de idioma: menú desplegable */
 #langSelect {
   font-size: 1rem;
   padding: 5px;
+  width: auto;
+  display: inline-block;
+  /* Se fuerza el uso de una fuente que soporte emojis de bandera */
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
 
 /* Botones del Header */
@@ -271,6 +277,12 @@ footer {
   position: relative;
   transition: transform 0.3s, box-shadow 0.3s;
 }
+/* Mayor margen y centrado para los títulos de los modales */
+.modal-content h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 .modal-content p {
   margin-bottom: 10px;
   line-height: 1.5;
@@ -298,13 +310,14 @@ footer {
   max-width: 300px;
 }
 
-/* Centrado y estilo para la foto en el modal de receta */
+/* La imagen en el modal de receta se adapta al ancho y tiene mayor margen superior para separarse del botón de cierre */
 #fotoRecetaDisplay {
   display: block;
-  margin: 0 auto 10px auto;
+  width: 100%;
+  height: auto;
+  margin: 20px auto 10px auto;
   border: 2px solid #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  max-width: 100%;
 }
 
 /* Responsive: En móviles se apilan verticalmente */

@@ -21,6 +21,7 @@
           <h1 id="headerTitle">CostCalc Pro</h1>
         </div>
         <div class="header-right">
+          <!-- Selector de idioma en menú desplegable -->
           <select id="langSelect" onchange="setLanguage(this.value)">
             <option value="es">🇪🇸 Español</option>
             <option value="en">🇬🇧 English</option>
@@ -85,6 +86,8 @@
         <!-- Porcentaje de ganancia -->
         <input type="number" id="porcentajeGanancia" placeholder="Porcentaje de ganancia (%)" />
         <button id="btnCalcularReceta" onclick="calcularReceta()">Calcular Receta</button>
+        <!-- Botón para limpiar todas las recetas almacenadas -->
+        <button onclick="limpiarRecetas()">Limpiar Recetas</button>
         <!-- Lista de recetas guardadas -->
         <h3 id="recetasGuardadasTitle">Recetas Guardadas</h3>
         <ul id="listaRecetas"></ul>
@@ -97,6 +100,8 @@
         <input type="number" id="costoMateria" placeholder="Costo" />
         <input type="text" id="unidadMateria" placeholder="Unidad (g, ml, unidad)" />
         <button id="btnAgregarMateria" onclick="agregarMateria()">Agregar Materia Prima</button>
+        <!-- Botón para limpiar todas las materias almacenadas -->
+        <button onclick="limpiarMaterias()">Limpiar Materias Primas</button>
         <ul id="listaMaterias"></ul>
       </section>
 
@@ -106,6 +111,8 @@
         <input type="text" id="nombreGasto" placeholder="Nombre del gasto (ej: Luz)" />
         <input type="number" id="costoGasto" placeholder="Costo" />
         <button id="btnAgregarGasto" onclick="agregarGasto()">Agregar Gasto Fijo</button>
+        <!-- Botón para limpiar todos los gastos almacenados -->
+        <button onclick="limpiarGastos()">Limpiar Gastos Fijos</button>
         <ul id="listaGastos"></ul>
       </section>
     </div>
@@ -159,8 +166,8 @@
     <div id="modalRecetaView" class="modal">
       <div class="modal-content small-modal">
         <span class="close" onclick="cerrarModalRecetaView()">&times;</span>
-        <!-- La foto se mostrará centrada con borde y sombra -->
-        <img id="fotoRecetaDisplay" style="display: none;" alt="Foto de la receta" />
+        <!-- La imagen se mostrará centrada y se adaptará al ancho del modal -->
+        <img id="fotoRecetaDisplay" alt="Foto de la receta" />
         <h2 id="detalleRecetaTitle">Detalle de Receta</h2>
         <div id="detalleReceta"></div>
       </div>
