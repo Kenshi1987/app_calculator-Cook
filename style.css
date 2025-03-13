@@ -35,6 +35,7 @@ header {
 .logo {
   font-size: 3rem;
   color: #007bff;
+  cursor: pointer;
 }
 header h1 {
   font-size: 2rem;
@@ -139,7 +140,7 @@ button:hover {
   transform: scale(1.02);
 }
 
-/* Contenedor de ingredientes y gastos fijos en receta */
+/* Filas para ingredientes y gastos fijos */
 .ingrediente-row, .gasto-receta-row {
   display: flex;
   gap: 5px;
@@ -218,14 +219,33 @@ footer {
   text-align: center;
   margin: 20px 0;
 }
-footer a {
+.footer-carousel {
+  overflow: hidden;
+  white-space: nowrap;
+  background: #007bff;
+  color: #fff;
+  padding: 5px 0;
+  margin-bottom: 10px;
+}
+.footer-carousel p {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 10s linear infinite;
+  font-size: 1rem;
+  margin: 0;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.footer-links a {
   color: #007bff;
   margin: 0 10px;
   font-size: 1.5rem;
   text-decoration: none;
   transition: color 0.3s, transform 0.3s;
 }
-footer a:hover {
+.footer-links a:hover {
   color: #0056b3;
   transform: scale(1.05);
 }
@@ -273,56 +293,18 @@ footer a:hover {
   transform: scale(1.1);
 }
 
-/* FAQ List */
-.faq-list {
-  list-style: none;
-  padding: 0;
-}
-.faq-list li {
-  margin-bottom: 10px;
+/* Mini Calculadora */
+#modalMiniCalc .modal-content {
+  max-width: 300px;
 }
 
-/* Dark Mode */
-.dark-mode {
-  background: #222;
-  color: #eee;
-}
-.dark-mode .container {
-  background: #333;
-  color: #eee;
-}
-.dark-mode input,
-.dark-mode select,
-.dark-mode textarea,
-.dark-mode button {
-  background: #444;
-  color: #eee;
-  border: 1px solid #555;
-}
-.dark-mode .nav-btn {
-  background: #555;
-}
-.dark-mode #themeToggle,
-.dark-mode #faqButton {
-  background: #555;
-  color: #fff;
-}
-.dark-mode button:hover {
-  background: #666;
-}
-.dark-mode #listaMaterias li,
-.dark-mode #listaRecetas li,
-.dark-mode #listaGastos li {
-  background: #444;
-  color: #eee;
-}
-.dark-mode .modal-content {
-  background: #333;
-  color: #eee;
-  border: 1px solid #555;
-}
-.dark-mode .modal .close {
-  color: #eee;
+/* Centrado y estilo para la foto en el modal de receta */
+#fotoRecetaDisplay {
+  display: block;
+  margin: 0 auto 10px auto;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  max-width: 100%;
 }
 
 /* Responsive: En móviles se apilan verticalmente */
@@ -334,4 +316,54 @@ footer a:hover {
     width: 100%;
     margin: 5px 0;
   }
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: #333;
+  color: #f4f4f4;
+}
+body.dark-mode .container {
+  background: #444;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+}
+body.dark-mode header h1,
+body.dark-mode .nav-btn,
+body.dark-mode button,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #555;
+  color: #f4f4f4;
+  border-color: #666;
+}
+body.dark-mode .nav-btn:hover,
+body.dark-mode button:hover {
+  background: #777;
+}
+body.dark-mode .footer-carousel {
+  background: #555;
+}
+body.dark-mode .footer-links a {
+  color: #f4f4f4;
+}
+body.dark-mode .footer-links a:hover {
+  color: #ccc;
+}
+body.dark-mode #listaMaterias li,
+body.dark-mode #listaRecetas li,
+body.dark-mode #listaGastos li {
+  background: #555;
+  color: #f4f4f4;
+  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+body.dark-mode #listaMaterias li:hover,
+body.dark-mode #listaRecetas li:hover,
+body.dark-mode #listaGastos li:hover {
+  background: #666;
+}
+body.dark-mode .modal-content {
+  background: #444;
+  color: #f4f4f4;
+  border: 1px solid #666;
 }
