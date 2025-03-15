@@ -1347,13 +1347,13 @@ function verReceta(index) {
 /* -------------------- Funciones para Imprimir -------------------- */
 
 function imprimirReceta() {
-  // Obtenemos el contenido del modal de receta
+  // Obtener el contenido del modal que queremos imprimir
   const contenido = document.getElementById("modalRecetaView").innerHTML;
   
-  // Abrimos una nueva ventana/tab
+  // Abrir una nueva ventana o pestaña
   const ventanaImpresion = window.open('', '_blank');
-
-  // Creamos un documento HTML completo con meta, estilos y el contenido deseado
+  
+  // Crear un documento HTML completo con meta, estilos en línea y el contenido deseado
   ventanaImpresion.document.open();
   ventanaImpresion.document.write(`
     <!DOCTYPE html>
@@ -1363,6 +1363,7 @@ function imprimirReceta() {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Imprimir Receta</title>
       <style>
+        /* Estilos básicos para impresión */
         body {
           font-family: Arial, sans-serif;
           background: #fff;
@@ -1377,7 +1378,14 @@ function imprimirReceta() {
         h1, h2, h3 {
           text-align: center;
         }
-        /* Otros estilos que necesites para mostrar la receta correctamente */
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+        /* Ocultar botones y elementos interactivos */
+        .no-print, button, .import-label {
+          display: none !important;
+        }
       </style>
     </head>
     <body>
@@ -1389,15 +1397,14 @@ function imprimirReceta() {
   `);
   ventanaImpresion.document.close();
   
-  // Aumentamos el tiempo de espera para que se cargue el contenido
+  // Aumentar el tiempo de espera para móviles (1500 ms o más)
   setTimeout(() => {
     ventanaImpresion.focus();
     ventanaImpresion.print();
     ventanaImpresion.close();
-  }, 1000);
-
-  console.log(contenido);
+  }, 3000);
 }
+
 
 /* ------------------------------------------------------------------- */
 
