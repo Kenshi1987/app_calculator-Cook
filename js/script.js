@@ -123,6 +123,16 @@ const translations = {
     limpiarRecetas: "Limpiar Recetas",
     limpiarMaterias: "Limpiar Materias Primas",
     limpiarGastos: "Limpiar Gastos Fijos",
+    labelNombre: "Nombre",
+    labelUnidades: "Unidades",
+    labelTiempoCoccion: "Tiempo de Cocción",
+    labelComentarios: "Comentarios",
+    labelIngredientes: "Ingredientes",
+    labelGastosFijos: "Gastos Fijos",
+    labelCostoTotal: "Costo Total",
+    labelCostoPorUnidad: "Costo por Unidad",
+    labelGanancia: "Ganancia",
+    labelPrecioSugerido: "Precio Sugerido",
     faqContent: `
       <ul class="faq-list">
         <li><strong>¿Qué es CostCalc Pro?</strong><br>
@@ -195,6 +205,16 @@ const translations = {
     limpiarRecetas: "Clear Recipes",
     limpiarMaterias: "Clear Raw Materials",
     limpiarGastos: "Clear Fixed Expenses",
+    labelNombre: "Name",
+    labelUnidades: "Units",
+    labelTiempoCoccion: "Cooking Time",
+    labelComentarios: "Comments",
+    labelIngredientes: "Ingredients",
+    labelGastosFijos: "Fixed Expenses",
+    labelCostoTotal: "Total Cost",
+    labelCostoPorUnidad: "Cost per Unit",
+    labelGanancia: "Profit",
+    labelPrecioSugerido: "Suggested Price", 
     faqContent: `
       <ul class="faq-list">
         <li><strong>What is CostCalc Pro?</strong><br>
@@ -267,7 +287,16 @@ const translations = {
     limpiarRecetas: "Limpar Receitas",
     limpiarMaterias: "Limpar Matérias-Primas",
     limpiarGastos: "Limpar Gastos Fixos",
-
+    labelNombre: "Name",
+    labelUnidades: "Units",
+    labelTiempoCoccion: "Cooking Time",
+    labelComentarios: "Comments",
+    labelIngredientes: "Ingredients",
+    labelGastosFijos: "Fixed Expenses",
+    labelCostoTotal: "Total Cost",
+    labelCostoPorUnidad: "Cost per Unit",
+    labelGanancia: "Profit",
+    labelPrecioSugerido: "Suggested Price",
     faqContent: `
       <ul class="faq-list">
         <li><strong>O que é o CostCalc Pro?</strong><br>
@@ -340,6 +369,16 @@ const translations = {
     limpiarRecetas: "Effacer les recettes",
     limpiarMaterias: "Effacer les matières premières",
     limpiarGastos: "Effacer les dépenses fixes",
+    labelNombre: "Nom",
+    labelUnidades: "Unités",
+    labelTiempoCoccion: "Temps de Cuisson",
+    labelComentarios: "Commentaires",
+    labelIngredientes: "Ingrédients",
+    labelGastosFijos: "Dépenses Fixes",
+    labelCostoTotal: "Coût Total",
+    labelCostoPorUnidad: "Coût par Unité",
+    labelGanancia: "Bénéfice",
+    labelPrecioSugerido: "Prix Suggéré",
     faqContent: `
       <ul class="faq-list">
         <li><strong>Qu'est-ce que CostCalc Pro ?</strong><br>
@@ -412,6 +451,16 @@ const translations = {
     limpiarRecetas: "Rezepte löschen",
     limpiarMaterias: "Rohstoffe löschen",
     limpiarGastos: "Fixkosten löschen",
+    labelNombre: "Name",
+    labelUnidades: "Einheiten",
+    labelTiempoCoccion: "Kochzeit",
+    labelComentarios: "Kommentare",
+    labelIngredientes: "Zutaten",
+    labelGastosFijos: "Fixkosten",
+    labelCostoTotal: "Gesamtkosten",
+    labelCostoPorUnidad: "Kosten pro Einheit",
+    labelGanancia: "Gewinn",
+    labelPrecioSugerido: "Vorgeschlagener Preis",
     faqContent: `
       <ul class="faq-list">
         <li><strong>Was ist CostCalc Pro?</strong><br>
@@ -485,6 +534,16 @@ const translations = {
     limpiarRecetas: "レシピをクリア",
     limpiarMaterias: "原材料をクリア",
     limpiarGastos: "固定費をクリア",
+    labelNombre: "名前",
+    labelUnidades: "単位数",
+    labelTiempoCoccion: "調理時間",
+    labelComentarios: "コメント",
+    labelIngredientes: "材料",
+    labelGastosFijos: "固定費",
+    labelCostoTotal: "合計コスト",
+    labelCostoPorUnidad: "単価",
+    labelGanancia: "利益",
+    labelPrecioSugerido: "推奨価格",
     faqContent: `
       <ul class="faq-list">
         <li><strong>CostCalc Proとは何ですか？</strong><br>
@@ -557,7 +616,16 @@ const translations = {
     limpiarRecetas: "清除食谱",
     limpiarMaterias: "清除原材料",
     limpiarGastos: "清除固定费用",
-
+    labelNombre: "名称",
+    labelUnidades: "单位数",
+    labelTiempoCoccion: "烹饪时间",
+    labelComentarios: "备注",
+    labelIngredientes: "原料",
+    labelGastosFijos: "固定费用",
+    labelCostoTotal: "总成本",
+    labelCostoPorUnidad: "每单位成本",
+    labelGanancia: "利润",
+    labelPrecioSugerido: "建议价格",
     faqContent: `
       <ul class="faq-list">
         <li><strong>什么是CostCalc Pro？</strong><br>
@@ -610,6 +678,11 @@ function translateApp() {
     document.getElementById("fotoRecetaEditLabel").innerText = t.labelFotoReceta;
   }
   document.getElementById("btnAgregarGastoReceta").innerText = t.btnAgregarGastoReceta;
+  
+if (document.getElementById("btnAgregarGastoRecetaEdit")) {
+  document.getElementById("btnAgregarGastoRecetaEdit").innerText = t.btnAgregarGastoReceta;
+}
+
   document.getElementById("porcentajeGanancia").placeholder = t.placeholderGanancia;
   // Sección Materias
   document.getElementById("materiaTitle").innerText = t.materiaTitle;
@@ -659,8 +732,8 @@ function translateApp() {
   if (document.getElementById("editarPorcentajeGanancia")) {
     document.getElementById("editarPorcentajeGanancia").placeholder = t.placeholderGanancia;
   }
+  
 }
-
 function setLanguage(lang) {
   currentLang = lang;
   translateApp();
@@ -1204,28 +1277,31 @@ function mostrarRecetas() {
 
 function verReceta(index) {
   const receta = recetas[index];
+  // Obtenemos las traducciones del idioma actual
+  const t = translations[currentLang];
+
   const detalleDiv = document.getElementById("detalleReceta");
   detalleDiv.innerHTML = `
-    <p><strong>Nombre:</strong> ${receta.nombre}</p>
-    <p><strong>Unidades:</strong> ${receta.unidades}</p>
-    <p><strong>Tiempo de Cocción:</strong> ${receta.tiempoCoccion} min</p>
-    <p><strong>Comentarios:</strong> ${
-      receta.comentarios ? receta.comentarios : ""
-    }</p>
-    <hr style="margin: 20px 0;">
-    <p><strong>Ingredientes:</strong></p>
+    <p><strong>${t.labelNombre}:</strong> ${receta.nombre}</p>
+    <p><strong>${t.labelUnidades}:</strong> ${receta.unidades}</p>
+    <p><strong>${t.labelTiempoCoccion}:</strong> ${receta.tiempoCoccion} min</p>
+    <p><strong>${t.labelComentarios}:</strong> ${receta.comentarios || ""}</p>
+    <hr>
+    <p><strong>${t.labelIngredientes}:</strong></p>
     <ul>
-      ${receta.ingredientes
-        .map(
-          (ing) =>
-            `<li>${ing.materia} (${ing.cantidad} ${ing.unidad}) = $${(
-              ing.cantidad * ing.costo
-            ).toFixed(2)}</li>`
-        )
-        .join("")}
+      ${
+        receta.ingredientes
+          .map(
+            (ing) =>
+              `<li>${ing.materia} (${ing.cantidad} ${ing.unidad}) = $${(
+                ing.cantidad * ing.costo
+              ).toFixed(2)}</li>`
+          )
+          .join("")
+      }
     </ul>
     <hr style="margin: 20px 0;">
-    <p><strong>Gastos Fijos:</strong></p>
+    <p><strong>${t.labelGastosFijos}:</strong></p>
     <ul>
       ${
         receta.gastosReceta && receta.gastosReceta.length
@@ -1240,11 +1316,11 @@ function verReceta(index) {
           : "<li>Ninguno</li>"
       }
     </ul>
-    <hr style="margin: 20px 0;">
-    <p><strong>Costo Total:</strong> $${receta.costoTotal.toFixed(2)}</p>
-    <p><strong>Costo por Unidad:</strong> $${receta.costoPorUnidad.toFixed(2)}</p>
-    <p><strong>Ganancia:</strong> ${receta.porcentajeGanancia}%</p>
-    <p><strong>Precio Sugerido:</strong> $${receta.precioSugerido.toFixed(2)}</p>
+    <hr>
+    <p><strong>${t.labelCostoTotal}:</strong> $${receta.costoTotal.toFixed(2)}</p>
+    <p><strong>${t.labelCostoPorUnidad}:</strong> $${receta.costoPorUnidad.toFixed(2)}</p>
+    <p><strong>${t.labelGanancia}:</strong> ${receta.porcentajeGanancia}%</p>
+    <p><strong>${t.labelPrecioSugerido}:</strong> $${receta.precioSugerido.toFixed(2)}</p>
   `;
 
   // Cargar foto
@@ -1330,6 +1406,7 @@ function editarReceta(index) {
   // Establecer el idioma del modal según la receta guardada
   if (receta.idioma) {
     currentLang = receta.idioma;
+    document.getElementById("langSelect").value = receta.idioma;
   }
 
   // Ajustar título
