@@ -1347,12 +1347,33 @@ function verReceta(index) {
 /* -------------------- Funciones para Imprimir -------------------- */
 
 function imprimirRecetaConIframe() {
-  const contenido = document.getElementById("modalRecetaView").innerHTML;
+  // Seleccionamos la parte interna del modal que contiene la información a imprimir
+  const modalContent = document.querySelector("#modalRecetaView .modal-content");
+  if (!modalContent) {
+    alert("No se encontró el contenido de la receta.");
+    return;
+  }
   
-  // Crear un iframe oculto
-  const iframe = document.createElement('iframe');
-  iframe.style.position = 'absolute';
-  iframe.style.left = '-9999px';
+  // Clonamos el contenido para evitar problemas de visibilidad
+  const clone = modalContent.cloneNode(true);
+  
+  // Creamos un contenedor temporal y forzamos que sea visible
+  const tempContainer = document.createElement("div");
+  tempContainer.id = "tempPrintContainer";
+  tempContainer.style.position = "absolute";
+  tempContainer.style.top = "0";
+  tempContainer.style.left = "0";
+  tempContainer.style.width = "100%";
+  tempContainer.style.zIndex = "9999";
+  tempContainer.style.background = "#fff";
+  tempContainer.style.display = "block";
+  tempContainer.appendChild(clone);
+  document.body.appendChild(tempContainer);
+  
+  // Creamos un iframe oculto para imprimir
+  const iframe = document.createElement("iframe");
+  iframe.style.position = "absolute";
+  iframe.style.left = "-9999px";
   document.body.appendChild(iframe);
   
   const doc = iframe.contentWindow.document;
@@ -1362,64 +1383,75 @@ function imprimirRecetaConIframe() {
     <html>
     <head>
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Imprimir Receta</title>
-      <!-- Incluir Font Awesome para iconos -->
+      <link rel="stylesheet" href="css/style.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
       <style>
-        body {
-          font-family: Arial, sans-serif;
-          background: #fff;
-          color: #333;
-          margin: 0;
-          padding: 20px;
-        }
-        .container {
-          max-width: 800px;
-          margin: auto;
-        }
-        h1, h2, h3 {
-          text-align: center;
-        }
-        img {
-          max-width: 100%;
-          height: auto;
-        }
-        .no-print, button, .import-label {
-          display: none !important;
-        }
-        /* Solo imprimir el contenido del modal */
+        /* Para asegurarnos de que solo se imprima el contenido deseado */
         @media print {
-          body * {
-            visibility: hidden;
-          }
-          #modalRecetaView, #modalRecetaView * {
-            visibility: visible;
-          }
-          #modalRecetaView {
-            position: absolute;
-            left: 0;
-            top: 0;
-          }
+          body * { visibility: hidden; }
+          #printContent, #printContent * { visibility: visible; }
+          #printContent { position: absolute; left: 0; top: 0; }
         }
       </style>
     </head>
     <body>
-      <div id="modalRecetaView" class="container">
-        ${contenido}
+      <div id="printContent">
+        ${tempContainer.innerHTML}
       </div>
     </body>
     </html>
   `);
-  
   doc.close();
   
-  // Dar tiempo para que el contenido se renderice
+  // Esperamos un poco para que el contenido se renderice completamente
   setTimeout(() => {
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
     document.body.removeChild(iframe);
+    document.body.removeChild(tempContainer);
   }, 1500);
+}
+
+/* -------------------- Funciones para PDF -------------------- */
+
+function generarPDFReceta() {
+  // Seleccionamos la parte interna del modal que contiene la información a exportar
+  const modalContent = document.querySelector("#modalRecetaView .modal-content");
+  if (!modalContent) {
+    alert("No se encontró el contenido de la receta.");
+    return;
+  }
+  
+  // Clonamos el contenido
+  const clone = modalContent.cloneNode(true);
+  
+  // Creamos un contenedor temporal visible para que html2pdf.js pueda capturarlo
+  const tempContainer = document.createElement("div");
+  tempContainer.id = "tempPDFContainer";
+  tempContainer.style.position = "absolute";
+  tempContainer.style.top = "0";
+  tempContainer.style.left = "0";
+  tempContainer.style.width = "100%";
+  tempContainer.style.zIndex = "9999";
+  tempContainer.style.background = "#fff";
+  tempContainer.style.display = "block";
+  tempContainer.appendChild(clone);
+  document.body.appendChild(tempContainer);
+  
+  // Opciones para html2pdf.js (se usa un scale de 2 para mayor resolución)
+  const opt = {
+    margin: 10,
+    filename: 'receta.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  
+  html2pdf().set(opt).from(tempContainer).save().then(() => {
+    document.body.removeChild(tempContainer);
+  });
 }
 
 
