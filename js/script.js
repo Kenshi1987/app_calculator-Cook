@@ -1346,26 +1346,31 @@ function verReceta(index) {
 
 /* -------------------- Funciones para Imprimir -------------------- */
 
-
-
 function imprimirReceta() {
   const contenido = document.getElementById("modalRecetaView").innerHTML;
   const ventanaImpresion = window.open("", "", "height=600,width=800");
-  ventanaImpresion.document.write("<html><head><title>Imprimir Receta</title><style>");
-  ventanaImpresion.document.write(`
-    body { background: #fff; color: #000; font-family: Arial, sans-serif; }
-    .container { width: 100%; max-width: 800px; margin: 0 auto; }
-    button, nav, footer { display: none; }
-  `);
-  ventanaImpresion.document.write("</style></head><body>");
+  ventanaImpresion.document.write("<html><head><title>Imprimir Receta</title>");
+  ventanaImpresion.document.write("<style>");
+  ventanaImpresion.document.write(`body { font-family: Arial, sans-serif; background: #fff; color: #333; }
+    .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+    h1, h2, h3 { text-align: center; }
+    /* Agrega más estilos necesarios aquí */`);
+  ventanaImpresion.document.write("</style>");
+  ventanaImpresion.document.write("</head><body>");
   ventanaImpresion.document.write(contenido);
   ventanaImpresion.document.write("</body></html>");
   ventanaImpresion.document.close();
-  ventanaImpresion.focus();
-  setTimeout(() => { ventanaImpresion.print(); ventanaImpresion.close(); }, 500);
+  
+  // Espera un poco para que se cargue el contenido
+  setTimeout(() => {
+    ventanaImpresion.focus();
+    ventanaImpresion.print();
+    ventanaImpresion.close();
+  }, 500);
 }
 
- 
+/* ------------------------------------------------------------------- */
+
 function cerrarModalRecetaView() {
   document.getElementById("modalRecetaView").style.display = "none";
 }
@@ -1397,6 +1402,7 @@ function editarReceta(index) {
   // Limpiar contenedores
   const ingContainer = document.getElementById("editarIngredientesReceta");
   ingContainer.innerHTML = "";
+
   // Cargar ingredientes
   receta.ingredientes.forEach((ing) => {
     const div = document.createElement("div");
@@ -1404,7 +1410,8 @@ function editarReceta(index) {
 
     const select = document.createElement("select");
     select.className = "select-materia";
-    // Llenar el select
+
+  // Llenar el select
     const materiasOrdenadas = materiasPrimas.slice().sort((a, b) =>
       a.nombre.localeCompare(b.nombre)
     );
