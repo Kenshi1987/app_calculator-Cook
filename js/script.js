@@ -1346,16 +1346,18 @@ function verReceta(index) {
 
 /* -------------------- Funciones para Imprimir -------------------- */
 
-function imprimirReceta() {
-  // Obtener el contenido del modal que queremos imprimir
+function imprimirRecetaConIframe() {
   const contenido = document.getElementById("modalRecetaView").innerHTML;
   
-  // Abrir una nueva ventana o pestaña
-  const ventanaImpresion = window.open('', '_blank');
+  // Crear un iframe oculto
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'absolute';
+  iframe.style.left = '-9999px';
+  document.body.appendChild(iframe);
   
-  // Crear un documento HTML completo con meta, estilos en línea y el contenido deseado
-  ventanaImpresion.document.open();
-  ventanaImpresion.document.write(`
+  const doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(`
     <!DOCTYPE html>
     <html>
     <head>
@@ -1363,7 +1365,6 @@ function imprimirReceta() {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Imprimir Receta</title>
       <style>
-        /* Estilos básicos para impresión */
         body {
           font-family: Arial, sans-serif;
           background: #fff;
@@ -1382,7 +1383,7 @@ function imprimirReceta() {
           max-width: 100%;
           height: auto;
         }
-        /* Ocultar botones y elementos interactivos */
+        /* Ocultar botones y elementos no necesarios */
         .no-print, button, .import-label {
           display: none !important;
         }
@@ -1395,16 +1396,15 @@ function imprimirReceta() {
     </body>
     </html>
   `);
-  ventanaImpresion.document.close();
+  doc.close();
   
-  // Aumentar el tiempo de espera para móviles (1500 ms o más)
+  // Espera para asegurar que el contenido se haya renderizado
   setTimeout(() => {
-    ventanaImpresion.focus();
-    ventanaImpresion.print();
-    ventanaImpresion.close();
-  }, 3000);
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    document.body.removeChild(iframe);
+  }, 1000);
 }
-
 
 /* ------------------------------------------------------------------- */
 
