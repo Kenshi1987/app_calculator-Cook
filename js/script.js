@@ -1366,7 +1366,9 @@ function imprimirReceta() {
     ventanaImpresion.focus();
     ventanaImpresion.print();
     ventanaImpresion.close();
-  }, 500);
+  }, 2000);
+
+  console.log(contenido);
 }
 
 /* ------------------------------------------------------------------- */
