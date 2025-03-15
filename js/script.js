@@ -1364,8 +1364,13 @@ function imprimirRecetaConIframe() {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Imprimir Receta</title>
+      <!-- Incluir Font Awesome para iconos -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
       <style>
+        /* Fuerza a que los colores y estilos se impriman correctamente */
         body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
           font-family: Arial, sans-serif;
           background: #fff;
           color: #333;
@@ -1383,9 +1388,18 @@ function imprimirRecetaConIframe() {
           max-width: 100%;
           height: auto;
         }
-        /* Ocultar botones y elementos no necesarios */
+        /* Evita que se apliquen transformaciones que podrían forzar la conversión a imagen */
+        * {
+          transform: none !important;
+          -webkit-transform: none !important;
+        }
+        /* Ocultar botones y elementos no necesarios para la impresión */
         .no-print, button, .import-label {
           display: none !important;
+        }
+        /* Opcional: quitar sombras y otros efectos */
+        * {
+          box-shadow: none !important;
         }
       </style>
     </head>
@@ -1398,13 +1412,14 @@ function imprimirRecetaConIframe() {
   `);
   doc.close();
   
-  // Espera para asegurar que el contenido se haya renderizado
+  // Dar tiempo para que el contenido se renderice
   setTimeout(() => {
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
     document.body.removeChild(iframe);
-  }, 1000);
+  }, 1500);
 }
+
 
 /* ------------------------------------------------------------------- */
 
