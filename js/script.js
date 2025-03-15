@@ -1367,10 +1367,7 @@ function imprimirRecetaConIframe() {
       <!-- Incluir Font Awesome para iconos -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
       <style>
-        /* Fuerza a que los colores y estilos se impriman correctamente */
         body {
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
           font-family: Arial, sans-serif;
           background: #fff;
           color: #333;
@@ -1388,28 +1385,33 @@ function imprimirRecetaConIframe() {
           max-width: 100%;
           height: auto;
         }
-        /* Evita que se apliquen transformaciones que podrían forzar la conversión a imagen */
-        * {
-          transform: none !important;
-          -webkit-transform: none !important;
-        }
-        /* Ocultar botones y elementos no necesarios para la impresión */
         .no-print, button, .import-label {
           display: none !important;
         }
-        /* Opcional: quitar sombras y otros efectos */
-        * {
-          box-shadow: none !important;
+        /* Solo imprimir el contenido del modal */
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #modalRecetaView, #modalRecetaView * {
+            visibility: visible;
+          }
+          #modalRecetaView {
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
         }
       </style>
     </head>
     <body>
-      <div class="container">
+      <div id="modalRecetaView" class="container">
         ${contenido}
       </div>
     </body>
     </html>
   `);
+  
   doc.close();
   
   // Dar tiempo para que el contenido se renderice

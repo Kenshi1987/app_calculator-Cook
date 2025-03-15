@@ -484,16 +484,21 @@ body.dark-mode .modal-content {
 /* Print */
 
 @media print {
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    font-family: Arial, sans-serif;
-    background: #fff;
-    color: #333;
-    margin: 0;
-    padding: 20px;
+  /* Oculta todo el contenido de la página */
+  body * {
+    visibility: hidden;
   }
-  
+  /* Hace visible el contenido del modal y sus elementos internos */
+  #modalRecetaView, #modalRecetaView * {
+    visibility: visible;
+  }
+  /* Posiciona el modal en la esquina superior izquierda */
+  #modalRecetaView {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
   .container {
     box-shadow: none !important;
   }
