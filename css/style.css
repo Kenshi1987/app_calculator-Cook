@@ -480,3 +480,18 @@ body.dark-mode .modal-content {
   color: #f4f4f4;
   box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
+
+/* Print */
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .container {
+    box-shadow: none !important;
+  }
+  button, nav, footer {
+    display: none !important;
+  }
+}

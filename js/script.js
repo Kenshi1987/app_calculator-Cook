@@ -135,25 +135,25 @@ const translations = {
     labelPrecioSugerido: "Precio Sugerido",
     faqContent: `
       <ul class="faq-list">
-        <li><strong>¿Qué es CostCalc Pro?</strong><br>
-          CostCalc Pro es una aplicación que te permite calcular el costo de producción de recetas utilizando materias primas, gastos fijos y un porcentaje de ganancia para obtener un precio sugerido por unidad.</li>
-        <li><strong>¿Cómo se agregan materias primas?</strong><br>
+        <br><li><strong>¿Qué es CostCalc Pro?</strong><br>
+          <br>CostCalc Pro es una aplicación que te permite calcular el costo de producción de recetas utilizando materias primas, gastos fijos y un porcentaje de ganancia para obtener un precio sugerido por unidad.</li>
+        <br><li><strong>¿Cómo se agregan materias primas?</strong><br>
           En la sección "Materias Primas", ingresa el nombre, costo y unidad de cada materia y haz clic en "Agregar Materia Prima".</li>
-        <li><strong>¿Cómo se crean las recetas?</strong><br>
+        <br><li><strong>¿Cómo se crean las recetas?</strong><br>
           Ve a la sección "Recetas", completa el nombre, unidades producidas, tiempo de cocción, ingredientes, gastos fijos y porcentaje de ganancia. La receta se guarda automáticamente.</li>
-        <li><strong>¿Cómo se calculan los costos y precios?</strong><br>
+        <br><li><strong>¿Cómo se calculan los costos y precios?</strong><br>
           La aplicación suma el costo de los ingredientes y gastos fijos, lo divide entre las unidades producidas y aplica el porcentaje de ganancia para sugerir un precio por unidad.</li>
-        <li><strong>¿Cómo se edita o duplica una receta?</strong><br>
+        <br><li><strong>¿Cómo se edita o duplica una receta?</strong><br>
           Selecciona una receta de la lista y utiliza los botones de editar o duplicar. En el modo de edición, podrás modificar todos los campos, incluido el porcentaje de ganancia.</li>
-        <li><strong>¿Cómo se gestionan los gastos fijos?</strong><br>
+        <br><li><strong>¿Cómo se gestionan los gastos fijos?</strong><br>
           En la sección "Gastos Fijos", agrega el nombre y costo de cada gasto. Estos se pueden asignar a una receta y son incluidos en el cálculo total.</li>
-        <li><strong>¿Cómo se calcula el precio del gas?</strong><br>
+        <br><li><strong>¿Cómo se calcula el precio del gas?</strong><br>
           Para calcular el precio del gas, utiliza la fórmula: ((boleta de gas) / (consumo de metros cúbicos / 0.32)) / 60. Esto te da el costo por unidad de tiempo.</li>
-        <li><strong>¿Cómo se usa la mini calculadora?</strong><br>
+        <br><li><strong>¿Cómo se usa la mini calculadora?</strong><br>
           Haz clic en el logo para abrir la mini calculadora, ingresa la operación y presiona "Calcular" para ver el resultado.</li>
-        <li><strong>¿Cómo funciona el conversor de medidas?</strong><br>
+        <br><li><strong>¿Cómo funciona el conversor de medidas?</strong><br>
           En el conversor, ingresa un valor y selecciona la unidad de origen y destino. Al hacer clic en "Convertir", verás el valor convertido.</li>
-        <li><strong>¿Cómo se importan y exportan los datos?</strong><br>
+        <br><li><strong>¿Cómo se importan y exportan los datos?</strong><br>
           Utiliza los botones de exportar e importar en el header para guardar y cargar tus datos en formato JSON.</li>
       </ul>
     `
@@ -217,25 +217,25 @@ const translations = {
     labelPrecioSugerido: "Suggested Price", 
     faqContent: `
       <ul class="faq-list">
-        <li><strong>What is CostCalc Pro?</strong><br>
+        <br><li><strong>What is CostCalc Pro?</strong><br>
           CostCalc Pro is an application that allows you to calculate the production cost of recipes using raw materials, fixed expenses, and a profit margin to obtain a suggested unit price.</li>
-        <li><strong>How do I add raw materials?</strong><br>
+        <br><li><strong>How do I add raw materials?</strong><br>
           In the "Raw Materials" section, enter the name, cost, and unit for each material and click "Add Raw Material."</li>
-        <li><strong>How do I create a recipe?</strong><br>
+        <<br>li><strong>How do I create a recipe?</strong><br>
           Go to the "Recipes" section, fill in the recipe name, number of produced units, cooking time, ingredients, fixed expenses, and profit margin. The recipe is saved automatically.</li>
-        <li><strong>How are costs and prices calculated?</strong><br>
+        <br><li><strong>How are costs and prices calculated?</strong><br>
           The app sums the cost of ingredients and fixed expenses, divides by the number of units produced, and applies the profit margin to suggest a price per unit.</li>
-        <li><strong>How do I edit or duplicate a recipe?</strong><br>
+        <br><li><strong>How do I edit or duplicate a recipe?</strong><br>
           Select a recipe from the list and use the edit or duplicate buttons. In edit mode, you can modify all fields, including the profit margin.</li>
-        <li><strong>How do I manage fixed expenses?</strong><br>
+        <br><li><strong>How do I manage fixed expenses?</strong><br>
           In the "Fixed Expenses" section, add the name and cost for each expense. These can be assigned to a recipe and are included in the total calculation.</li>
-        <li><strong>How do I calculate the gas price?</strong><br>
+        <br><li><strong>How do I calculate the gas price?</strong><br>
           To calculate the gas price, use the formula: ((gas bill) / (consumption in cubic meters / 0.32)) / 60. This gives you the cost per unit of time.</li>
-        <li><strong>How does the mini calculator work?</strong><br>
+        <br><li><strong>How does the mini calculator work?</strong><br>
           Click the logo to open the mini calculator, enter an operation, and press "Calculate" to see the result.</li>
-        <li><strong>How does the unit converter work?</strong><br>
+        <br><li><strong>How does the unit converter work?</strong><br>
           In the converter, input a value and select the source and destination units. Clicking "Convert" displays the converted value.</li>
-        <li><strong>How do I import and export data?</strong><br>
+        <br><li><strong>How do I import and export data?</strong><br>
           Use the export and import buttons in the header to save and load your data in JSON format.</li>
       </ul>
     `
@@ -299,25 +299,25 @@ const translations = {
     labelPrecioSugerido: "Suggested Price",
     faqContent: `
       <ul class="faq-list">
-        <li><strong>O que é o CostCalc Pro?</strong><br>
+        <br><li><strong>O que é o CostCalc Pro?</strong><br>
           O CostCalc Pro é um aplicativo que permite calcular o custo de produção de receitas usando matérias-primas, gastos fixos e margem de lucro para obter um preço sugerido por unidade.</li>
-        <li><strong>Como adicionar matérias-primas?</strong><br>
+        <br><li><strong>Como adicionar matérias-primas?</strong><br>
           Na seção "Matérias-Primas", insira o nome, custo e unidade de cada matéria e clique em "Adicionar Matéria-Prima".</li>
         <li><strong>Como criar uma receita?</strong><br>
           Vá para a seção "Receitas", preencha os campos de nome da receita, unidades produzidas, tempo de cozimento, ingredientes, gastos fixos e margem de lucro. A receita é salva automaticamente.</li>
-        <li><strong>Como são calculados os custos e preços?</strong><br>
+        <br><li><strong>Como são calculados os custos e preços?</strong><br>
           O aplicativo soma o custo dos ingredientes e dos gastos fixos, divide pelo número de unidades produzidas e aplica a margem de lucro para sugerir um preço por unidade.</li>
-        <li><strong>Como editar ou duplicar uma receita?</strong><br>
+        <br><li><strong>Como editar ou duplicar uma receita?</strong><br>
           Selecione uma receita da lista e use os botões de editar ou duplicar. No modo de edição, é possível modificar todos os campos, inclusive a margem de lucro.</li>
-        <li><strong>Como gerenciar os gastos fixos?</strong><br>
+        <br><li><strong>Como gerenciar os gastos fixos?</strong><br>
           Na seção "Gastos Fixos", adicione o nome e o custo de cada despesa. Estes podem ser atribuídos a uma receita e são incluídos no cálculo total.</li>
-        <li><strong>Como calcular o preço do gás?</strong><br>
+        <br><li><strong>Como calcular o preço do gás?</strong><br>
           Para calcular o preço do gás, utilize a fórmula: ((conta de gás) / (consumo em metros cúbicos / 0.32)) / 60. Isso fornece o custo por unidade de tempo.</li>
-        <li><strong>Como funciona a mini calculadora?</strong><br>
+        <br><li><strong>Como funciona a mini calculadora?</strong><br>
           Clique no logotipo para abrir a mini calculadora, insira a operação e pressione "Calcular" para ver o resultado.</li>
-        <li><strong>Como funciona o conversor de medidas?</strong><br>
+        <br><li><strong>Como funciona o conversor de medidas?</strong><br>
           No conversor, insira um valor e selecione a unidade de origem e a unidade de destino. Ao clicar em "Converter", o valor convertido será exibido.</li>
-        <li><strong>Como importar e exportar os dados?</strong><br>
+        <br><li><strong>Como importar e exportar os dados?</strong><br>
           Utilize os botões de exportar e importar no cabeçalho para salvar e carregar seus dados em formato JSON.</li>
       </ul>
     `
@@ -381,25 +381,25 @@ const translations = {
     labelPrecioSugerido: "Prix Suggéré",
     faqContent: `
       <ul class="faq-list">
-        <li><strong>Qu'est-ce que CostCalc Pro ?</strong><br>
+        <br><li><strong>Qu'est-ce que CostCalc Pro ?</strong><br>
           CostCalc Pro est une application qui vous permet de calculer le coût de production de recettes en utilisant des matières premières, des dépenses fixes et une marge de bénéfice afin d'obtenir un prix unitaire suggéré.</li>
-        <li><strong>Comment ajouter des matières premières ?</strong><br>
+        <br><li><strong>Comment ajouter des matières premières ?</strong><br>
           Dans la section "Matières Premières", entrez le nom, le coût et l'unité de chaque matière puis cliquez sur "Ajouter Matière Première".</li>
-        <li><strong>Comment créer une recette ?</strong><br>
+        <br><li><strong>Comment créer une recette ?</strong><br>
           Allez dans la section "Recettes", remplissez le nom de la recette, le nombre d'unités produites, le temps de cuisson, les ingrédients, les dépenses fixes et la marge de bénéfice. La recette est sauvegardée automatiquement.</li>
-        <li><strong>Comment les coûts et les prix sont-ils calculés ?</strong><br>
+        <br><li><strong>Comment les coûts et les prix sont-ils calculés ?</strong><br>
           L'application additionne le coût des ingrédients et des dépenses fixes, divise par le nombre d'unités produites et applique la marge de bénéfice pour suggérer un prix par unité.</li>
-        <li><strong>Comment modifier ou dupliquer une recette ?</strong><br>
+        <br><li><strong>Comment modifier ou dupliquer une recette ?</strong><br>
           Sélectionnez une recette dans la liste et utilisez les boutons pour la modifier ou la dupliquer. En mode modification, vous pouvez changer tous les champs, y compris la marge de bénéfice.</li>
-        <li><strong>Comment gérer les dépenses fixes ?</strong><br>
+        <br><li><strong>Comment gérer les dépenses fixes ?</strong><br>
           Dans la section "Dépenses Fixes", ajoutez le nom et le coût de chaque dépense. Ces dépenses peuvent être affectées à une recette et sont incluses dans le calcul total.</li>
-        <li><strong>Comment calculer le prix du gaz ?</strong><br>
+        <br><li><strong>Comment calculer le prix du gaz ?</strong><br>
           Pour calculer le prix du gaz, utilisez la formule : ((facture de gaz) / (consommation en m³ / 0,32)) / 60. Cela vous donne le coût par unité de temps.</li>
-        <li><strong>Comment fonctionne la mini calculatrice ?</strong><br>
+        <br><li><strong>Comment fonctionne la mini calculatrice ?</strong><br>
           Cliquez sur le logo pour ouvrir la mini calculatrice, entrez une opération et appuyez sur "Calculer" pour voir le résultat.</li>
-        <li><strong>Comment fonctionne le convertisseur d'unités ?</strong><br>
+        <br><li><strong>Comment fonctionne le convertisseur d'unités ?</strong><br>
           Dans le convertisseur, entrez une valeur et sélectionnez l'unité de départ et d'arrivée. En cliquant sur "Convertir", la valeur convertie s'affiche.</li>
-        <li><strong>Comment importer et exporter les données ?</strong><br>
+        <br><li><strong>Comment importer et exporter les données ?</strong><br>
           Utilisez les boutons d'exportation et d'importation dans l'en-tête pour sauvegarder et charger vos données au format JSON.</li>
       </ul>
     `
@@ -463,25 +463,25 @@ const translations = {
     labelPrecioSugerido: "Vorgeschlagener Preis",
     faqContent: `
       <ul class="faq-list">
-        <li><strong>Was ist CostCalc Pro?</strong><br>
+        <br><li><strong>Was ist CostCalc Pro?</strong><br>
           CostCalc Pro ist eine Anwendung, mit der Sie die Produktionskosten von Rezepten berechnen können, indem Sie Zutaten, Fixkosten und eine Gewinnmarge verwenden, um einen vorgeschlagenen Stückpreis zu erhalten.</li>
-        <li><strong>Wie füge ich Zutaten hinzu?</strong><br>
+        <br><li><strong>Wie füge ich Zutaten hinzu?</strong><br>
           Geben Sie im Bereich "Zutaten" den Namen, die Kosten und die Einheit für jede Zutat ein und klicken Sie auf "Zutat hinzufügen".</li>
-        <li><strong>Wie erstelle ich ein Rezept?</strong><br>
+        <br><li><strong>Wie erstelle ich ein Rezept?</strong><br>
           Gehen Sie zum Abschnitt "Rezepte", füllen Sie den Rezeptnamen, die Anzahl produzierter Einheiten, die Kochzeit, die Zutaten, die Fixkosten und die Gewinnmarge aus. Das Rezept wird automatisch gespeichert.</li>
-        <li><strong>Wie werden Kosten und Preise berechnet?</strong><br>
+        <br><li><strong>Wie werden Kosten und Preise berechnet?</strong><br>
           Die App summiert die Kosten der Zutaten und Fixkosten, teilt sie durch die Anzahl der produzierten Einheiten und wendet die Gewinnmarge an, um einen Preis pro Einheit vorzuschlagen.</li>
-        <li><strong>Wie bearbeite oder dupliziere ich ein Rezept?</strong><br>
+        <br><li><strong>Wie bearbeite oder dupliziere ich ein Rezept?</strong><br>
           Wählen Sie ein Rezept aus der Liste und verwenden Sie die Schaltflächen zum Bearbeiten oder Duplizieren. Im Bearbeitungsmodus können Sie alle Felder ändern, einschließlich der Gewinnmarge.</li>
-        <li><strong>Wie verwalte ich die Fixkosten?</strong><br>
+        <br><li><strong>Wie verwalte ich die Fixkosten?</strong><br>
           Fügen Sie im Abschnitt "Fixkosten" den Namen und die Kosten für jede Ausgabe hinzu. Diese können einem Rezept zugewiesen werden und werden in die Gesamtkalkulation einbezogen.</li>
-        <li><strong>Wie berechne ich den Gaspreis?</strong><br>
+        <br><li><strong>Wie berechne ich den Gaspreis?</strong><br>
           Um den Gaspreis zu berechnen, verwenden Sie die Formel: ((Gasrechnung) / (Verbrauch in m³ / 0,32)) / 60. Dies ergibt die Kosten pro Zeiteinheit.</li>
-        <li><strong>Wie funktioniert der Mini-Rechner?</strong><br>
+        <br><li><strong>Wie funktioniert der Mini-Rechner?</strong><br>
           Klicken Sie auf das Logo, um den Mini-Rechner zu öffnen, geben Sie einen Rechenvorgang ein und drücken Sie "=" um das Ergebnis zu sehen.</li>
-        <li><strong>Wie funktioniert der Umrechner?</strong><br>
+        <br><li><strong>Wie funktioniert der Umrechner?</strong><br>
           Geben Sie im Umrechner einen Wert ein und wählen Sie die Ausgangs- sowie die Zieleinheit. Klicken Sie auf "Umrechnen", um den umgerechneten Wert zu erhalten.</li>
-        <li><strong>Wie importiere und exportiere ich Daten?</strong><br>
+        <br><li><strong>Wie importiere und exportiere ich Daten?</strong><br>
           Verwenden Sie die Export- und Import-Schaltflächen in der Kopfzeile, um Ihre Daten im JSON-Format zu speichern und zu laden.</li>
       </ul>
     `
@@ -546,25 +546,25 @@ const translations = {
     labelPrecioSugerido: "推奨価格",
     faqContent: `
       <ul class="faq-list">
-        <li><strong>CostCalc Proとは何ですか？</strong><br>
+        <br><li><strong>CostCalc Proとは何ですか？</strong><br>
           CostCalc Proは、原材料、固定費、利益率を使用してレシピの生産コストを計算し、1単位あたりの推奨価格を算出するアプリです。</li>
-        <li><strong>原材料はどのように追加しますか？</strong><br>
+        <br><li><strong>原材料はどのように追加しますか？</strong><br>
           「原材料」セクションで、各原材料の名前、コスト、単位を入力し、「原材料を追加」をクリックします。</li>
-        <li><strong>レシピはどのように作成しますか？</strong><br>
+        <br><li><strong>レシピはどのように作成しますか？</strong><br>
           「レシピ」セクションで、レシピの名前、生産単位数、調理時間、材料、固定費、利益率を入力してください。レシピは自動保存されます。</li>
-        <li><strong>コストと価格はどのように計算されますか？</strong><br>
+        <br><li><strong>コストと価格はどのように計算されますか？</strong><br>
           材料費と固定費を合計し、生産単位数で割り、利益率を適用して1単位あたりの推奨価格を算出します。</li>
-        <li><strong>レシピはどのように編集または複製しますか？</strong><br>
+        <br><li><strong>レシピはどのように編集または複製しますか？</strong><br>
           リストからレシピを選び、編集または複製ボタンを使用します。編集モードでは、すべての項目（利益率を含む）を変更可能です。</li>
-        <li><strong>固定費はどのように管理しますか？</strong><br>
+        <br><li><strong>固定費はどのように管理しますか？</strong><br>
           「固定費」セクションで、各費用の名前とコストを入力し、追加します。これらはレシピに割り当て、総計算に含まれます。</li>
-        <li><strong>ガスの価格はどのように計算しますか？</strong><br>
+        <br><li><strong>ガスの価格はどのように計算しますか？</strong><br>
           ガスの価格を計算するには、次の式を使用します：((ガスの請求書) / (消費メートル立方 / 0.32)) / 60。これにより、時間単位あたりのコストが得られます。</li>
-        <li><strong>ミニ計算機はどのように使いますか？</strong><br>
+        <br><li><strong>ミニ計算機はどのように使いますか？</strong><br>
           ロゴをクリックしてミニ計算機を開き、計算式を入力して「計算」ボタンを押すと結果が表示されます。</li>
-        <li><strong>単位コンバーターはどのように機能しますか？</strong><br>
+        <br><li><strong>単位コンバーターはどのように機能しますか？</strong><br>
           変換器で数値を入力し、元の単位と変換先の単位を選択します。「変換」ボタンをクリックすると、変換結果が表示されます。</li>
-        <li><strong>データはどのようにインポート/エクスポートしますか？</strong><br>
+        <br><li><strong>データはどのようにインポート/エクスポートしますか？</strong><br>
           ヘッダーのエクスポート・インポートボタンを使用して、JSON形式でデータを保存・読み込みし、バックアップや復元が可能です。</li>
       </ul>
     `
@@ -628,25 +628,25 @@ const translations = {
     labelPrecioSugerido: "建议价格",
     faqContent: `
       <ul class="faq-list">
-        <li><strong>什么是CostCalc Pro？</strong><br>
+        <br><li><strong>什么是CostCalc Pro？</strong><br>
           CostCalc Pro是一款应用，通过使用原材料、固定费用和利润率来计算配方的生产成本，从而得出建议的单价。</li>
-        <li><strong>如何添加原材料？</strong><br>
+        <br><li><strong>如何添加原材料？</strong><br>
           在“原材料”部分，输入每种原材料的名称、成本和单位，然后点击“添加原材料”。</li>
-        <li><strong>如何创建配方？</strong><br>
+        <br><li><strong>如何创建配方？</strong><br>
           进入“食谱”部分，填写配方名称、生产单位数、烹饪时间、原材料、固定费用和利润率，系统会自动保存配方。</li>
-        <li><strong>成本和价格如何计算？</strong><br>
+        <br><li><strong>成本和价格如何计算？</strong><br>
           系统将原材料成本和固定费用相加，除以生产单位数，再应用利润率计算出建议的单价。</li>
-        <li><strong>如何编辑或复制配方？</strong><br>
+        <br><li><strong>如何编辑或复制配方？</strong><br>
           从列表中选择配方后，点击编辑或复制按钮。编辑模式下可以修改所有项，包括利润率。</li>
-        <li><strong>如何管理固定费用？</strong><br>
+        <br><li><strong>如何管理固定费用？</strong><br>
           在“固定费用”部分，输入每项费用的名称和成本，然后添加。费用将被分配到配方中并计入总成本。</li>
-        <li><strong>如何计算天然气价格？</strong><br>
+        <br><li><strong>如何计算天然气价格？</strong><br>
           要计算天然气价格，请使用以下公式：((燃气账单) / (消耗的立方米数 / 0.32)) / 60，这将得到每单位时间的成本。</li>
-        <li><strong>如何使用迷你计算器？</strong><br>
+        <br><li><strong>如何使用迷你计算器？</strong><br>
           点击logo打开迷你计算器，输入算式并点击“计算”按钮即可显示结果。</li>
-        <li><strong>单位转换器如何工作？</strong><br>
+        <br><li><strong>单位转换器如何工作？</strong><br>
           在转换器中输入数值，选择原单位和目标单位，点击“转换”按钮后即可获得转换后的结果。</li>
-        <li><strong>如何导入和导出数据？</strong><br>
+        <br><li><strong>如何导入和导出数据？</strong><br>
           使用页眉中的导出和导入按钮可以将数据以JSON格式保存或加载，方便数据备份与恢复。</li>
       </ul>
     `
@@ -727,7 +727,7 @@ if (document.getElementById("btnAgregarGastoRecetaEdit")) {
     document.getElementById("btnGuardarCambiosGasto").innerText = t.btnGuardarCambiosGasto;
   }
   // FAQ
-  document.getElementById("faqTitle").innerText = "Preguntas Frecuentes";
+  document.getElementById("faqTitle").innerText = "FAQs";
   document.getElementById("faqContent").innerHTML = t.faqContent;
   if (document.getElementById("editarPorcentajeGanancia")) {
     document.getElementById("editarPorcentajeGanancia").placeholder = t.placeholderGanancia;
@@ -1287,7 +1287,9 @@ function verReceta(index) {
     <p><strong>${t.labelTiempoCoccion}:</strong> ${receta.tiempoCoccion} min</p>
     <p><strong>${t.labelComentarios}:</strong> ${receta.comentarios || ""}</p>
     <hr>
+    <br>
     <p><strong>${t.labelIngredientes}:</strong></p>
+    <br>
     <ul>
       ${
         receta.ingredientes
@@ -1316,7 +1318,7 @@ function verReceta(index) {
           : "<li>Ninguno</li>"
       }
     </ul>
-    <hr>
+    <br><hr><br>
     <p><strong>${t.labelCostoTotal}:</strong> $${receta.costoTotal.toFixed(2)}</p>
     <p><strong>${t.labelCostoPorUnidad}:</strong> $${receta.costoPorUnidad.toFixed(2)}</p>
     <p><strong>${t.labelGanancia}:</strong> ${receta.porcentajeGanancia}%</p>
@@ -1344,56 +1346,26 @@ function verReceta(index) {
 
 /* -------------------- Funciones para Imprimir -------------------- */
 
+
+
 function imprimirReceta() {
-  // Obtiene el contenido del área de detalles de la receta
-  const detalleRecetaEl = document.getElementById("detalleReceta");
-  // Crea un contenedor temporal para clonar solo el contenido interno (sin la estructura del modal)
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = detalleRecetaEl.innerHTML;
-
-  // Obtiene la imagen de la receta (si existe)
-  const fotoEl = document.getElementById("fotoRecetaDisplay");
-  let imagenHTML = "";
-  if (fotoEl && fotoEl.style.display !== "none" && fotoEl.src) {
-    imagenHTML = `<div style="text-align: center; margin-bottom: 20px;">
-                    <img src="${fotoEl.src}" alt="Foto de la receta" style="max-width: 100%; height: auto; border: none;" />
-                  </div>`;
-  }
-
-  // Define el HTML para la ventana de impresión con estilos mínimos
-  const printContent = `
-    <html>
-      <head>
-        <title>Imprimir Receta</title>
-        <style>
-          /* Quita fondos y otros estilos que puedan hacer que se imprima como imagen */
-          * { background: none !important; }
-          body { font-family: Arial, sans-serif; padding: 20px; }
-          h1, h2, h3 { text-align: center; }
-          p { margin: 0 0 10px; line-height: 1.5; }
-          ul { list-style: disc; margin-left: 20px; }
-          img { max-width: 100%; height: auto; }
-        </style>
-      </head>
-      <body>
-        ${imagenHTML}
-        ${tempDiv.innerHTML}
-      </body>
-    </html>
-  `;
-
-  // Abre una nueva ventana y escribe el contenido preparado
-  const printWindow = window.open("", "", "height=600,width=800");
-  printWindow.document.open();
-  printWindow.document.write(printContent);
-  printWindow.document.close();
-  printWindow.focus();
-  printWindow.print();
-  printWindow.close();
+  const contenido = document.getElementById("modalRecetaView").innerHTML;
+  const ventanaImpresion = window.open("", "", "height=600,width=800");
+  ventanaImpresion.document.write("<html><head><title>Imprimir Receta</title><style>");
+  ventanaImpresion.document.write(`
+    body { background: #fff; color: #000; font-family: Arial, sans-serif; }
+    .container { width: 100%; max-width: 800px; margin: 0 auto; }
+    button, nav, footer { display: none; }
+  `);
+  ventanaImpresion.document.write("</style></head><body>");
+  ventanaImpresion.document.write(contenido);
+  ventanaImpresion.document.write("</body></html>");
+  ventanaImpresion.document.close();
+  ventanaImpresion.focus();
+  setTimeout(() => { ventanaImpresion.print(); ventanaImpresion.close(); }, 500);
 }
 
-
-
+ 
 function cerrarModalRecetaView() {
   document.getElementById("modalRecetaView").style.display = "none";
 }
@@ -1896,6 +1868,10 @@ function limpiarGastos() {
   }
 }
 
+function cerrarModalRecetaEdit() {
+  document.getElementById("modalRecetaEdit").style.display = "none";
+}
+
 /* Inicialización */
 document.addEventListener("DOMContentLoaded", () => {
   translateApp();
@@ -1903,6 +1879,4 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarRecetas();
   mostrarGastos();
 });
-function cerrarModalRecetaEdit() {
-  document.getElementById("modalRecetaEdit").style.display = "none";
-}
+
