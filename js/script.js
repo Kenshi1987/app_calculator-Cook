@@ -135,7 +135,7 @@ const translations = {
     labelPrecioSugerido: "Precio Sugerido",
     faqContent: `
       <ul class="faq-list">
-        <br><li><strong>¿Qué es CostCalc Pro?</strong><br>
+        <li><strong>¿Qué es CostCalc Pro?</strong>
           <br>CostCalc Pro es una aplicación que te permite calcular el costo de producción de recetas utilizando materias primas, gastos fijos y un porcentaje de ganancia para obtener un precio sugerido por unidad.</li>
         <br><li><strong>¿Cómo se agregan materias primas?</strong><br>
           En la sección "Materias Primas", ingresa el nombre, costo y unidad de cada materia y haz clic en "Agregar Materia Prima".</li>
@@ -221,7 +221,7 @@ const translations = {
           CostCalc Pro is an application that allows you to calculate the production cost of recipes using raw materials, fixed expenses, and a profit margin to obtain a suggested unit price.</li>
         <br><li><strong>How do I add raw materials?</strong><br>
           In the "Raw Materials" section, enter the name, cost, and unit for each material and click "Add Raw Material."</li>
-        <<br>li><strong>How do I create a recipe?</strong><br>
+        <br><li><strong>How do I create a recipe?</strong><br>
           Go to the "Recipes" section, fill in the recipe name, number of produced units, cooking time, ingredients, fixed expenses, and profit margin. The recipe is saved automatically.</li>
         <br><li><strong>How are costs and prices calculated?</strong><br>
           The app sums the cost of ingredients and fixed expenses, divides by the number of units produced, and applies the profit margin to suggest a price per unit.</li>
@@ -1347,26 +1347,54 @@ function verReceta(index) {
 /* -------------------- Funciones para Imprimir -------------------- */
 
 function imprimirReceta() {
+  // Obtenemos el contenido del modal de receta
   const contenido = document.getElementById("modalRecetaView").innerHTML;
-  const ventanaImpresion = window.open("", "", "height=600,width=800");
-  ventanaImpresion.document.write("<html><head><title>Imprimir Receta</title>");
-  ventanaImpresion.document.write("<style>");
-  ventanaImpresion.document.write(`body { font-family: Arial, sans-serif; background: #fff; color: #333; }
-    .container { max-width: 800px; margin: 20px auto; padding: 20px; }
-    h1, h2, h3 { text-align: center; }
-    /* Agrega más estilos necesarios aquí */`);
-  ventanaImpresion.document.write("</style>");
-  ventanaImpresion.document.write("</head><body>");
-  ventanaImpresion.document.write(contenido);
-  ventanaImpresion.document.write("</body></html>");
+  
+  // Abrimos una nueva ventana/tab
+  const ventanaImpresion = window.open('', '_blank');
+
+  // Creamos un documento HTML completo con meta, estilos y el contenido deseado
+  ventanaImpresion.document.open();
+  ventanaImpresion.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Imprimir Receta</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #fff;
+          color: #333;
+          margin: 0;
+          padding: 20px;
+        }
+        .container {
+          max-width: 800px;
+          margin: auto;
+        }
+        h1, h2, h3 {
+          text-align: center;
+        }
+        /* Otros estilos que necesites para mostrar la receta correctamente */
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        ${contenido}
+      </div>
+    </body>
+    </html>
+  `);
   ventanaImpresion.document.close();
   
-  // Espera un poco para que se cargue el contenido
+  // Aumentamos el tiempo de espera para que se cargue el contenido
   setTimeout(() => {
     ventanaImpresion.focus();
     ventanaImpresion.print();
     ventanaImpresion.close();
-  }, 2000);
+  }, 1000);
 
   console.log(contenido);
 }
