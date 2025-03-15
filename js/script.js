@@ -1263,7 +1263,7 @@ function mostrarRecetas() {
   recetas.forEach((receta, index) => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <span>${receta.nombre} (Unidades: ${receta.unidades})</span>
+      <span><strong>${receta.nombre}</strong> (C/U:$${receta.costoPorUnidad.toFixed(2)})</span>
       <div class="lista-btns">
         <button class="ver" onclick="verReceta(${index})"><i class="fas fa-eye"></i></button>
         <button class="edit" onclick="editarReceta(${index})"><i class="fas fa-edit"></i></button>
