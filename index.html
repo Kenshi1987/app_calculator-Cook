@@ -26,6 +26,8 @@
             <option value="es">🇪🇸 Español</option>
             <option value="en">🇬🇧 English</option>
             <option value="pt">🇵🇹 Português</option>
+            <option value="fr">🇫🇷 Frances</option>
+            <option value="de">🇩🇪 Aleman</option>
             <option value="ja">🇯🇵 日本語</option>
             <option value="zh">🇨🇳 中文</option>
           </select>
@@ -73,7 +75,7 @@
         <input type="text" id="tiempoCoccion" placeholder="Tiempo de cocción (min)" />
         <textarea id="comentariosReceta" placeholder="Comentarios (opcional)"></textarea>
         <!-- Campo de foto opcional -->
-        <label id="fotoRecetaLabel" for="fotoReceta">Subir foto (opcional)</label>
+        <label id="fotoRecetaLabel" for="fotoReceta"></label>
         <input type="file" id="fotoReceta" accept="image/*" />
         <!-- Ingredientes -->
         <div id="ingredientesReceta"></div>
@@ -87,7 +89,7 @@
         <input type="number" id="porcentajeGanancia" placeholder="Porcentaje de ganancia (%)" />
         <button id="btnCalcularReceta" onclick="calcularReceta()">Calcular Receta</button>
         <!-- Botón para limpiar todas las recetas almacenadas -->
-        <button onclick="limpiarRecetas()">Limpiar Recetas</button>
+        <button id="btnLimpiarRecetas" onclick="limpiarRecetas()">Limpiar Recetas</button>
         <!-- Lista de recetas guardadas -->
         <h3 id="recetasGuardadasTitle">Recetas Guardadas</h3>
         <ul id="listaRecetas"></ul>
@@ -101,7 +103,7 @@
         <input type="text" id="unidadMateria" placeholder="Unidad (g, ml, unidad)" />
         <button id="btnAgregarMateria" onclick="agregarMateria()">Agregar Materia Prima</button>
         <!-- Botón para limpiar todas las materias almacenadas -->
-        <button onclick="limpiarMaterias()">Limpiar Materias Primas</button>
+        <button id="btnLimpiarMaterias" onclick="limpiarMaterias()">Limpiar Materias Primas</button>
         <ul id="listaMaterias"></ul>
       </section>
 
@@ -112,7 +114,7 @@
         <input type="number" id="costoGasto" placeholder="Costo" />
         <button id="btnAgregarGasto" onclick="agregarGasto()">Agregar Gasto Fijo</button>
         <!-- Botón para limpiar todos los gastos almacenados -->
-        <button onclick="limpiarGastos()">Limpiar Gastos Fijos</button>
+        <button id="btnLimpiarGastos" onclick="limpiarGastos()">Limpiar Gastos Fijos</button>
         <ul id="listaGastos"></ul>
       </section>
     </div>
@@ -159,9 +161,28 @@
       <div class="modal-content small-modal">
         <span class="close" onclick="cerrarMiniCalculator()">&times;</span>
         <h2>Mini Calculadora</h2>
-        <input type="text" id="miniCalcInput" placeholder="Ej.: 2+2" />
-        <button onclick="calcularMini()">Calcular</button>
-        <div id="miniCalcResult"></div>
+        <div id="miniCalc">
+          <div id="miniCalcDisplay">0</div>
+          <div id="miniCalcButtons">
+            <button onclick="appendCalc('7')">7</button>
+            <button onclick="appendCalc('8')">8</button>
+            <button onclick="appendCalc('9')">9</button>
+            <button onclick="appendCalc('/')">/</button>
+            <button onclick="appendCalc('4')">4</button>
+            <button onclick="appendCalc('5')">5</button>
+            <button onclick="appendCalc('6')">6</button>
+            <button onclick="appendCalc('*')">*</button>
+            <button onclick="appendCalc('1')">1</button>
+            <button onclick="appendCalc('2')">2</button>
+            <button onclick="appendCalc('3')">3</button>
+            <button onclick="appendCalc('-')">-</button>
+            <button onclick="appendCalc('0')">0</button>
+            <button onclick="appendCalc('.')">.</button>
+            <button onclick="clearCalc()">C</button>
+            <button onclick="appendCalc('+')">+</button>
+            <button onclick="calculateMini()">=</button>
+          </div>
+        </div>
       </div>
     </div>
 

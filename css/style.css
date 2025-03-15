@@ -60,7 +60,7 @@ header h1 {
 #faqButton,
 #exportButton,
 .import-label {
-  background: #007bff;
+  background: #6ebeca;
   border: none;
   color: #fff;
   padding: 5px 10px;
@@ -89,7 +89,7 @@ header h1 {
   margin-bottom: 15px;
 }
 .nav-btn {
-  background: #007bff;
+  background: #6ebeca;
   color: #fff;
   border: none;
   padding: 10px 15px;
@@ -145,7 +145,7 @@ button:focus {
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 button {
-  background: #007bff;
+  background: #6ebeca;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -228,7 +228,11 @@ button:hover {
   transform: scale(1.05);
 }
 .lista-btns button.ver {
-  background: #28a745;
+  background: #28a744;
+  color: #fff;
+}
+.lista-btns button.edit {
+  background: #ffc107;
   color: #fff;
 }
 .lista-btns button.eliminar {
@@ -236,7 +240,7 @@ button:hover {
   color: #fff;
 }
 .lista-btns button.duplicar {
-  background: #17a2b8;
+  background: #6ebeca;
   color: #fff;
 }
 
@@ -248,7 +252,7 @@ footer {
 .footer-carousel {
   overflow: hidden;
   white-space: nowrap;
-  background: #007bff;
+  background: #6ebeca;
   color: #fff;
   padding: 5px 0;
   margin-bottom: 10px;
@@ -265,7 +269,7 @@ footer {
   100% { transform: translateX(-100%); }
 }
 .footer-links a {
-  color: #007bff;
+  color: #6ebeca;
   margin: 0 10px;
   font-size: 1.5rem;
   text-decoration: none;
@@ -325,9 +329,37 @@ footer {
 }
 
 /* Mini Calculadora */
-#modalMiniCalc .modal-content {
-  max-width: 300px;
+#miniCalc {
+  width: 100%;
+  margin: 10px 0;
 }
+#miniCalcDisplay {
+  width: 100%;
+  height: 40px;
+  background: #a0a0a0;
+  text-align: right;
+  padding: 10px;
+  font-size: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+#miniCalcButtons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+#miniCalcButtons button {
+  padding: 15px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  background: #6ebeca;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#miniCalcButtons button:hover { background: #0f7a8c; }
 
 /* Imagen en el modal de receta */
 #fotoRecetaDisplay {
@@ -404,9 +436,13 @@ body.dark-mode .container {
   background: #444;
   box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
-body.dark-mode header h1,
+
 body.dark-mode .nav-btn,
-body.dark-mode button,
+body.dark-mode button{
+background: #6ebeca;
+}
+
+body.dark-mode header h1,
 body.dark-mode input,
 body.dark-mode select,
 body.dark-mode textarea {
