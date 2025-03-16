@@ -328,6 +328,31 @@ footer {
   transform: scale(1.1);
 }
 
+#btnEliminarFotoEdit {
+  width: 30px;
+  height: 30px;
+  background: #dc3545; /* Rojo */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#btnEliminarFotoEdit:hover {
+  background: #b22222;
+  transform: scale(1.1);
+}
+
+#btnEliminarFotoEdit i {
+  font-size: 1rem;
+}
+
+
+
 /* Mini Calculadora */
 #miniCalc {
   width: 100%;

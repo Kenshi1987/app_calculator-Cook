@@ -215,7 +215,16 @@
         <textarea id="editarComentariosReceta" placeholder="Comentarios (opcional)"></textarea>
         <!-- Campo para foto opcional en edición -->
         <label id="fotoRecetaEditLabel" for="fotoRecetaEdit">Subir foto (opcional)</label>
-        <input type="file" id="fotoRecetaEdit" accept="image/*" />
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <input type="file" id="fotoRecetaEdit" accept="image/*" />
+              <button id="btnEliminarFotoEdit" onclick="eliminarImagenEditada()" class="eliminar">
+                <i class="fas fa-trash"></i>
+              </button>
+          </div>
+<!-- Contenedor de la imagen para que desaparezca visualmente -->
+<img id="previewFotoEdit" src="" alt="Foto de la receta" style="max-width: 80px; height: auto; margin-top: 5px; display: none;">
+
+        
         <!-- Nuevo campo para editar % de ganancia -->
         <input type="number" id="editarPorcentajeGanancia" placeholder="Porcentaje de ganancia (%)" />
         <!-- Ingredientes a editar -->

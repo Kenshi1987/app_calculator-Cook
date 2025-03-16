@@ -1590,6 +1590,62 @@ function generarPDFReceta() {
  * 11) FUNCIONES VARIAS
  ***************************************************************************/
 
+// Función Borrar Foto Edit y Duplicado
+function eliminarImagenEditada() {
+  const inputFile = document.getElementById("fotoRecetaEdit");
+  const previewImage = document.getElementById("previewFotoEdit");
+
+  // Limpiamos el valor del input file
+  inputFile.value = "";
+
+  // Si la receta tenía una imagen guardada, la eliminamos de IndexedDB
+  const recetaId = recetaEditIndex !== null ? recetas[recetaEditIndex].id : null;
+  if (recetaId) {
+    deleteImage(recetaId).then(() => {
+      console.log("Imagen eliminada de IndexedDB.");
+    }).catch(err => {
+      console.error("Error al eliminar la imagen de IndexedDB:", err);
+    });
+  }
+
+  // Ocultamos la imagen si ya existía en la receta
+  if (previewImage) {
+    previewImage.src = "";
+    previewImage.style.display = "none";
+  }
+
+  alert("Imagen eliminada. Puedes subir otra si lo deseas.");
+}
+
+// Función para mostrar la imagen seleccionada
+function mostrarImagenSeleccionada() {
+  const inputFile = document.getElementById("fotoRecetaEdit");
+  const previewImage = document.getElementById("previewFotoEdit");
+
+  if (inputFile.files && inputFile.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewImage.src = e.target.result;
+      previewImage.style.display = "block"; // Mostrar la imagen seleccionada
+    };
+    reader.readAsDataURL(inputFile.files[0]);
+  }
+}
+
+// Función para cargar la imagen guardada si la receta ya tenía una
+function cargarImagenGuardada(idReceta) {
+  const previewImage = document.getElementById("previewFotoEdit");
+
+  getImage(idReceta).then((blob) => {
+    if (blob) {
+      previewImage.src = URL.createObjectURL(blob);
+      previewImage.style.display = "block"; // Mostrar la imagen si existe
+    } else {
+      previewImage.style.display = "none"; // Ocultarla si no hay
+    }
+  });
+}
+
 // Función para cerrar modales al hacer clic fuera del contenido
 document.addEventListener("click", function (event) {
   const modales = document.querySelectorAll(".modal");
