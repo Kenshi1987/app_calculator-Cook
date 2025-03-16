@@ -1,32 +1,25 @@
-/* ======================================================
-   RESET Y ESTILOS BASE
-====================================================== */
+/* Reset y estilos base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   color: #333;
   transition: background 0.3s, color 0.3s;
 }
-
-/* Contenedor principal */
 .container {
   max-width: 800px;
   margin: 20px auto;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-/* ======================================================
-   HEADER
-====================================================== */
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -34,23 +27,19 @@ header {
   margin-bottom: 15px;
   flex-wrap: wrap;
 }
-
 .header-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 .logo {
   width: 3rem;
   height: auto;
   cursor: pointer;
 }
-
 header h1 {
   font-size: 2rem;
 }
-
 .header-right {
   display: flex;
   align-items: center;
@@ -66,7 +55,7 @@ header h1 {
   font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
 
-/* Botones del header */
+/* Botones del Header */
 #themeToggle,
 #faqButton,
 #exportButton,
@@ -79,7 +68,7 @@ header h1 {
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 #themeToggle:hover,
 #faqButton:hover,
@@ -88,21 +77,17 @@ header h1 {
   background: #0056b3;
   transform: scale(1.02);
 }
-
 #importInput {
   display: none;
 }
 
-/* ======================================================
-   NAVEGACIÓN
-====================================================== */
+/* Navegación */
 .nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   margin-bottom: 15px;
 }
-
 .nav-btn {
   background: #6ebeca;
   color: #fff;
@@ -116,7 +101,7 @@ header h1 {
   justify-content: center;
   cursor: pointer;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .nav-btn:hover {
   background: #0056b3;
@@ -125,10 +110,11 @@ header h1 {
 .nav-btn i {
   margin-right: 8px;
 }
+.nav-label {
+  display: inline-block;
+}
 
-/* ======================================================
-   SECCIONES E INPUTS
-====================================================== */
+/* Secciones */
 section {
   margin-bottom: 20px;
 }
@@ -156,7 +142,7 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 button {
   background: #6ebeca;
@@ -164,16 +150,14 @@ button {
   border: none;
   cursor: pointer;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 button:hover {
   background: #0056b3;
   transform: scale(1.02);
 }
 
-/* ======================================================
-   FILAS (INGREDIENTES Y GASTOS)
-====================================================== */
+/* Filas para ingredientes y gastos fijos */
 .ingrediente-row,
 .gasto-receta-row {
   display: flex;
@@ -200,16 +184,14 @@ button:hover {
   border-radius: 3px;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .ingrediente-row button:hover,
 .gasto-receta-row button:hover {
   transform: scale(1.05);
 }
 
-/* ======================================================
-   LISTADOS
-====================================================== */
+/* Listados */
 #listaMaterias li,
 #listaRecetas li,
 #listaGastos li {
@@ -221,7 +203,7 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   transition: background 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 #listaMaterias li:hover,
 #listaRecetas li:hover,
@@ -240,7 +222,7 @@ button:hover {
   cursor: pointer;
   color: #212529;
   transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .lista-btns button:hover {
   transform: scale(1.05);
@@ -262,9 +244,7 @@ button:hover {
   color: #fff;
 }
 
-/* ======================================================
-   FOOTER
-====================================================== */
+/* Footer */
 footer {
   text-align: center;
   margin: 20px 0;
@@ -300,9 +280,7 @@ footer {
   transform: scale(1.05);
 }
 
-/* ======================================================
-   MODALES
-====================================================== */
+/* Modales */
 .modal {
   display: none;
   position: fixed;
@@ -312,7 +290,7 @@ footer {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.4);
 }
 .modal-content {
   background: #fff;
@@ -333,7 +311,7 @@ footer {
   line-height: 1.5;
 }
 .modal-content:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 .small-modal {
   max-width: 400px;
@@ -350,9 +328,7 @@ footer {
   transform: scale(1.1);
 }
 
-/* ======================================================
-   MINI CALCULADORA
-====================================================== */
+/* Mini Calculadora */
 #miniCalc {
   width: 100%;
   margin: 10px 0;
@@ -383,25 +359,19 @@ footer {
   cursor: pointer;
   transition: background 0.3s;
 }
-#miniCalcButtons button:hover {
-  background: #0f7a8c;
-}
+#miniCalcButtons button:hover { background: #0f7a8c; }
 
-/* ======================================================
-   IMAGEN DE RECETA EN MODAL
-====================================================== */
+/* Imagen en el modal de receta */
 #fotoRecetaDisplay {
   display: block;
   width: 100%;
   height: auto;
   margin: 20px auto 10px auto;
   border: 2px solid #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-/* ======================================================
-   RESPONSIVE
-====================================================== */
+/* Responsive */
 @media (max-width: 600px) {
   .nav {
     flex-direction: column;
@@ -457,21 +427,22 @@ footer {
   }
 }
 
-/* ======================================================
-   DARK MODE
-====================================================== */
+/* Dark Mode */
 body.dark-mode {
   background: #333;
   color: #f4f4f4;
 }
 body.dark-mode .container {
   background: #444;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
+
 body.dark-mode .nav-btn,
-body.dark-mode button {
-  background: #6ebeca;
+body.dark-mode button{
+background: #6ebeca;
 }
+
+
 body.dark-mode input,
 body.dark-mode select,
 body.dark-mode textarea {
@@ -497,33 +468,37 @@ body.dark-mode #listaRecetas li,
 body.dark-mode #listaGastos li {
   background: #555;
   color: #f4f4f4;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(255,255,255,0.1);
 }
+
+/* Dark Mode para Modales */
 body.dark-mode .modal {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
 }
 body.dark-mode .modal-content {
   background: #444;
   color: #f4f4f4;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
 
-/* ======================================================
-   ESTILOS PARA IMPRESIÓN
-====================================================== */
+/* Print */
+
 @media print {
-  /* Oculta todo excepto el modal de receta */
+  /* Oculta todo el contenido de la página */
   body * {
     visibility: hidden;
   }
+  /* Hace visible el contenido del modal y sus elementos internos */
   #modalRecetaView, #modalRecetaView * {
     visibility: visible;
   }
+  /* Posiciona el modal en la esquina superior izquierda */
   #modalRecetaView {
     position: absolute;
     left: 0;
     top: 0;
   }
+
   .container {
     box-shadow: none !important;
   }

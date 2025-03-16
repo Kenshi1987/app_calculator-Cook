@@ -1,8 +1,10 @@
 "use strict";
 
-/* ======================================================
-   INDEXEDDB: Manejo de imágenes
-====================================================== */
+/***************************************************************************
+ * 1) INDEXEDDB OPERATIONS
+ *    Manejo de imágenes (fotos de las recetas) con IndexedDB
+ ***************************************************************************/
+
 const dbName = "CostCalcDB";
 const dbVersion = 1;
 let db;
@@ -44,7 +46,9 @@ function getImage(id) {
       const tx = db.transaction("images", "readonly");
       const store = tx.objectStore("images");
       const request = store.get(id);
-      request.onsuccess = (e) => resolve(e.target.result ? e.target.result.blob : null);
+      request.onsuccess = function (e) {
+        resolve(e.target.result ? e.target.result.blob : null);
+      };
       request.onerror = (e) => reject(e.target.error);
     });
   });
@@ -62,23 +66,32 @@ function deleteImage(id) {
   });
 }
 
-/* ======================================================
-   VARIABLES GLOBALES Y CONFIGURACIÓN INICIAL
-====================================================== */
+/***************************************************************************
+ * 2) VARIABLES GLOBALES Y DATOS DESDE LOCALSTORAGE
+ ***************************************************************************/
+
+// Índices para edición
 let recetaEditIndex = null;
 let materiaEditIndex = null;
 let gastoEditIndex = null;
 let duplicarMode = false;
+
+// Idioma por defecto
 let currentLang = "es";
+
+// Modo oscuro
 let darkMode = false;
 
+// Datos en localStorage
 let materiasPrimas = JSON.parse(localStorage.getItem("materias") || "[]");
 let recetas = JSON.parse(localStorage.getItem("recetas") || "[]");
 let gastosFijos = JSON.parse(localStorage.getItem("gastosFijos") || "[]");
 
-/* ======================================================
-   TRADUCCIONES
-====================================================== */
+/***************************************************************************
+ * 3) DICCIONARIO DE TRADUCCIONES
+ *    (AQUÍ VIENE EL OBJETO "translations")
+ ***************************************************************************/
+
 const translations = {
   es: {
     headerTitle: "CostCalc Pro",
@@ -139,8 +152,8 @@ const translations = {
     labelPrecioSugerido: "Precio Sugerido",
     faqContent: `
       <ul class="faq-list">
-        <br><li><strong>¿Qué es CostCalc Pro?</strong><br>
-          CostCalc Pro es una aplicación que te permite calcular el costo de producción de recetas utilizando materias primas, gastos fijos y un porcentaje de ganancia para obtener un precio sugerido por unidad.</li>
+        <li><strong>¿Qué es CostCalc Pro?</strong>
+          <br>CostCalc Pro es una aplicación que te permite calcular el costo de producción de recetas utilizando materias primas, gastos fijos y un porcentaje de ganancia para obtener un precio sugerido por unidad.</li>
         <br><li><strong>¿Cómo se agregan materias primas?</strong><br>
           En la sección "Materias Primas", ingresa el nombre, costo y unidad de cada materia y haz clic en "Agregar Materia Prima".</li>
         <br><li><strong>¿Cómo se crean las recetas?</strong><br>
@@ -150,7 +163,7 @@ const translations = {
         <br><li><strong>¿Cómo se edita o duplica una receta?</strong><br>
           Selecciona una receta de la lista y utiliza los botones de editar o duplicar. En el modo de edición, podrás modificar todos los campos, incluido el porcentaje de ganancia.</li>
         <br><li><strong>¿Cómo se gestionan los gastos fijos?</strong><br>
-          En la sección "Gastos Fijos", agrega el nombre y costo de cada gasto. Estos se pueden asignar a una receta y se incluyen en el cálculo total.</li>
+          En la sección "Gastos Fijos", agrega el nombre y costo de cada gasto. Estos se pueden asignar a una receta y son incluidos en el cálculo total.</li>
         <br><li><strong>¿Cómo se calcula el precio del gas?</strong><br>
           Para calcular el precio del gas, utiliza la fórmula: ((boleta de gas) / (consumo de metros cúbicos / 0.32)) / 60. Esto te da el costo por unidad de tiempo.</li>
         <br><li><strong>¿Cómo se usa la mini calculadora?</strong><br>
@@ -162,7 +175,6 @@ const translations = {
       </ul>
     `
   },
-
   en: {
     headerTitle: "CostCalc Pro",
     navRecetas: "Recipes",
@@ -657,10 +669,12 @@ const translations = {
     `
   }
 };
-  
-/* ======================================================
-   TRADUCCIÓN Y CONFIGURACIÓN DE LA INTERFAZ
-====================================================== */
+
+
+/***************************************************************************
+ * 4) FUNCIONES DE TRADUCCIÓN
+ ***************************************************************************/
+
 function translateApp() {
   const t = translations[currentLang];
   // Encabezado
@@ -668,8 +682,8 @@ function translateApp() {
   document.getElementById("navRecetasText").innerText = t.navRecetas;
   document.getElementById("navMateriasText").innerText = t.navMaterias;
   document.getElementById("navConversorText").innerText = t.navConversor;
-  document.getElementById("navGastosText").innerText = t.navGastos;
-  // Sección Recetas
+  document.getElementById("navGastosText").innerText = t.navGastos;  
+  // Sección Recetas (crear)
   document.getElementById("recetasTitle").innerText = t.crearReceta;
   document.getElementById("nombreReceta").placeholder = t.placeholderNombreReceta;
   document.getElementById("unidadesProduccion").placeholder = t.placeholderUnidades;
@@ -680,14 +694,18 @@ function translateApp() {
   document.getElementById("recetasGuardadasTitle").innerText = t.recetasGuardadas;
   document.getElementById("fotoRecetaLabel").innerText = t.labelFotoReceta;
   document.getElementById("btnLimpiarRecetas").innerText = t.limpiarRecetas;
+  
   if (document.getElementById("fotoRecetaEditLabel")) {
     document.getElementById("fotoRecetaEditLabel").innerText = t.labelFotoReceta;
   }
+  
   document.getElementById("btnAgregarGastoReceta").innerText = t.btnAgregarGastoReceta;
   if (document.getElementById("btnAgregarGastoRecetaEdit")) {
     document.getElementById("btnAgregarGastoRecetaEdit").innerText = t.btnAgregarGastoReceta;
   }
+
   document.getElementById("porcentajeGanancia").placeholder = t.placeholderGanancia;
+ 
   // Sección Materias
   document.getElementById("materiaTitle").innerText = t.materiaTitle;
   document.getElementById("nombreMateria").placeholder = t.placeholderNombreMateria;
@@ -695,19 +713,23 @@ function translateApp() {
   document.getElementById("unidadMateria").placeholder = t.placeholderUnidadMateria;
   document.getElementById("btnAgregarMateria").innerText = t.btnAgregarMateria;
   document.getElementById("btnLimpiarMaterias").innerText = t.limpiarMaterias;
+  
   // Sección Gastos
   document.getElementById("gastosTitle").innerText = t.gastosTitle;
   document.getElementById("nombreGasto").placeholder = t.placeholderNombreGasto;
   document.getElementById("costoGasto").placeholder = t.placeholderCostoGasto;
   document.getElementById("btnAgregarGasto").innerText = t.btnAgregarGasto;
   document.getElementById("btnLimpiarGastos").innerText = t.limpiarGastos;
+  
   // Conversor
   document.getElementById("conversorTitle").innerText = t.conversorTitle;
   document.getElementById("valorConversor").placeholder = t.placeholderValorConversor;
-  // Modal Ver Receta
+  
+  // Modales Receta
   document.getElementById("detalleRecetaTitle").innerText = t.detalleRecetaTitle;
   if (duplicarMode) {
-    document.getElementById("editarRecetaTitle").innerText = t.duplicarRecetaTitle || "Duplicar Receta";
+    document.getElementById("editarRecetaTitle").innerText =
+      t.duplicarRecetaTitle || "Duplicar Receta";
   } else {
     document.getElementById("editarRecetaTitle").innerText = t.editarRecetaTitle;
   }
@@ -716,31 +738,38 @@ function translateApp() {
   document.getElementById("editarTiempoCoccion").placeholder = t.placeholderTiempoCoccion;
   document.getElementById("btnAgregarIngredienteEdit").innerText = t.btnAgregarIngredienteEdit;
   document.getElementById("btnGuardarCambiosReceta").innerText = t.btnGuardarCambiosReceta;
-  // Modal Materia
+  
+  // Modales Materia
   document.getElementById("editarMateriaTitle").innerText = t.editarMateriaTitle;
   document.getElementById("editarNombreMateria").placeholder = t.placeholderEditarNombreMateria;
   document.getElementById("editarCostoMateria").placeholder = t.placeholderEditarCostoMateria;
   document.getElementById("editarUnidadMateria").placeholder = t.placeholderEditarUnidadMateria;
   document.getElementById("btnGuardarCambiosMateria").innerText = t.btnGuardarCambiosMateria;
-  // Modal Gasto
+  
+  // Modales Gasto
   if (document.getElementById("editarGastoTitle")) {
     document.getElementById("editarGastoTitle").innerText = t.editarGastoTitle;
     document.getElementById("editarNombreGasto").placeholder = t.placeholderEditarNombreGasto;
     document.getElementById("editarCostoGasto").placeholder = t.placeholderEditarCostoGasto;
     document.getElementById("btnGuardarCambiosGasto").innerText = t.btnGuardarCambiosGasto;
   }
+ 
   // FAQ
   document.getElementById("faqTitle").innerText = "FAQs";
   document.getElementById("faqContent").innerHTML = t.faqContent;
   if (document.getElementById("editarPorcentajeGanancia")) {
     document.getElementById("editarPorcentajeGanancia").placeholder = t.placeholderGanancia;
   }
+  
 }
-
 function setLanguage(lang) {
   currentLang = lang;
   translateApp();
 }
+
+/***************************************************************************
+ * 5) TEMAS (DARK MODE)
+ ***************************************************************************/
 
 function toggleTheme() {
   darkMode = !darkMode;
@@ -750,15 +779,23 @@ function toggleTheme() {
     : '<i class="fas fa-sun"></i>';
 }
 
+/***************************************************************************
+ * 6) NAVEGACIÓN ENTRE SECCIONES
+ ***************************************************************************/
+
 function showSection(sectionId) {
-  document.getElementById("recetas-section").style.display = sectionId === "recetas-section" ? "block" : "none";
-  document.getElementById("materias-section").style.display = sectionId === "materias-section" ? "block" : "none";
-  document.getElementById("gastos-section").style.display = sectionId === "gastos-section" ? "block" : "none";
+  document.getElementById("recetas-section").style.display =
+    sectionId === "recetas-section" ? "block" : "none";
+  document.getElementById("materias-section").style.display =
+    sectionId === "materias-section" ? "block" : "none";
+  document.getElementById("gastos-section").style.display =
+    sectionId === "gastos-section" ? "block" : "none";
 }
 
-/* ======================================================
-   FUNCIONES PARA MATERIAS PRIMAS
-====================================================== */
+/***************************************************************************
+ * 7) GESTIÓN DE MATERIAS PRIMAS
+ ***************************************************************************/
+
 function guardarMaterias() {
   localStorage.setItem("materias", JSON.stringify(materiasPrimas));
 }
@@ -767,7 +804,7 @@ function mostrarMaterias() {
   const lista = document.getElementById("listaMaterias");
   lista.innerHTML = "";
   const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-  materiasOrdenadas.forEach(materia => {
+  materiasOrdenadas.forEach(function (materia) {
     const li = document.createElement("li");
     li.innerHTML = `
       <span>${materia.nombre}: $${materia.costo} por ${materia.unidad}</span>
@@ -788,12 +825,14 @@ function agregarMateria() {
       id: Date.now().toString(),
       nombre,
       costo: parseFloat(costo),
-      unidad
+      unidad,
     };
     materiasPrimas.push(nuevaMateria);
     guardarMaterias();
     mostrarMaterias();
     actualizarFijosReceta();
+
+    // Limpiar campos
     document.getElementById("nombreMateria").value = "";
     document.getElementById("costoMateria").value = "";
     document.getElementById("unidadMateria").value = "";
@@ -803,7 +842,7 @@ function agregarMateria() {
 }
 
 function editarMateria(id) {
-  const index = materiasPrimas.findIndex(m => m.id === id);
+  const index = materiasPrimas.findIndex((m) => m.id === id);
   if (index === -1) return;
   materiaEditIndex = index;
   const materia = materiasPrimas[index];
@@ -822,7 +861,7 @@ function guardarEdicionMateria() {
       id: materiasPrimas[materiaEditIndex].id,
       nombre,
       costo: parseFloat(costo),
-      unidad
+      unidad,
     };
     guardarMaterias();
     mostrarMaterias();
@@ -835,10 +874,11 @@ function guardarEdicionMateria() {
 
 function eliminarMateria(id) {
   if (confirm("¿Eliminar esta materia prima?")) {
-    materiasPrimas = materiasPrimas.filter(m => m.id !== id);
+    materiasPrimas = materiasPrimas.filter((m) => m.id !== id);
     guardarMaterias();
     mostrarMaterias();
     actualizarFijosReceta();
+    // También convendría actualizar las recetas que usaban esta materia.
     actualizarRecetasConMateria();
   }
 }
@@ -848,10 +888,10 @@ function cerrarModalMateriaEdit() {
 }
 
 function actualizarRecetasConMateria() {
-  recetas.forEach(receta => {
+  recetas.forEach(function (receta) {
     let nuevoCostoTotal = 0;
-    receta.ingredientes.forEach(ing => {
-      const materiaActual = materiasPrimas.find(m => m.id === ing.id);
+    receta.ingredientes.forEach(function (ing) {
+      const materiaActual = materiasPrimas.find((m) => m.id === ing.id);
       if (materiaActual) {
         ing.costo = materiaActual.costo;
         ing.materia = materiaActual.nombre;
@@ -859,17 +899,21 @@ function actualizarRecetasConMateria() {
       }
       nuevoCostoTotal += ing.cantidad * ing.costo;
     });
+
     receta.costoTotal = nuevoCostoTotal + receta.gastosIncluidos;
     receta.costoPorUnidad = receta.unidades ? receta.costoTotal / receta.unidades : 0;
-    receta.precioSugerido = receta.costoPorUnidad * (1 + (receta.porcentajeGanancia || 0) / 100);
+    receta.precioSugerido =
+      receta.costoPorUnidad * (1 + (receta.porcentajeGanancia || 0) / 100);
   });
+
   localStorage.setItem("recetas", JSON.stringify(recetas));
   mostrarRecetas();
 }
 
-/* ======================================================
-   FUNCIONES PARA GASTOS FIJOS
-====================================================== */
+/***************************************************************************
+ * 8) GESTIÓN DE GASTOS FIJOS
+ ***************************************************************************/
+
 function guardarGastosFijos() {
   localStorage.setItem("gastosFijos", JSON.stringify(gastosFijos));
 }
@@ -877,7 +921,7 @@ function guardarGastosFijos() {
 function mostrarGastos() {
   const lista = document.getElementById("listaGastos");
   lista.innerHTML = "";
-  gastosFijos.forEach((gasto, index) => {
+  gastosFijos.forEach(function (gasto, index) {
     const li = document.createElement("li");
     li.innerHTML = `
       <span>${gasto.nombre}: $${gasto.costo}</span>
@@ -891,10 +935,10 @@ function mostrarGastos() {
 
 function actualizarFijosReceta() {
   const selects = document.querySelectorAll(".select-gasto");
-  selects.forEach(select => {
+  selects.forEach((select) => {
     const current = select.value;
     select.innerHTML = "";
-    gastosFijos.forEach(gasto => {
+    gastosFijos.forEach((gasto) => {
       const option = document.createElement("option");
       option.value = gasto.id;
       option.textContent = `${gasto.nombre} ($${gasto.costo})`;
@@ -944,7 +988,7 @@ function guardarEdicionGasto() {
     gastosFijos[gastoEditIndex] = {
       id: gastosFijos[gastoEditIndex].id,
       nombre,
-      costo: parseFloat(costo)
+      costo: parseFloat(costo),
     };
     guardarGastosFijos();
     mostrarGastos();
@@ -964,24 +1008,28 @@ function agregarGastoReceta() {
   const container = document.getElementById("fijosRecetaContainer");
   const div = document.createElement("div");
   div.className = "gasto-receta-row";
+
   const select = document.createElement("select");
   select.className = "select-gasto";
-  gastosFijos.forEach(gasto => {
+  gastosFijos.forEach(function (gasto) {
     const option = document.createElement("option");
     option.value = gasto.id;
     option.textContent = `${gasto.nombre} ($${gasto.costo})`;
     select.appendChild(option);
   });
+
   const inputCantidad = document.createElement("input");
   inputCantidad.type = "number";
   inputCantidad.placeholder = "Cantidad";
   inputCantidad.className = "input-cantidad";
+
   const btnRemove = document.createElement("button");
   btnRemove.classList.add("eliminar");
   btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
   btnRemove.onclick = function () {
     container.removeChild(div);
   };
+
   div.appendChild(select);
   div.appendChild(inputCantidad);
   div.appendChild(btnRemove);
@@ -992,24 +1040,28 @@ function agregarGastoRecetaEdit() {
   const container = document.getElementById("editarFijosRecetaContainer");
   const div = document.createElement("div");
   div.className = "gasto-receta-row";
+
   const select = document.createElement("select");
   select.className = "select-gasto";
-  gastosFijos.forEach(gasto => {
+  gastosFijos.forEach(function (gasto) {
     const option = document.createElement("option");
     option.value = gasto.id;
     option.textContent = `${gasto.nombre} ($${gasto.costo})`;
     select.appendChild(option);
   });
+
   const inputCantidad = document.createElement("input");
   inputCantidad.type = "number";
   inputCantidad.placeholder = "Cantidad";
   inputCantidad.className = "input-cantidad";
+
   const btnRemove = document.createElement("button");
   btnRemove.classList.add("eliminar");
   btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
   btnRemove.onclick = function () {
     container.removeChild(div);
   };
+
   div.appendChild(select);
   div.appendChild(inputCantidad);
   div.appendChild(btnRemove);
@@ -1017,11 +1069,11 @@ function agregarGastoRecetaEdit() {
 }
 
 function actualizarRecetasConGasto() {
-  recetas.forEach(receta => {
+  recetas.forEach(function (receta) {
     let nuevoGastos = 0;
     if (receta.gastosReceta) {
-      receta.gastosReceta.forEach(gasto => {
-        const gastoActual = gastosFijos.find(g => g.id === gasto.id);
+      receta.gastosReceta.forEach(function (gasto) {
+        const gastoActual = gastosFijos.find((g) => g.id === gasto.id);
         if (gastoActual) {
           gasto.costo = gastoActual.costo;
           gasto.nombre = gastoActual.nombre;
@@ -1031,43 +1083,54 @@ function actualizarRecetasConGasto() {
     }
     receta.gastosIncluidos = nuevoGastos;
     let costoIngredientes = 0;
-    receta.ingredientes.forEach(ing => {
+    receta.ingredientes.forEach(function (ing) {
       costoIngredientes += ing.cantidad * ing.costo;
     });
     receta.costoTotal = costoIngredientes + nuevoGastos;
-    receta.costoPorUnidad = receta.unidades ? receta.costoTotal / receta.unidades : 0;
-    receta.precioSugerido = receta.costoPorUnidad * (1 + (receta.porcentajeGanancia || 0) / 100);
+    receta.costoPorUnidad = receta.unidades
+      ? receta.costoTotal / receta.unidades
+      : 0;
+    receta.precioSugerido =
+      receta.costoPorUnidad * (1 + (receta.porcentajeGanancia || 0) / 100);
   });
   localStorage.setItem("recetas", JSON.stringify(recetas));
   mostrarRecetas();
 }
 
-/* ======================================================
-   FUNCIONES PARA RECETAS
-====================================================== */
+/***************************************************************************
+ * 9) GESTIÓN DE RECETAS
+ ***************************************************************************/
+
 function agregarIngredienteReceta() {
   const container = document.getElementById("ingredientesReceta");
   const div = document.createElement("div");
   div.className = "ingrediente-row";
+
   const select = document.createElement("select");
   select.className = "select-materia";
-  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-  materiasOrdenadas.forEach(materia => {
+
+  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) =>
+    a.nombre.localeCompare(b.nombre)
+  );
+  materiasOrdenadas.forEach((materia) => {
     const option = document.createElement("option");
     option.value = materia.id;
     option.textContent = `${materia.nombre} (${materia.unidad})`;
     select.appendChild(option);
   });
+
   const inputCantidad = document.createElement("input");
   inputCantidad.type = "number";
   inputCantidad.placeholder = "Cantidad";
   inputCantidad.className = "input-cantidad";
+
   const btnRemove = document.createElement("button");
   btnRemove.classList.add("eliminar");
   btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
   btnRemove.onclick = function () {
     container.removeChild(div);
   };
+
   div.appendChild(select);
   div.appendChild(inputCantidad);
   div.appendChild(btnRemove);
@@ -1078,25 +1141,32 @@ function agregarIngredienteRecetaEdit() {
   const container = document.getElementById("editarIngredientesReceta");
   const div = document.createElement("div");
   div.className = "ingrediente-row";
+
   const select = document.createElement("select");
   select.className = "select-materia";
-  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-  materiasOrdenadas.forEach(materia => {
+
+  const materiasOrdenadas = materiasPrimas.slice().sort((a, b) =>
+    a.nombre.localeCompare(b.nombre)
+  );
+  materiasOrdenadas.forEach((materia) => {
     const option = document.createElement("option");
     option.value = materia.id;
     option.textContent = `${materia.nombre} (${materia.unidad})`;
     select.appendChild(option);
   });
+
   const inputCantidad = document.createElement("input");
   inputCantidad.type = "number";
   inputCantidad.placeholder = "Cantidad";
   inputCantidad.className = "input-cantidad";
+
   const btnRemove = document.createElement("button");
   btnRemove.classList.add("eliminar");
   btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
   btnRemove.onclick = function () {
     container.removeChild(div);
   };
+
   div.appendChild(select);
   div.appendChild(inputCantidad);
   div.appendChild(btnRemove);
@@ -1113,31 +1183,33 @@ function calcularReceta() {
     alert("Completa el nombre y número de unidades de la receta.");
     return;
   }
-  
+
   if (comentarios) {
     comentarios = comentarios.replace(/\n/g, "<br>");
   }
-  
+
   const containerIng = document.getElementById("ingredientesReceta");
   const filasIng = containerIng.getElementsByClassName("ingrediente-row");
   if (filasIng.length === 0) {
     alert("Agrega al menos un ingrediente.");
     return;
   }
-  
+
   let costoTotalIngredientes = 0;
   let ingredientesArray = [];
+
   for (let i = 0; i < filasIng.length; i++) {
     const fila = filasIng[i];
     const select = fila.querySelector(".select-materia");
     const inputCantidad = fila.querySelector(".input-cantidad");
     const selectedId = select.value;
     const cantidad = parseFloat(inputCantidad.value);
+
     if (isNaN(cantidad) || cantidad <= 0) {
       alert("Ingresa una cantidad válida para todos los ingredientes.");
       return;
     }
-    const materia = materiasPrimas.find(m => m.id === selectedId);
+    const materia = materiasPrimas.find((m) => m.id === selectedId);
     if (!materia) {
       alert("Materia no encontrada.");
       return;
@@ -1148,26 +1220,28 @@ function calcularReceta() {
       materia: materia.nombre,
       cantidad: cantidad,
       unidad: materia.unidad,
-      costo: materia.costo
+      costo: materia.costo,
     });
   }
-  
-  // Procesar gastos fijos
+
+  // Gastos de la receta
   const containerGastos = document.getElementById("fijosRecetaContainer");
   const filasGasto = containerGastos.getElementsByClassName("gasto-receta-row");
   let costoGastosReceta = 0;
   let gastosRecetaArray = [];
+
   for (let i = 0; i < filasGasto.length; i++) {
     const fila = filasGasto[i];
     const select = fila.querySelector(".select-gasto");
     const inputCantidad = fila.querySelector(".input-cantidad");
     const selectedId = select.value;
     const cantidad = parseFloat(inputCantidad.value);
+
     if (isNaN(cantidad) || cantidad <= 0) {
       alert("Ingresa una cantidad válida para los gastos fijos.");
       return;
     }
-    const gastoObj = gastosFijos.find(g => g.id === selectedId);
+    const gastoObj = gastosFijos.find((g) => g.id === selectedId);
     if (!gastoObj) {
       alert("Gasto fijo no encontrado.");
       return;
@@ -1178,15 +1252,16 @@ function calcularReceta() {
       id: gastoObj.id,
       nombre: gastoObj.nombre,
       costo: gastoObj.costo,
-      cantidad: cantidad
+      cantidad: cantidad,
     });
   }
-  
+
   const costoTotalFinal = costoTotalIngredientes + costoGastosReceta;
   const costoPorUnidad = costoTotalFinal / Number(unidadesProduccion);
-  const porcentajeGanancia = parseFloat(document.getElementById("porcentajeGanancia").value) || 0;
+  const porcentajeGanancia =
+    parseFloat(document.getElementById("porcentajeGanancia").value) || 0;
   const precioSugerido = costoPorUnidad * (1 + porcentajeGanancia / 100);
-  
+
   let nuevaReceta = {
     id: Date.now().toString(),
     nombre: nombreReceta,
@@ -1203,24 +1278,24 @@ function calcularReceta() {
     foto: null,
     idioma: currentLang
   };
-  
-  // Guardar foto (si se sube)
+
+  // Guardar la foto si se subió
   const file = document.getElementById("fotoReceta").files[0];
   if (file) {
     saveImage(nuevaReceta.id, file)
       .then(() => {
         console.log("Imagen guardada en IndexedDB");
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error guardando la imagen:", err);
       });
   }
-  
+
   recetas.push(nuevaReceta);
   localStorage.setItem("recetas", JSON.stringify(recetas));
   mostrarRecetas();
-  
-  // Limpieza de campos
+
+  // Limpieza
   document.getElementById("nombreReceta").value = "";
   document.getElementById("unidadesProduccion").value = "";
   document.getElementById("tiempoCoccion").value = "";
@@ -1237,7 +1312,7 @@ function mostrarRecetas() {
   recetas.forEach((receta, index) => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <span><strong>${receta.nombre}</strong> (C/U: $${receta.costoPorUnidad.toFixed(2)})</span>
+      <span><strong>${receta.nombre}</strong> (C/U:$${receta.costoPorUnidad.toFixed(2)})</span>
       <div class="lista-btns">
         <button class="ver" onclick="verReceta(${index})"><i class="fas fa-eye"></i></button>
         <button class="edit" onclick="editarReceta(${index})"><i class="fas fa-edit"></i></button>
@@ -1251,37 +1326,58 @@ function mostrarRecetas() {
 
 function verReceta(index) {
   const receta = recetas[index];
+  // Obtenemos las traducciones del idioma actual
   const t = translations[currentLang];
+
   const detalleDiv = document.getElementById("detalleReceta");
   detalleDiv.innerHTML = `
     <p><strong>${t.labelNombre}:</strong> ${receta.nombre}</p>
     <p><strong>${t.labelUnidades}:</strong> ${receta.unidades}</p>
     <p><strong>${t.labelTiempoCoccion}:</strong> ${receta.tiempoCoccion} min</p>
     <p><strong>${t.labelComentarios}:</strong> ${receta.comentarios || ""}</p>
-    <br><hr><br><p><strong>${t.labelIngredientes}:</strong></p>
+    <hr>
+    <br>
+    <p><strong>${t.labelIngredientes}:</strong></p>
+    <br>
     <ul>
-      ${receta.ingredientes.map(ing =>
-        `<li>${ing.materia} (${ing.cantidad} ${ing.unidad}) = $${(ing.cantidad * ing.costo).toFixed(2)}</li>`
-      ).join("")}
+      ${
+        receta.ingredientes
+          .map(
+            (ing) =>
+              `<li>${ing.materia} (${ing.cantidad} ${ing.unidad}) = $${(
+                ing.cantidad * ing.costo
+              ).toFixed(2)}</li>`
+          )
+          .join("")
+      }
     </ul>
-    
-    <br><hr><br><p><strong>${t.labelGastosFijos}:</strong></p>
+    <hr style="margin: 20px 0;">
+    <p><strong>${t.labelGastosFijos}:</strong></p>
     <ul>
-      ${receta.gastosReceta && receta.gastosReceta.length ? receta.gastosReceta.map(g =>
-        `<li>${g.nombre} x ${g.cantidad} = $${(g.cantidad * g.costo).toFixed(2)}</li>`
-      ).join("") : "<li>Ninguno</li>"}
+      ${
+        receta.gastosReceta && receta.gastosReceta.length
+          ? receta.gastosReceta
+              .map(
+                (g) =>
+                  `<li>${g.nombre} x ${g.cantidad} = $${(
+                    g.cantidad * g.costo
+                  ).toFixed(2)}</li>`
+              )
+              .join("")
+          : "<li>Ninguno</li>"
+      }
     </ul>
-    
-    <br><hr><br><p><strong>${t.labelCostoTotal}:</strong> $${receta.costoTotal.toFixed(2)}</p>
+    <br><hr><br>
+    <p><strong>${t.labelCostoTotal}:</strong> $${receta.costoTotal.toFixed(2)}</p>
     <p><strong>${t.labelCostoPorUnidad}:</strong> $${receta.costoPorUnidad.toFixed(2)}</p>
     <p><strong>${t.labelGanancia}:</strong> ${receta.porcentajeGanancia}%</p>
     <p><strong>${t.labelPrecioSugerido}:</strong> $${receta.precioSugerido.toFixed(2)}</p>
   `;
-  
-  // Cargar foto si existe
+
+  // Cargar foto
   const fotoDisplay = document.getElementById("fotoRecetaDisplay");
   getImage(receta.id)
-    .then(blob => {
+    .then((blob) => {
       if (blob) {
         fotoDisplay.style.display = "block";
         fotoDisplay.src = URL.createObjectURL(blob);
@@ -1289,96 +1385,332 @@ function verReceta(index) {
         fotoDisplay.style.display = "none";
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Error al cargar la imagen:", err);
       fotoDisplay.style.display = "none";
     });
-  
+
   document.getElementById("modalRecetaView").style.display = "block";
+}
+
+
+/***************************************************************************
+ * 10) IMPRESIÓN Y PDF
+ ***************************************************************************/
+
+/* Función para imprimir la receta mediante un iframe y contenedor temporal.
+   Se extrae el contenido visible del modal (.modal-content dentro de #modalRecetaView). */
+   function imprimirRecetaConIframe() {
+    const modalElement = document.getElementById("modalRecetaView");
+  
+    // Creamos un contenedor temporal solo con el contenido que queremos imprimir
+    const tempContainer = document.createElement("div");
+    tempContainer.id = "tempPrintContainer";
+    tempContainer.innerHTML = `
+      <div style="width: 100%; padding: 0px; text-align: center;">
+        <h2 id="printTitle" style="margin-bottom: 10px;">${document.getElementById("detalleRecetaTitle").innerText}</h2>
+        <img id="printImage" style="max-width: 60%; height: auto; margin-bottom: 10px; margin-top: 10px; display: block; margin-left: auto; margin-right: auto;">
+        <div id="printContent" style="text-align: justify; margin: 5 auto; width: 90%;">
+          ${modalElement.querySelector("#detalleReceta").innerHTML}
+        </div>
+      </div>
+    `;
+  
+    // Agregamos la imagen si existe
+    const imgElement = modalElement.querySelector("#fotoRecetaDisplay");
+    if (imgElement && imgElement.src) {
+      tempContainer.querySelector("#printImage").src = imgElement.src;
+    } else {
+      tempContainer.querySelector("#printImage").style.display = "none";
+    }
+  
+    document.body.appendChild(tempContainer);
+  
+    // Creamos un iframe oculto para la impresión
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.left = "-9999px";
+    document.body.appendChild(iframe);
+  
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Imprimir Receta</title>
+        <style>
+          @page {
+            margin: 5mm 5mm; /* Más margen arriba y abajo */
+          }
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+          }
+          #printContent {
+            width: 100%;
+            text-align: justify;
+            padding: 10px;
+            margin: 0 auto;
+          }
+          #printTitle {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+          }
+          img {
+            max-width: 60%;
+            height: auto;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          @media print {
+            body * { visibility: hidden; }
+            #printContainer, #printContainer * { visibility: visible; }
+            #printContainer {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+            }
+            /* Ocultar encabezados y pies de página */
+            @page {
+              size: auto;
+              margin: 25mm 15mm 25mm 15mm;
+            }
+            @page :left {
+              @bottom-left { content: "Página " counter(page); }
+            }
+            @page :right {
+              @bottom-right { content: "Página " counter(page); }
+            }
+            /* Ocultar título, fecha y URL del navegador */
+            header, footer {
+              display: none !important;
+              visibility: hidden !important;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div id="printContainer">${tempContainer.innerHTML}</div>
+      </body>
+      </html>
+    `);
+    doc.close();
+  
+    // Esperamos un pequeño tiempo para que la renderización termine antes de imprimir
+    setTimeout(() => {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+  
+      // Eliminamos el iframe y el contenedor temporal después de imprimir
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        document.body.removeChild(tempContainer);
+      }, 500);
+    }, 1000);
+  }
+    
+/* Función para generar PDF de la receta utilizando html2pdf.js.*/
+    
+  function generarPDFReceta() {
+    const modalElement = document.getElementById("modalRecetaView");
+  
+    // Creamos un clon solo con el contenido que queremos en el PDF
+    const tempContainer = document.createElement("div");
+    tempContainer.id = "tempPDFContainer";
+    tempContainer.style.textAlign = "center";
+    tempContainer.innerHTML = `
+      <div style="width: 100%; padding: 10px; text-align: left;">
+        <h2>${document.getElementById("detalleRecetaTitle").innerText}</h2>
+        <img id="pdfImage" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+        <div id="pdfContent">${modalElement.querySelector("#detalleReceta").innerHTML}</div>
+      </div>
+    `;
+  
+    // Agregamos la imagen si existe
+    const imgElement = modalElement.querySelector("#fotoRecetaDisplay");
+    if (imgElement && imgElement.src) {
+      tempContainer.querySelector("#pdfImage").src = imgElement.src;
+    } else {
+      tempContainer.querySelector("#pdfImage").style.display = "none";
+    }
+  
+    document.body.appendChild(tempContainer);
+  
+    // Opciones de html2pdf
+    const opt = {
+      margin: 10,
+      filename: 'receta.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+  
+    // Esperamos un pequeño tiempo para evitar que capture el contenido en blanco
+    setTimeout(() => {
+      html2pdf()
+        .set(opt)
+        .from(tempContainer)
+        .save()
+        .then(() => {
+          // Eliminamos el contenedor temporal después de la descarga
+          document.body.removeChild(tempContainer);
+        })
+        .catch(err => {
+          console.error("Error al generar PDF:", err);
+        });
+    }, 500);
+  }
+  
+
+/***************************************************************************
+ * 11) FUNCIONES VARIAS
+ ***************************************************************************/
+
+// Función para cerrar modales al hacer clic fuera del contenido
+document.addEventListener("click", function (event) {
+  const modales = document.querySelectorAll(".modal");
+  modales.forEach(modal => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.style.display = "none";
+    });
+  }
+});
+
+
+function cerrarModalRecetaView() {
+  document.getElementById("modalRecetaView").style.display = "none";
 }
 
 function editarReceta(index) {
   duplicarMode = false;
   recetaEditIndex = index;
   const receta = recetas[index];
+  
+  // Establecer el idioma del modal según la receta guardada
   if (receta.idioma) {
     currentLang = receta.idioma;
     document.getElementById("langSelect").value = receta.idioma;
   }
-  translateApp();
+
+  // Ajustar título
+  translateApp(); // para que ponga "Editar Receta" si duplicarMode = false
   document.getElementById("modalRecetaEdit").style.display = "block";
+
   document.getElementById("editarNombreReceta").value = receta.nombre;
   document.getElementById("editarUnidadesProduccion").value = receta.unidades;
   document.getElementById("editarTiempoCoccion").value = receta.tiempoCoccion;
-  document.getElementById("editarComentariosReceta").value = receta.comentarios ? receta.comentarios.replace(/<br>/g, "\n") : "";
-  document.getElementById("editarPorcentajeGanancia").value = receta.porcentajeGanancia || 0;
-  
-  // Cargar ingredientes en edición
+  document.getElementById("editarComentariosReceta").value = receta.comentarios
+    ? receta.comentarios.replace(/<br>/g, "\n")
+    : "";
+  document.getElementById("editarPorcentajeGanancia").value =
+    receta.porcentajeGanancia || 0;
+
+  // Limpiar contenedores
   const ingContainer = document.getElementById("editarIngredientesReceta");
   ingContainer.innerHTML = "";
-  receta.ingredientes.forEach(ing => {
+
+  // Cargar ingredientes
+  receta.ingredientes.forEach((ing) => {
     const div = document.createElement("div");
     div.className = "ingrediente-row";
+
     const select = document.createElement("select");
     select.className = "select-materia";
-    const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-    materiasOrdenadas.forEach(materia => {
+
+  // Llenar el select
+    const materiasOrdenadas = materiasPrimas.slice().sort((a, b) =>
+      a.nombre.localeCompare(b.nombre)
+    );
+    materiasOrdenadas.forEach((materia) => {
       const option = document.createElement("option");
       option.value = materia.id;
       option.textContent = `${materia.nombre} (${materia.unidad})`;
-      if (materia.id === ing.id) option.selected = true;
+      if (materia.id === ing.id) {
+        option.selected = true;
+      }
       select.appendChild(option);
     });
+
     const inputCantidad = document.createElement("input");
     inputCantidad.type = "number";
     inputCantidad.placeholder = "Cantidad";
     inputCantidad.className = "input-cantidad";
     inputCantidad.value = ing.cantidad;
+
     const btnRemove = document.createElement("button");
+    btnRemove.classList.add("eliminar");
     btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-    btnRemove.onclick = () => ingContainer.removeChild(div);
+    btnRemove.onclick = function () {
+      ingContainer.removeChild(div);
+    };
+
     div.appendChild(select);
     div.appendChild(inputCantidad);
     div.appendChild(btnRemove);
     ingContainer.appendChild(div);
   });
-  
-  // Cargar gastos fijos en edición
+
+  // Cargar gastos fijos
   const gastosContainer = document.getElementById("editarFijosRecetaContainer");
   gastosContainer.innerHTML = "";
   if (receta.gastosReceta) {
-    receta.gastosReceta.forEach(g => {
+    receta.gastosReceta.forEach((g) => {
       const div = document.createElement("div");
       div.className = "gasto-receta-row";
+
       const select = document.createElement("select");
       select.className = "select-gasto";
-      gastosFijos.forEach(gasto => {
+      gastosFijos.forEach((gasto) => {
         const option = document.createElement("option");
         option.value = gasto.id;
         option.textContent = `${gasto.nombre} ($${gasto.costo})`;
-        if (gasto.id === g.id) option.selected = true;
+        if (gasto.id === g.id) {
+          option.selected = true;
+        }
         select.appendChild(option);
       });
+
       const inputCantidad = document.createElement("input");
       inputCantidad.type = "number";
       inputCantidad.placeholder = "Cantidad";
       inputCantidad.className = "input-cantidad";
       inputCantidad.value = g.cantidad;
+
       const btnRemove = document.createElement("button");
+      btnRemove.classList.add("eliminar");
       btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-      btnRemove.onclick = () => gastosContainer.removeChild(div);
+      btnRemove.onclick = function () {
+        gastosContainer.removeChild(div);
+      };
+
       div.appendChild(select);
       div.appendChild(inputCantidad);
       div.appendChild(btnRemove);
       gastosContainer.appendChild(div);
     });
   }
-  
-  document.getElementById("modalRecetaEdit").style.display = "block";
 }
 
 function duplicarReceta(index) {
   duplicarMode = true;
+  console.log("duplicarReceta called, duplicarMode set to", duplicarMode);
   recetaEditIndex = index;
   const receta = recetas[index];
   document.getElementById("editarNombreReceta").value = receta.nombre + " (Copia)";
@@ -1387,20 +1719,22 @@ function duplicarReceta(index) {
   document.getElementById("editarComentariosReceta").value = receta.comentarios || "";
   document.getElementById("editarPorcentajeGanancia").value = receta.porcentajeGanancia || 0;
   
-  // Copiar ingredientes
+  // Copia los ingredientes
   const containerIng = document.getElementById("editarIngredientesReceta");
   containerIng.innerHTML = "";
-  receta.ingredientes.forEach(ing => {
+  receta.ingredientes.forEach(function (ing) {
     const div = document.createElement("div");
     div.className = "ingrediente-row";
     const select = document.createElement("select");
     select.className = "select-materia";
     const materiasOrdenadas = materiasPrimas.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-    materiasOrdenadas.forEach(materia => {
+    materiasOrdenadas.forEach(function (materia) {
       const option = document.createElement("option");
       option.value = materia.id;
-      option.textContent = `${materia.nombre} (${materia.unidad})`;
-      if (materia.id === ing.id) option.selected = true;
+      option.textContent = materia.nombre + " (" + materia.unidad + ")";
+      if (materia.id === ing.id) {
+        option.selected = true;
+      }
       select.appendChild(option);
     });
     const inputCantidad = document.createElement("input");
@@ -1410,27 +1744,31 @@ function duplicarReceta(index) {
     inputCantidad.value = ing.cantidad;
     const btnRemove = document.createElement("button");
     btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-    btnRemove.onclick = () => containerIng.removeChild(div);
+    btnRemove.onclick = function () {
+      containerIng.removeChild(div);
+    };
     div.appendChild(select);
     div.appendChild(inputCantidad);
     div.appendChild(btnRemove);
     containerIng.appendChild(div);
   });
   
-  // Copiar gastos fijos
+  // Copia los gastos fijos
   const containerGastos = document.getElementById("editarFijosRecetaContainer");
   containerGastos.innerHTML = "";
   if (receta.gastosReceta) {
-    receta.gastosReceta.forEach(gasto => {
+    receta.gastosReceta.forEach(function (gasto) {
       const div = document.createElement("div");
       div.className = "gasto-receta-row";
       const select = document.createElement("select");
       select.className = "select-gasto";
-      gastosFijos.forEach(g => {
+      gastosFijos.forEach(function (g) {
         const option = document.createElement("option");
         option.value = g.id;
-        option.textContent = `${g.nombre} ($${g.costo})`;
-        if (g.id === gasto.id) option.selected = true;
+        option.textContent = g.nombre + " ($" + g.costo + ")";
+        if (g.id === gasto.id) {
+          option.selected = true;
+        }
         select.appendChild(option);
       });
       const inputCantidad = document.createElement("input");
@@ -1440,7 +1778,9 @@ function duplicarReceta(index) {
       inputCantidad.value = gasto.cantidad;
       const btnRemove = document.createElement("button");
       btnRemove.innerHTML = '<i class="fas fa-trash"></i>';
-      btnRemove.onclick = () => containerGastos.removeChild(div);
+      btnRemove.onclick = function () {
+        containerGastos.removeChild(div);
+      };
       div.appendChild(select);
       div.appendChild(inputCantidad);
       div.appendChild(btnRemove);
@@ -1451,7 +1791,10 @@ function duplicarReceta(index) {
   document.getElementById("modalRecetaEdit").style.display = "block";
 }
 
+
 async function guardarEdicionReceta() {
+  console.log("guardarEdicionReceta llamado. duplicarMode =", duplicarMode);
+  
   const nombre = document.getElementById("editarNombreReceta").value;
   const unidades = document.getElementById("editarUnidadesProduccion").value;
   const tiempoCoccion = document.getElementById("editarTiempoCoccion").value;
@@ -1467,7 +1810,7 @@ async function guardarEdicionReceta() {
     comentarios = comentarios.replace(/\n/g, "<br>");
   }
   
-  // Procesar ingredientes
+  // Procesamos los ingredientes
   const containerIng = document.getElementById("editarIngredientesReceta");
   const filasIng = containerIng.getElementsByClassName("ingrediente-row");
   if (filasIng.length === 0) {
@@ -1501,7 +1844,7 @@ async function guardarEdicionReceta() {
     });
   }
   
-  // Procesar gastos fijos
+  // Procesamos los gastos fijos
   const containerGastos = document.getElementById("editarFijosRecetaContainer");
   const filasGasto = containerGastos.getElementsByClassName("gasto-receta-row");
   let costoGastosReceta = 0;
@@ -1535,7 +1878,7 @@ async function guardarEdicionReceta() {
   const costoPorUnidad = costoTotalFinal / Number(unidades);
   const precioSugerido = costoPorUnidad * (1 + porcentajeGanancia / 100);
   
-  // Usar un nuevo ID para duplicar o mantener el existente para editar
+  // Usamos un nuevo ID para duplicar o el mismo para editar
   const newId = duplicarMode ? Date.now().toString() : recetas[recetaEditIndex].id;
   let recetaData = {
     id: newId,
@@ -1550,13 +1893,16 @@ async function guardarEdicionReceta() {
     costoPorUnidad: costoPorUnidad,
     porcentajeGanancia: porcentajeGanancia,
     precioSugerido: precioSugerido,
-    foto: null,
-    idioma: currentLang
+    foto: null,  // se asignará a continuación
+    idioma: currentLang,
+        
   };
-  
-  // Manejo de la imagen en edición o duplicación
+  console.log("RecetaData:", recetaData);
+
+  // Manejo de la imagen
   const fileEdit = document.getElementById("fotoRecetaEdit").files[0];
   if (fileEdit) {
+    // Si se seleccionó una nueva imagen, la guardamos con el ID correspondiente
     try {
       await saveImage(newId, fileEdit);
       recetaData.foto = newId;
@@ -1565,6 +1911,7 @@ async function guardarEdicionReceta() {
     }
   } else {
     if (duplicarMode) {
+      // En duplicar, si no se sube una nueva imagen, copiamos la imagen original (si existe)
       const originalFoto = recetas[recetaEditIndex].foto;
       if (originalFoto) {
         try {
@@ -1578,14 +1925,18 @@ async function guardarEdicionReceta() {
         }
       }
     } else {
+      // En edición, si no se selecciona nueva imagen, se conserva la imagen original
       recetaData.foto = recetas[recetaEditIndex].foto || null;
     }
   }
   
+  // Actualizamos el array de recetas
   if (duplicarMode) {
     recetas.push(recetaData);
+    console.log("Receta duplicada:", recetaData);
   } else {
     recetas[recetaEditIndex] = recetaData;
+    console.log("Receta editada:", recetaData);
   }
   
   localStorage.setItem("recetas", JSON.stringify(recetas));
@@ -1594,13 +1945,18 @@ async function guardarEdicionReceta() {
   duplicarMode = false;
 }
 
+/* -------------------- Funcion Eliminar Receta -------------------- */
+
 function eliminarReceta(index) {
   if (confirm("¿Eliminar esta receta?")) {
     const recetaEliminada = recetas.splice(index, 1)[0];
     localStorage.setItem("recetas", JSON.stringify(recetas));
     mostrarRecetas();
+    // Puedes eliminar también la foto de IndexedDB si lo deseas
     if (recetaEliminada && recetaEliminada.id) {
-      deleteImage(recetaEliminada.id).catch(err => console.error("Error eliminando imagen:", err));
+      deleteImage(recetaEliminada.id).catch((err) => {
+        console.error("Error eliminando imagen de la receta:", err);
+      });
     }
   }
 }
@@ -1613,144 +1969,10 @@ function limpiarRecetas() {
   }
 }
 
-/* ======================================================
-   FUNCIONES PARA IMPRESIÓN Y GENERACIÓN DE PDF
-====================================================== */
+/***************************************************************************
+ * 12) FAQ, CONVERSOR, MINI CALCULADORA
+ ***************************************************************************/
 
-/* Función para imprimir la receta mediante un iframe y contenedor temporal.
-   Se extrae el contenido visible del modal (.modal-content dentro de #modalRecetaView). */
-function imprimirRecetaConIframe() {
-  // Seleccionar el contenido interno del modal
-  const modalContent = document.querySelector("#modalRecetaView .modal-content");
-  if (!modalContent) {
-    alert("No se encontró el contenido de la receta.");
-    return;
-  }
-  // Clonar el contenido para no alterar el DOM original
-  const clone = modalContent.cloneNode(true);
-  
-  // Crear un contenedor temporal visible
-  const tempContainer = document.createElement("div");
-  tempContainer.id = "tempPrintContainer";
-  tempContainer.style.position = "absolute";
-  tempContainer.style.top = "0";
-  tempContainer.style.left = "0";
-  tempContainer.style.width = "100%";
-  tempContainer.style.zIndex = "9999";
-  tempContainer.style.background = "#fff";
-  tempContainer.style.display = "block";
-  tempContainer.appendChild(clone);
-  document.body.appendChild(tempContainer);
-  
-  // Crear un iframe oculto para la impresión
-  const iframe = document.createElement("iframe");
-  iframe.style.position = "absolute";
-  iframe.style.left = "-9999px";
-  document.body.appendChild(iframe);
-  
-  const doc = iframe.contentWindow.document;
-  doc.open();
-  doc.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Imprimir Receta</title>
-      <!-- Incluir estilos de la app y Font Awesome -->
-      <link rel="stylesheet" href="css/style.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <style>
-        @media print {
-          body * { visibility: hidden; }
-          #printContent, #printContent * { visibility: visible; }
-          #printContent { position: absolute; left: 0; top: 0; }
-        }
-      </style>
-    </head>
-    <body>
-      <div id="printContent">
-        ${tempContainer.innerHTML}
-      </div>
-    </body>
-    </html>
-  `);
-  doc.close();
-  
-  // Esperar a que el contenido se renderice completamente antes de imprimir
-  setTimeout(() => {
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-    document.body.removeChild(iframe);
-    document.body.removeChild(tempContainer);
-  }, 1500);
-}
-
-/* Función para generar PDF de la receta utilizando html2pdf.js.*/
-  
-function generarPDFReceta() {
-  // 1) Seleccionar SOLAMENTE el contenido esencial de la receta
-  const detailContainer = document.getElementById("detalleReceta");
-  if (!detailContainer) {
-    alert("No se encontró el contenido de la receta en #detalleReceta.");
-    return;
-  }
-
-  // 2) Clonar el HTML interno de #detalleReceta
-  const contentHTML = detailContainer.innerHTML;
-
-  // 3) Crear un contenedor temporal visible en el DOM
-  const tempDiv = document.createElement("div");
-  tempDiv.style.position = "absolute";
-  tempDiv.style.left = "0";
-  tempDiv.style.top = "0";
-  tempDiv.style.width = "100%";
-  tempDiv.style.background = "#fff";
-  tempDiv.style.zIndex = "9999";
-  tempDiv.innerHTML = contentHTML;
-  document.body.appendChild(tempDiv);
-
-  // 4) Configuración para html2pdf.js
-  
-  
-  const opts = {
-    margin: 10,
-    filename: 'receta.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-      scale: 2,      // Aumenta la resolución
-      useCORS: true, // Útil si hay imágenes con URL externas
-      allowTaint: true 
-    },
-    jsPDF: { 
-      unit: 'mm', 
-      format: 'a4', 
-      orientation: 'portrait' 
-    }
-  };
-
-  // 5) Dar un retardo para asegurar que se renderice y cargar cualquier estilo
-  setTimeout(() => {
-    html2pdf()
-      .set(opts)
-      .from(tempDiv)
-      .save()
-      .then(() => {
-        console.log("PDF generado con éxito.");
-        // 6) Eliminar el contenedor temporal
-        document.body.removeChild(tempDiv);
-      })
-      .catch(err => {
-        // Aquí capturas cualquier error que ocurra durante el proceso
-        console.error("Error html2pdf:", err);
-      });
-  }, 800);
-  
-}
-
-/* ======================================================
-   OTRAS FUNCIONES: Conversor, Mini Calculadora, Import/Export, etc.
-====================================================== */
 function abrirModalFAQ() {
   document.getElementById("modalFAQ").style.display = "block";
 }
@@ -1758,6 +1980,7 @@ function cerrarModalFAQ() {
   document.getElementById("modalFAQ").style.display = "none";
 }
 
+/* Conversor */
 function abrirModalConversor() {
   document.getElementById("modalConversor").style.display = "block";
 }
@@ -1768,15 +1991,19 @@ function convertirMedida() {
   const valor = parseFloat(document.getElementById("valorConversor").value) || 0;
   const unidadOrigen = document.getElementById("unidadOrigen").value;
   const unidadDestino = document.getElementById("unidadDestino").value;
+
   let factor = 1;
+  // Conversiones simples (g <-> kg, ml <-> l)
   if (unidadOrigen === "g" && unidadDestino === "kg") factor = 0.001;
   if (unidadOrigen === "kg" && unidadDestino === "g") factor = 1000;
   if (unidadOrigen === "ml" && unidadDestino === "l") factor = 0.001;
   if (unidadOrigen === "l" && unidadDestino === "ml") factor = 1000;
+
   const resultado = valor * factor;
   document.getElementById("resultadoConversor").innerText = `${valor} ${unidadOrigen} = ${resultado} ${unidadDestino}`;
 }
 
+/* Mini Calculadora */
 let miniCalcOperation = "";
 function abrirMiniCalculator() {
   document.getElementById("modalMiniCalc").style.display = "block";
@@ -1800,6 +2027,7 @@ function clearCalc() {
 }
 function calculateMini() {
   try {
+    // eslint-disable-next-line no-eval
     const resultado = eval(miniCalcOperation);
     document.getElementById("miniCalcDisplay").innerText = resultado;
     miniCalcOperation = resultado.toString();
@@ -1807,6 +2035,10 @@ function calculateMini() {
     document.getElementById("miniCalcDisplay").innerText = "Error";
   }
 }
+
+/***************************************************************************
+ * 13) IMPORTAR/EXPORTAR JSON
+ ***************************************************************************/
 
 function exportData() {
   const data = {
@@ -1873,9 +2105,13 @@ function limpiarGastos() {
   }
 }
 
-function cerrarModalRecetaView() {
-  document.getElementById("modalRecetaView").style.display = "none";
+function cerrarModalRecetaEdit() {
+  document.getElementById("modalRecetaEdit").style.display = "none";
 }
+
+/***************************************************************************
+ * 14) INICIALIZACIÓN
+ ***************************************************************************/
 
 document.addEventListener("DOMContentLoaded", () => {
   translateApp();
@@ -1883,3 +2119,4 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarRecetas();
   mostrarGastos();
 });
+
