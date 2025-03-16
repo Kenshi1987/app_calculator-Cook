@@ -1406,17 +1406,18 @@ function verReceta(index) {
     // Creamos un contenedor temporal solo con el contenido que queremos imprimir
     const tempContainer = document.createElement("div");
     tempContainer.id = "tempPrintContainer";
+    tempContainer.style.textAlign = "center";
     tempContainer.innerHTML = `
-      <div style="width: 100%; padding: 0px; text-align: center;">
+      <div style="width: 100%; padding: 10px; text-align: center;">
         <h2 id="printTitle" style="margin-bottom: 10px;">${document.getElementById("detalleRecetaTitle").innerText}</h2>
-        <img id="printImage" style="max-width: 60%; height: auto; margin-bottom: 10px; margin-top: 10px; display: block; margin-left: auto; margin-right: auto;">
-        <div id="printContent" style="text-align: justify; margin: 5 auto; width: 90%;">
+        <img id="printImage" style="max-width: 60%; height: auto; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto;">
+        <div id="printContent" style="text-align: justify; margin: 0 auto; width: 80%;">
           ${modalElement.querySelector("#detalleReceta").innerHTML}
         </div>
       </div>
     `;
   
-    // Agregamos la imagen si existe
+    // Agregar la imagen si existe
     const imgElement = modalElement.querySelector("#fotoRecetaDisplay");
     if (imgElement && imgElement.src) {
       tempContainer.querySelector("#printImage").src = imgElement.src;
@@ -1443,7 +1444,7 @@ function verReceta(index) {
         <title>Imprimir Receta</title>
         <style>
           @page {
-            margin: 5mm 5mm; /* Más margen arriba y abajo */
+            margin: 20mm 10mm; /* Ajustamos margen para evitar espacios */
           }
           body {
             font-family: Arial, sans-serif;
@@ -1452,15 +1453,10 @@ function verReceta(index) {
             text-align: center;
           }
           #printContent {
-            width: 100%;
+            width: 80%;
             text-align: justify;
-            padding: 10px;
+            padding: 20px;
             margin: 0 auto;
-          }
-          #printTitle {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
           }
           img {
             max-width: 60%;
@@ -1479,18 +1475,10 @@ function verReceta(index) {
               top: 0;
               width: 100%;
             }
-            /* Ocultar encabezados y pies de página */
             @page {
               size: auto;
-              margin: 25mm 15mm 25mm 15mm;
+              margin: 20mm 10mm; /* Ajustamos margen */
             }
-            @page :left {
-              @bottom-left { content: "Página " counter(page); }
-            }
-            @page :right {
-              @bottom-right { content: "Página " counter(page); }
-            }
-            /* Ocultar título, fecha y URL del navegador */
             header, footer {
               display: none !important;
               visibility: hidden !important;
@@ -1505,7 +1493,7 @@ function verReceta(index) {
     `);
     doc.close();
   
-    // Esperamos un pequeño tiempo para que la renderización termine antes de imprimir
+    // Esperamos a que todo se cargue antes de imprimir
     setTimeout(() => {
       iframe.contentWindow.focus();
       iframe.contentWindow.print();
@@ -1514,62 +1502,89 @@ function verReceta(index) {
       setTimeout(() => {
         document.body.removeChild(iframe);
         document.body.removeChild(tempContainer);
-      }, 500);
-    }, 1000);
+      }, 800);
+    }, 2000); // Se da más tiempo para evitar errores en la primera impresión
   }
-    
+  
 /* Función para generar PDF de la receta utilizando html2pdf.js.*/
     
-  function generarPDFReceta() {
-    const modalElement = document.getElementById("modalRecetaView");
-  
-    // Creamos un clon solo con el contenido que queremos en el PDF
-    const tempContainer = document.createElement("div");
-    tempContainer.id = "tempPDFContainer";
-    tempContainer.style.textAlign = "center";
-    tempContainer.innerHTML = `
-      <div style="width: 100%; padding: 10px; text-align: left;">
-        <h2>${document.getElementById("detalleRecetaTitle").innerText}</h2>
-        <img id="pdfImage" style="max-width: 100%; height: auto; margin-bottom: 10px;">
-        <div id="pdfContent">${modalElement.querySelector("#detalleReceta").innerHTML}</div>
+function generarPDFReceta() {
+  const modalElement = document.getElementById("modalRecetaView");
+
+  // Creamos un contenedor temporal con el contenido del modal
+  const tempContainer = document.createElement("div");
+  tempContainer.id = "tempPDFContainer";
+  tempContainer.style.textAlign = "center";
+  tempContainer.style.margin = "0";
+  tempContainer.style.padding = "10px";
+  tempContainer.style.width = "100%";
+  tempContainer.style.pageBreakInside = "avoid"; // Evita cortes dentro del contenido
+  tempContainer.innerHTML = `
+    <div style="width: 100%; text-align: center;">
+      <h2 id="pdfTitle" style="margin-bottom: 10px;">${document.getElementById("detalleRecetaTitle").innerText}</h2>
+      <img id="pdfImage" style="max-width: 80%; height: auto; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto;">
+      <div id="pdfContent" style="text-align: justify; margin: 0 auto; width: 90%; font-size: 14px; line-height: 1.5;">
+        ${modalElement.querySelector("#detalleReceta").innerHTML}
       </div>
-    `;
-  
-    // Agregamos la imagen si existe
-    const imgElement = modalElement.querySelector("#fotoRecetaDisplay");
-    if (imgElement && imgElement.src) {
-      tempContainer.querySelector("#pdfImage").src = imgElement.src;
-    } else {
-      tempContainer.querySelector("#pdfImage").style.display = "none";
-    }
-  
-    document.body.appendChild(tempContainer);
-  
-    // Opciones de html2pdf
-    const opt = {
-      margin: 10,
-      filename: 'receta.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-  
-    // Esperamos un pequeño tiempo para evitar que capture el contenido en blanco
-    setTimeout(() => {
-      html2pdf()
-        .set(opt)
-        .from(tempContainer)
-        .save()
-        .then(() => {
-          // Eliminamos el contenedor temporal después de la descarga
-          document.body.removeChild(tempContainer);
-        })
-        .catch(err => {
-          console.error("Error al generar PDF:", err);
-        });
-    }, 500);
+    </div>
+  `;
+
+  // Agregar imagen si existe
+  const imgElement = modalElement.querySelector("#fotoRecetaDisplay");
+  if (imgElement && imgElement.src) {
+    tempContainer.querySelector("#pdfImage").src = imgElement.src;
+  } else {
+    tempContainer.querySelector("#pdfImage").style.display = "none";
   }
-  
+
+  document.body.appendChild(tempContainer);
+
+  // Aplicamos CSS extra para evitar cortes en el PDF
+  const style = document.createElement("style");
+  style.innerHTML = `
+    #tempPDFContainer {
+      width: 100%;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    #pdfContent {
+      text-align: justify;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      padding: 10px;
+    }
+   `;
+  document.head.appendChild(style);
+
+  // Opciones para html2pdf
+  const opt = {
+    margin: [5, 5, 5, 5], // Márgenes optimizados
+    filename: 'receta.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { 
+      scale: 2, 
+      useCORS: true, 
+      scrollX: 0, 
+      scrollY: 0
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    
+  };
+
+  // Aseguramos que todo se renderice bien antes de generar el PDF
+  setTimeout(() => {
+    html2pdf()
+      .set(opt)
+      .from(tempContainer)
+      .save()
+      .then(() => {
+        document.body.removeChild(tempContainer); // Eliminamos el contenedor después de generar el PDF
+        document.head.removeChild(style); // Eliminamos el CSS temporal
+      })
+      .catch(err => console.error("Error al generar PDF:", err));
+  }, 2000);
+}
+
 
 /***************************************************************************
  * 11) FUNCIONES VARIAS
